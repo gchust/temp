@@ -1,0 +1,49 @@
+name: NocoReach connector local bundle
+on:
+  push:
+    paths:
+      - '.github/workflows/nocoreach-connector-local-bundle.yml'
+permissions:
+  contents: read
+jobs:
+  bundle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: nocobase/NocoReach
+          ref: 9167abf46021c80972e786eea6a2446df6882d89
+          path: source
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Export source and runtime for local work
+        run: |
+          mkdir -p export
+          tar -czf export/nocoreach-source.tar.gz -C source .
+          cp "$(command -v node)" export/node
+          tar -czf export/node-runtime.tar.gz -C export node
+          rm export/node
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nocoreach-connector-source
+          path: export/*.tar.gz
+          retention-days: 3
+      - name: Prepare locked dependencies
+        working-directory: source
+        run: |
+          npm install --global pnpm@11.7.0
+          pnpm install --frozen-lockfile
+      - name: Export offline dependencies without credentials or application data
+        run: |
+          tar -czf export/nocoreach-dependencies.tar.gz -C source node_modules .agents app-plugins/nocoreach-mock/node_modules
+          sha256sum export/*.tar.gz > export/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nocoreach-connector-dependencies
+          path: |
+            export/nocoreach-dependencies.tar.gz
+            export/SHA256SUMS
+          retention-days: 3
