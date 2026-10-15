@@ -33,6 +33,8 @@ run_check changesets node scripts/validate-changesets.mjs
 run_check peers pnpm peers:check
 run_check runtime-deps pnpm deps:check
 run_check cli-reference env NODE_OPTIONS=--max-old-space-size=6144 pnpm --filter @nocobase/studio cli-reference
-run_check openapi env NODE_OPTIONS=--max-old-space-size=6144 pnpm openapi:check
+# Only Studio and its dependency closure are installed. The unchanged templates have no node_modules here.
+# Validate every registered Studio/plugin operation rather than booting unrelated, uninstalled applications.
+run_check openapi env NODE_OPTIONS=--max-old-space-size=6144 node scripts/check-openapi.mjs studio
 run_check frozen-lockfile env CI=true HUSKY=0 pnpm --filter '@nocobase/app-plugin-project-reports...' --filter '@nocobase/studio...' install --frozen-lockfile --ignore-scripts
 exit "$FAILED"
