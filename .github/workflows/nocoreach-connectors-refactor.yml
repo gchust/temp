@@ -42,20 +42,14 @@ jobs:
           mkdir -p ../artifacts
           git switch -c refactor/connector-plugins
           npm install --global pnpm@11.7.0
-          pnpm install --frozen-lockfile
-      - name: Record applicable development guidance
-        working-directory: source
-        run: |
-          cat .agents/skills/nocobase-app-development/references/cli.md
-          cat .agents/skills/nocobase-app-development/references/frontend/ui-workflow.md
-          cat .agents/skills/nocobase-app-development/references/plugins.md
+          pnpm install --frozen-lockfile > ../artifacts/install-baseline.log 2>&1 || { tail -100 ../artifacts/install-baseline.log; exit 1; }
       - name: Apply production code and regression tests
         working-directory: source
         run: |
           set -euo pipefail
           cp -R ../harness/nocoreach/connector-plugins/implementation/patch/. .
           node ../harness/nocoreach/connector-plugins/implementation/apply.mjs "$PWD"
-          pnpm install --no-frozen-lockfile
+          pnpm install --no-frozen-lockfile > ../artifacts/install-refactor.log 2>&1 || { tail -100 ../artifacts/install-refactor.log; exit 1; }
           pnpm connectors:prepare
       - name: Run registry and GitHub regression tests
         working-directory: source
@@ -67,6 +61,18 @@ jobs:
         run: |
           set -euo pipefail
           pnpm exec tsc -p tsconfig.server.json --noEmit 2>&1 | tee ../artifacts/server-types.log
+      - name: Confirm actual CLI development options
+        working-directory: source
+        run: pnpm nocobase dev --help
+      - name: Install the pinned Chromium browser
+        working-directory: source
+        run: |
+          pnpm exec playwright install --with-deps chromium > ../artifacts/browser-install.log 2>&1 || { tail -100 ../artifacts/browser-install.log; exit 1; }
+      - name: Start real NocoReach and validate migrated GitHub UI
+        working-directory: source
+        run: |
+          set -euo pipefail
+          node ../harness/nocoreach/connector-plugins/implementation/browser.mjs "$PWD" "$(realpath ../artifacts)" 2>&1 | tee ../artifacts/browser-run.log
       - name: Preserve the exact branch diff
         if: always()
         working-directory: source
