@@ -73,21 +73,22 @@ try {
   assert.equal((await loginResponse).status(), 200, 'Synthetic test administrator signs in through the actual application');
   await page.waitForURL(url => !url.pathname.endsWith('/login'));
   record('real-login-with-synthetic-admin');
-  // Start traces after login so passwords are not retained in the published evidence.
   await context.tracing.start({ screenshots: true, snapshots: true, sources: false });
   await page.goto(base + '/connections', { waitUntil: 'domcontentloaded' });
   const indicator = page.getByTestId('mock-environment-indicator');
   await indicator.waitFor({ state: 'visible' });
   await expect(indicator).toHaveAttribute('role', 'img');
-  // Use the authenticated browser context for an explicit local status check. A response
-  // from the previous document may disappear during navigation and must not be reused.
-  const mock = await context.request.post(base + '/api/nocoreach/nrMock/status', { data: { projectId: '1' } });
-  assert.equal(mock.status(), 200);
-  const mockPayload = await mock.json();
-  const mockStatus = mockPayload.data ?? mockPayload;
-  assert.equal(mockStatus.globalEnabled, true, 'The server must confirm this is a mock deployment');
-  assert.equal(mockStatus.environment, 'test');
   await page.locator('[data-source-id="github"]').waitFor({ state: 'visible' });
+  // Keep the application's CSRF/origin enforcement enabled. The authenticated page
+  // makes this local status request with the same origin and cookies as its own UI.
+  const mock = await page.evaluate(async url => {
+    const response = await fetch(url, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ projectId: '1' }) });
+    return { status: response.status, body: await response.json() };
+  }, base + '/api/nocoreach/nrMock/status');
+  assert.equal(mock.status, 200, JSON.stringify(mock.body));
+  const mockStatus = mock.body.data ?? mock.body;
+  assert.equal(mockStatus.globalEnabled, true);
+  assert.equal(mockStatus.environment, 'test');
   await page.screenshot({ path: path.join(artifacts, 'connections.png'), fullPage: true });
   record('existing-connections-page-and-mock-isolation', { environment: mockStatus.environment });
 
