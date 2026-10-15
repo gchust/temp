@@ -1,0 +1,43 @@
+Studio e2e server: http://127.0.0.1:40363/main (ready in 23 s, data in /tmp/studio-e2e-Ku00mW)
+
+Running 1 test using 1 worker
+
+[1/1] [e2e] › e2e/project-reports.test.ts:18:1 › project report settings, runner publication, history, permissions and responsive UI
+  1) [e2e] › e2e/project-reports.test.ts:18:1 › project report settings, runner publication, history, permissions and responsive UI 
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.selectOption: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Runner Agent', { exact: true })
+
+
+      46 |   ).toBeVisible();
+      47 |   await page.getByText('报告设置', { exact: true }).click();
+    > 48 |   await page.getByLabel('Runner Agent', { exact: true }).selectOption(agentId);
+         |                                                          ^
+      49 |   await page.getByLabel('时区', { exact: true }).fill('UTC');
+      50 |   await page.getByLabel('开始时间（本地小时）', { exact: true }).fill('23');
+      51 |   await page.getByLabel('摘要语言', { exact: true }).selectOption('zh-CN');
+        at /home/runner/work/temp/temp/source/packages/apps/studio/e2e/project-reports.test.ts:48:58
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/project-reports-project-re-13461-rmissions-and-responsive-UI-e2e/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/project-reports-project-re-13461-rmissions-and-responsive-UI-e2e/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/project-reports-project-re-13461-rmissions-and-responsive-UI-e2e/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/project-reports-project-re-13461-rmissions-and-responsive-UI-e2e/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  1 failed
+    [e2e] › e2e/project-reports.test.ts:18:1 › project report settings, runner publication, history, permissions and responsive UI 
+undefined
+/home/runner/work/temp/temp/source/packages/apps/studio:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: playwright test e2e/project-reports.test.ts '--workers=1' '--reporter=line'
