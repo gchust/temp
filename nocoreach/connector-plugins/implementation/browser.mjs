@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 const root = path.resolve(process.argv[2]);
 const artifacts = path.resolve(process.argv[3]);
 const require = createRequire(path.join(root, 'package.json'));
-const { chromium } = require('@playwright/test');
+const { chromium, expect } = require('@playwright/test');
 const isolated = await mkdtemp(path.join(tmpdir(), 'nocoreach-connectors-'));
 await mkdir(artifacts, { recursive: true });
 const username = 'connectorqa';
@@ -75,11 +75,20 @@ try {
   record('real-login-with-synthetic-admin');
   // Start traces after login so passwords are not retained in the published evidence.
   await context.tracing.start({ screenshots: true, snapshots: true, sources: false });
+  const mockResponse = page.waitForResponse(response => response.url().includes('/nrMock/status'));
   await page.goto(base + '/connections', { waitUntil: 'domcontentloaded' });
-  await page.getByTestId('mock-environment-banner').waitFor({ state: 'visible' });
+  const mock = await mockResponse;
+  assert.equal(mock.status(), 200);
+  const mockPayload = await mock.json();
+  const mockStatus = mockPayload.data ?? mockPayload;
+  assert.equal(mockStatus.globalEnabled, true, 'The server must confirm this is a mock deployment');
+  assert.equal(mockStatus.environment, 'test');
+  const indicator = page.getByTestId('mock-environment-indicator');
+  await indicator.waitFor({ state: 'visible' });
+  await expect(indicator).toHaveAttribute('role', 'img');
   await page.locator('[data-source-id="github"]').waitFor({ state: 'visible' });
   await page.screenshot({ path: path.join(artifacts, 'connections.png'), fullPage: true });
-  record('existing-connections-page-and-mock-isolation');
+  record('existing-connections-page-and-mock-isolation', { environment: mockStatus.environment });
 
   const statusResponses = [];
   page.on('response', response => {
@@ -106,10 +115,15 @@ try {
   report.status = 'failed';
   report.error = error instanceof Error ? error.message : String(error);
   console.error('APP_BROWSER_FAIL', report.error);
+  console.error('APPLICATION_LOG_TAIL', logs.slice(-8000));
   const pages = context?.pages() ?? [];
   if (pages[0]) {
     try { await pages[0].screenshot({ path: path.join(artifacts, 'failure.png'), fullPage: true }); } catch { /* Keep the original error. */ }
-    try { await writeFile(path.join(artifacts, 'failure-dom.txt'), await pages[0].locator('body').innerText()); } catch { /* Keep the original error. */ }
+    try {
+      const text = await pages[0].locator('body').innerText();
+      await writeFile(path.join(artifacts, 'failure-dom.txt'), text);
+      console.error('FAILURE_PAGE', pages[0].url(), text.slice(0, 8000));
+    } catch { /* Keep the original error. */ }
   }
   process.exitCode = 1;
 } finally {
