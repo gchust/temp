@@ -16,8 +16,9 @@ export const githubConnector: ConnectorDefinition<ConnectorRuntimeContext> = {
     { id: 'repository.trends', version: 1, effect: 'read' },
   ],
   create(context) {
-    const github = new GitHubSource(context.legacy);
-    const trends = new GitHubTrends(context.legacy);
+    // No request override: both sources keep using the connection-scoped network transport.
+    const github = new GitHubSource(context.legacy, undefined);
+    const trends = new GitHubTrends(context.legacy, undefined);
     context.expose('github', github);
     context.expose('githubTrends', trends);
     github.register();
