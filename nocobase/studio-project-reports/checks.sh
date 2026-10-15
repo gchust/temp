@@ -21,8 +21,10 @@ run_check studio-typecheck env NODE_OPTIONS=--max-old-space-size=6144 pnpm --fil
 if test "$FAILED" -eq 0; then
   run_check studio-build env NODE_OPTIONS=--max-old-space-size=6144 pnpm --filter @nocobase/studio build
   if test "$FAILED" -eq 0; then
-    run_check chromium pnpm --filter @nocobase/studio exec playwright install --with-deps chromium
-    run_check browser env NB_STUDIO_E2E_KEEP=1 pnpm --filter @nocobase/studio exec playwright test e2e/project-reports.test.ts --workers=1 --reporter=line
+    # GitHub's Ubuntu image already carries Chromium/Chrome system libraries. Install the pinned Playwright browser,
+    # not an unrelated apt upgrade of system libraries and fonts. Missing libraries still fail the actual test below.
+    run_check chromium timeout --signal=TERM --kill-after=20s 300s pnpm --filter @nocobase/studio exec playwright install chromium
+    run_check browser timeout --signal=TERM --kill-after=20s 600s env NB_STUDIO_E2E_KEEP=1 pnpm --filter @nocobase/studio exec playwright test e2e/project-reports.test.ts --workers=1 --reporter=line
   fi
 fi
 if test -d packages/apps/studio/test-results; then
