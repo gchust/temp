@@ -87,7 +87,6 @@ try {
   await indicator.waitFor({ state: 'visible' });
   await expect(indicator).toHaveAttribute('role', 'img');
   await page.locator('[data-source-id="github"]').waitFor({ state: 'visible' });
-  // Browser-origin calls retain the application's authentication and CSRF enforcement.
   async function status(resource) {
     const result = await page.evaluate(async ({ url }) => {
       const response = await fetch(url, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ projectId: '1' }) });
@@ -115,14 +114,15 @@ try {
       await expect(button).toBeEnabled({ timeout: 60_000 });
       const responsePromise = page.waitForResponse(response => response.url().includes(`/${target.resource}/${target.action}`), { timeout: 60_000 });
       await button.click();
-      const response = await responsePromise;
-      assert.equal(response.status(), 200, target.card + ' sync HTTP result');
+      assert.equal((await responsePromise).status(), 200, target.card + ' sync HTTP result');
       let after = await status(target.resource);
       const finish = Date.now() + 60_000;
       while ((after.syncing || after.checking) && Date.now() < finish) { await sleep(500); after = await status(target.resource); }
       assert.ok(!after.syncing && !after.checking, target.card + ' background read must complete');
-      const lastRun = target.platform ? after[target.platform]?.lastRun : after.lastSync ?? after.lastRun;
-      assert.equal(lastRun?.ok, true, target.card + ' must not report a partial/error result');
+      // GitHub's lastSync is a receipt; several other readers use lastSync only as an ISO timestamp.
+      const lastRun = target.platform ? after[target.platform]?.lastRun
+        : after.lastSync && typeof after.lastSync === 'object' ? after.lastSync : after.lastRun;
+      assert.equal(lastRun?.ok, true, target.card + ' must report a successful structured receipt: ' + JSON.stringify(lastRun));
       assert.ok(Number(target.metric(after)) > 0, target.card + ' should expose nonempty fixture data after reading');
       const again = await status(target.resource);
       assert.equal(target.metric(again), target.metric(after), target.card + ' results persist across subsequent status reads');
