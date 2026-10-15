@@ -1,0 +1,2 @@
+$ node ./scripts/gen-cli-reference.mjs
+Wrote 36 files to docs/cli/reference.

@@ -1,0 +1,302 @@
+[
+  {
+    "path": ".changeset/quiet-project-reports.md",
+    "size": 346,
+    "sha": "79fbf32fd34a9221ac5057efd25efc57c6bf4b7e"
+  },
+  {
+    "path": "packages/apps/studio/client/plugins.ts",
+    "size": 3016,
+    "sha": "9446d43e71d01990820cfa0116269aad1967e673"
+  },
+  {
+    "path": "packages/apps/studio/client/styles.css",
+    "size": 3955,
+    "sha": "cd186e16dac53524bbc4dcc100cd3b33d05a6db3"
+  },
+  {
+    "path": "packages/apps/studio/docs/cli/reference/index.md",
+    "size": 25240,
+    "sha": "420355ae8f1332aff57043adf7c3474343771db9"
+  },
+  {
+    "path": "packages/apps/studio/docs/cli/reference/project-reports.md",
+    "size": 4045,
+    "sha": "9aef35e278289337f04d03a55975bafadcd49e96"
+  },
+  {
+    "path": "packages/apps/studio/docs/cli/reference/report.md",
+    "size": 6118,
+    "sha": "3faa98e3f01b283e1ff343fb1d8e2a4549dc812e"
+  },
+  {
+    "path": "packages/apps/studio/e2e/project-reports.test.ts",
+    "size": 6010,
+    "sha": "2395351e78d29a876c0d2bba57d295a0e8c8c635"
+  },
+  {
+    "path": "packages/apps/studio/e2e/support/runner.ts",
+    "size": 9287,
+    "sha": "e1b23b5238c45e951d5b7adbb53d146a1e89c59f"
+  },
+  {
+    "path": "packages/apps/studio/package.json",
+    "size": 8875,
+    "sha": "ec712eae0abf738134f2998c90768bf9984f1591"
+  },
+  {
+    "path": "packages/apps/studio/server/plugins.ts",
+    "size": 2399,
+    "sha": "cbdfb370bb0c04bf27a8bfe64a6bc3eb38efca94"
+  },
+  {
+    "path": "packages/plugins/app-plugin-agents/README.md",
+    "size": 96384,
+    "sha": "fdcc53542a385b3c3d9e7204b4c18c8ef80d1c26"
+  },
+  {
+    "path": "packages/plugins/app-plugin-agents/server/composition.ts",
+    "size": 22980,
+    "sha": "686ae3a0824dad455f224e06456dc9ff8e9c0c19"
+  },
+  {
+    "path": "packages/plugins/app-plugin-agents/server/core/callers/index.ts",
+    "size": 4786,
+    "sha": "d1292019a7d64ce8459794b89fefb2e3e1c118cd"
+  },
+  {
+    "path": "packages/plugins/app-plugin-agents/server/core/runs/ports.ts",
+    "size": 14765,
+    "sha": "f690b69739ccb06b049e26fc92d5c430d50093dc"
+  },
+  {
+    "path": "packages/plugins/app-plugin-agents/tests/server/core/callers/action-ceiling.test.ts",
+    "size": 1408,
+    "sha": "6c7b7f04cbae319aecb3931b34600ab6792482ec"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/.gitignore",
+    "size": 30,
+    "sha": "2d0c064480d3be41b465da8323f11dd71ee68b6e"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/CHANGELOG.md",
+    "size": 163,
+    "sha": "634b9db9c848f1c1cadbf3ee21ee873da5972660"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/README.md",
+    "size": 6839,
+    "sha": "f1f07ec19345c61f75045699ac9c268554d3f65e"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/client/api.ts",
+    "size": 1908,
+    "sha": "ba8158ffc9ffc5e2d47f7092ff3d4e3fba941de8"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/client/components/page-container.tsx",
+    "size": 734,
+    "sha": "730b2204e47dcf8576c28ec9dbf1c6d96e04c4be"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/client/components/page-header.tsx",
+    "size": 1051,
+    "sha": "0c8863380feeba1549a6d1a5787b86aacb3e7606"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/client/components/ui/button.tsx",
+    "size": 3651,
+    "sha": "4b6e50b256d8bceaaacc42467abe5a2110617331"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/client/components/ui/input.tsx",
+    "size": 1100,
+    "sha": "db56fac365440dc975b547f090c531a18cc52cc3"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/client/index.ts",
+    "size": 868,
+    "sha": "44d2e596093bc0cde625d7c46f99397ad4dd9afc"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/client/locales/en-US.ts",
+    "size": 4695,
+    "sha": "636103e2ae466d38a2c49ff9c39adc4bfea16f24"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/client/locales/index.ts",
+    "size": 191,
+    "sha": "5cff8a9d8eba1f8dee8b2dbf5840e4684993a765"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/client/locales/zh-CN.ts",
+    "size": 4555,
+    "sha": "45171e946b2ca0bff33af6ee812078f174ef35da"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/client/page.tsx",
+    "size": 12187,
+    "sha": "55814f101277b46fc5b6abba77fe0f0dc294b8c1"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/client/report-card.tsx",
+    "size": 10373,
+    "sha": "5a5c3d4fdda01c50d5390111a89c9074c3b56193"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/client/settings.tsx",
+    "size": 6075,
+    "sha": "9bca7c9ce5bb293219d8762952a7c49381d7e227"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/client/trend-data.ts",
+    "size": 1849,
+    "sha": "bc590e2bc52b2a6b865e7701c9c048fdafa91ce3"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/client/trend.tsx",
+    "size": 6051,
+    "sha": "9e6a75c4a52536e4eeaaaa58f8acbf5a6b25e177"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/database/migrations/202610150001_project_reports.ts",
+    "size": 2933,
+    "sha": "e58335269e3432e82019a96288225dd3521e28e5"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/eslint.config.js",
+    "size": 238,
+    "sha": "65626c38a55c60263c94c746c8aa176c0248ab0a"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/package.json",
+    "size": 3032,
+    "sha": "b76c7cc3018dd19d82e1da5af296d282e4620445"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/runner/collector.d.mts",
+    "size": 105,
+    "sha": "f3391f57a11f20e8246b06acc62b3e8f00ef7250"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/runner/collector.mjs",
+    "size": 15241,
+    "sha": "679ab181353363a9f4057c2ab55bc9387af4546b"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/scripts/copy-runner.mjs",
+    "size": 250,
+    "sha": "7d4efd5e19d64ad60cb4d837e953ff57eee79c86"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/server/errors.ts",
+    "size": 264,
+    "sha": "889c623e6628e67d12d8ac8add9f6064b307c043"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/server/index.ts",
+    "size": 510,
+    "sha": "29bf6aa8b575da0d83e2f8cd6c527a33d442c0a4"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/server/provider.ts",
+    "size": 2574,
+    "sha": "df00dab8e87631fce59d08ca656d06933f740320"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/server/routes.ts",
+    "size": 12101,
+    "sha": "e13d985ea384d9c548b71bba3cffd20528566a6c"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/server/runtime.ts",
+    "size": 7224,
+    "sha": "0825d0b3ae59354974478ff1d62e871a1016c1ab"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/server/service.ts",
+    "size": 28409,
+    "sha": "0ee2a624e7472c5c60c4964545b315a707aa8044"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/server/store.ts",
+    "size": 3786,
+    "sha": "4ece9746d64de33d5a2518ff495c52afd79ab341"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/server/tokens.ts",
+    "size": 301,
+    "sha": "f675298da1c2fb9dc3015cc991ea6e6f3567d2f6"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/shared/api.ts",
+    "size": 10682,
+    "sha": "f328e1ec1671871c434f98308b09ffb9035bc295"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/shared/contracts.ts",
+    "size": 2126,
+    "sha": "d591556ae830693e574fac59ccb1021d4717592b"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/shared/dates.ts",
+    "size": 2411,
+    "sha": "cec83ea4846221abe6ddbee6f562c645e6253f74"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/tests/client/trend.test.tsx",
+    "size": 961,
+    "sha": "34e1e74e3c7777d3d3f49c116dc4efae7dc5ebd3"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/tests/collector.test.mjs",
+    "size": 4679,
+    "sha": "e2ed6294dcb5eb9008d938e3ed7896cd915a21fa"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/tests/dates.test.ts",
+    "size": 1277,
+    "sha": "48d5d8c1363db60f690fc4d39c5ea32fb8bfd36c"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/tests/schema.test.ts",
+    "size": 3026,
+    "sha": "835a45e2f74d9d7c289d9c1e4a7dd105c9e16701"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/tests/service.test.ts",
+    "size": 9196,
+    "sha": "8c47bb6685ee3ee3ea1c508c60c3f7606905c033"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/tsconfig.json",
+    "size": 381,
+    "sha": "7d033cbab4ae13d4020744ce12c0bab07086c92f"
+  },
+  {
+    "path": "packages/plugins/app-plugin-project-reports/vitest.config.ts",
+    "size": 562,
+    "sha": "62bc39fde67d03c0fda8c4aeb11056ae5ec79ffc"
+  },
+  {
+    "path": "packages/plugins/app-plugin-projects/server/domains/reports/daily.ts",
+    "size": 3674,
+    "sha": "51cef8b71a8d6debc649bfd72755d646451d294d"
+  },
+  {
+    "path": "packages/plugins/app-plugin-projects/server/domains/reports/report.service.ts",
+    "size": 27879,
+    "sha": "751fab504a970c7b266c1c73542e163c8c645973"
+  },
+  {
+    "path": "packages/plugins/app-plugin-projects/tests/domains/reports/daily.test.ts",
+    "size": 2411,
+    "sha": "0d7d194b81e6c3b756db1dc12601f8326b9d3bdf"
+  },
+  {
+    "path": "pnpm-lock.yaml",
+    "size": 984723,
+    "sha": "97df43372f5ba5ce518a5e1cb915612b1a7fe2fd"
+  }
+]

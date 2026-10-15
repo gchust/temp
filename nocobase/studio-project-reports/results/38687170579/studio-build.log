@@ -1,0 +1,1598 @@
+$ nocobase build
+
+> Typecheck client
+
+> Typecheck tooling
+
+> Build client
+[36mvite v6.4.3 [32mbuilding for production...[36m[39m
+transforming...
+[33m../../../node_modules/.pnpm/zod@4.6.5/node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../../node_modules/.pnpm/zod@4.6.5/node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.[39m
+[33m../../../node_modules/.pnpm/zod@4.6.5/node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../../node_modules/.pnpm/zod@4.6.5/node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.[39m
+[32m✓[39m 7849 modules transformed.
+rendering chunks...
+[33m[plugin vite:reporter] 
+(!) /home/runner/work/temp/temp/source/packages/plugins/app-plugin-agents/client/query.tsx is dynamically imported by /home/runner/work/temp/temp/source/packages/plugins/app-plugin-agents/client/chat.ts, /home/runner/work/temp/temp/source/packages/plugins/app-plugin-agents/client/routes.ts but also statically imported by /home/runner/work/temp/temp/source/packages/plugins/app-plugin-agents/client/chat.ts, /home/runner/work/temp/temp/source/packages/plugins/app-plugin-agents/client/chat/consultation-identity.ts, /home/runner/work/temp/temp/source/packages/plugins/app-plugin-agents/client/chat/ui-hooks.ts, /home/runner/work/temp/temp/source/packages/plugins/app-plugin-agents/client/chat/use-chat.ts, /home/runner/work/temp/temp/source/packages/plugins/app-plugin-agents/client/kit.ts, /home/runner/work/temp/temp/source/packages/plugins/app-plugin-agents/client/profile.ts, /home/runner/work/temp/temp/source/packages/plugins/app-plugin-agents/client/runs/run-hooks.ts, /home/runner/work/temp/temp/source/packages/plugins/app-plugin-agents/client/runs/subject-runs.ts, dynamic import will not move module into another chunk.
+[39m
+[33m[plugin vite:reporter] 
+(!) /home/runner/work/temp/temp/source/packages/plugins/app-plugin-knowledge/client/pages.ts is dynamically imported by /home/runner/work/temp/temp/source/packages/plugins/app-plugin-knowledge/client/routes.ts but also statically imported by /home/runner/work/temp/temp/source/packages/apps/studio/client/inbox/contributions/knowledge-parts.tsx, /home/runner/work/temp/temp/source/packages/apps/studio/client/pages/knowledge/index.tsx, /home/runner/work/temp/temp/source/packages/apps/studio/client/pages/projects/detail/knowledge.tsx, dynamic import will not move module into another chunk.
+[39m
+computing gzip size...
+[2mdist/client/[22m[32mindex.html                                                           [39m[1m[2m    2.84 kB[22m[1m[22m[2m │ gzip:   1.15 kB[22m
+[2mdist/client/[22m[2massets/[22m[32mrender-worker-BRKOyWVH-Cy2xwv7k.js                            [39m[1m[2m1,053.17 kB[22m[1m[22m
+[2mdist/client/[22m[2massets/[22m[32mrender-worker-NZPOUOTU-53o20w34.js                            [39m[1m[2m1,109.55 kB[22m[1m[22m
+[2mdist/client/[22m[2massets/[22m[32mxlsx_parser_bg-D35iK8p8.wasm                                  [39m[1m[2m1,616.90 kB[22m[1m[22m[2m │ gzip: 667.35 kB[22m
+[2mdist/client/[22m[2massets/[22m[32mrender-worker-CtLMFj9r-BB20No3F.js                            [39m[1m[2m1,654.04 kB[22m[1m[22m
+[2mdist/client/[22m[2massets/[22m[32mpptx_parser_bg-Dt8rn5cK.wasm                                  [39m[1m[2m1,688.28 kB[22m[1m[22m[2m │ gzip: 665.49 kB[22m
+[2mdist/client/[22m[2massets/[22m[32mdocx_parser_bg-CiTwQZUK.wasm                                  [39m[1m[2m1,830.38 kB[22m[1m[22m[2m │ gzip: 760.33 kB[22m
+[2mdist/client/[22m[2massets/[22m[35mindex-BEvvuMHD.css                                            [39m[1m[2m  308.08 kB[22m[1m[22m[2m │ gzip:  46.19 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-authz-sharing-rules.zh-CN-EPYsEybc.js      [39m[1m[2m    0.06 kB[22m[1m[22m[2m │ gzip:   0.08 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-authz-restriction-rules.zh-CN-BPG1IUvj.js  [39m[1m[2m    0.06 kB[22m[1m[22m[2m │ gzip:   0.08 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-authz-sharing-rules.en-US-CDXH_hoU.js      [39m[1m[2m    0.06 kB[22m[1m[22m[2m │ gzip:   0.08 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-authz-restriction-rules.en-US-pbRo5iqp.js  [39m[1m[2m    0.07 kB[22m[1m[22m[2m │ gzip:   0.09 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-authz-default-access.en-US-Cm2mtnqx.js     [39m[1m[2m    0.07 kB[22m[1m[22m[2m │ gzip:   0.08 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-authz-default-access.zh-CN-ldofxJEe.js     [39m[1m[2m    0.07 kB[22m[1m[22m[2m │ gzip:   0.09 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-i18n.zh-CN-CKxHx4zR.js                     [39m[1m[2m    0.09 kB[22m[1m[22m[2m │ gzip:   0.11 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-i18n.en-US-YrIUpJJ1.js                     [39m[1m[2m    0.10 kB[22m[1m[22m[2m │ gzip:   0.11 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-scheduler.en-US-CUCxHtcI.js                [39m[1m[2m    0.11 kB[22m[1m[22m[2m │ gzip:   0.11 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-scheduler.zh-CN-DJYVWGjs.js                [39m[1m[2m    0.11 kB[22m[1m[22m[2m │ gzip:   0.13 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mchannel-BpGbqI1Q.js                                           [39m[1m[2m    0.11 kB[22m[1m[22m[2m │ gzip:   0.13 kB[22m
+[2mdist/client/[22m[2massets/[22m[36muse-access-BzbSeP3g.js                                        [39m[1m[2m    0.13 kB[22m[1m[22m[2m │ gzip:   0.13 kB[22m
+[2mdist/client/[22m[2massets/[22m[36missue-parent-outlet-CjWJcx6H.js                               [39m[1m[2m    0.14 kB[22m[1m[22m[2m │ gzip:   0.14 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mcontext-t1D6n_PS.js                                           [39m[1m[2m    0.15 kB[22m[1m[22m[2m │ gzip:   0.14 kB[22m
+[2mdist/client/[22m[2massets/[22m[36msecurity-DvdY4IwA.js                                          [39m[1m[2m    0.17 kB[22m[1m[22m[2m │ gzip:   0.15 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mpage-container-BK7RjHFm.js                                    [39m[1m[2m    0.17 kB[22m[1m[22m[2m │ gzip:   0.16 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mpage-container-BY_U072K.js                                    [39m[1m[2m    0.17 kB[22m[1m[22m[2m │ gzip:   0.16 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mredirect-Bgxeh6_S.js                                          [39m[1m[2m    0.18 kB[22m[1m[22m[2m │ gzip:   0.16 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-hF9kagYd.js                                             [39m[1m[2m    0.18 kB[22m[1m[22m[2m │ gzip:   0.16 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mrender-worker-host-CBVe8aeD-Cf3JjmrL.js                       [39m[1m[2m    0.19 kB[22m[1m[22m[2m │ gzip:   0.16 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mrender-worker-host-XDMsyVsv-C7dQFgLH.js                       [39m[1m[2m    0.19 kB[22m[1m[22m[2m │ gzip:   0.17 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mrender-worker-host-CHlwYJdK-C9gRb1GD.js                       [39m[1m[2m    0.19 kB[22m[1m[22m[2m │ gzip:   0.17 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mchunk-2Q5K7J3B-BEToFJN4.js                                    [39m[1m[2m    0.19 kB[22m[1m[22m[2m │ gzip:   0.16 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mchunk-XXDRQBXY-Bz1LvOX_.js                                    [39m[1m[2m    0.23 kB[22m[1m[22m[2m │ gzip:   0.20 kB[22m
+[2mdist/client/[22m[2massets/[22m[36muse-role-error-DFJpl6vl.js                                    [39m[1m[2m    0.24 kB[22m[1m[22m[2m │ gzip:   0.20 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mprojects-DKZ8dfFh.js                                          [39m[1m[2m    0.26 kB[22m[1m[22m[2m │ gzip:   0.23 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-14AKzTC3.js                                             [39m[1m[2m    0.27 kB[22m[1m[22m[2m │ gzip:   0.21 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mversion-BLpU8_sS.js                                           [39m[1m[2m    0.28 kB[22m[1m[22m[2m │ gzip:   0.22 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mattachments-BbYBKFy6.js                                       [39m[1m[2m    0.28 kB[22m[1m[22m[2m │ gzip:   0.21 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mchunk-JWPE2WC7-CBqKvsiG.js                                    [39m[1m[2m    0.30 kB[22m[1m[22m[2m │ gzip:   0.20 kB[22m
+[2mdist/client/[22m[2massets/[22m[36msign-up-DPYOIhNo.js                                           [39m[1m[2m    0.30 kB[22m[1m[22m[2m │ gzip:   0.19 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mowned-B9UAZ0Ha.js                                             [39m[1m[2m    0.32 kB[22m[1m[22m[2m │ gzip:   0.23 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mexecuting-D64qGXRN.js                                         [39m[1m[2m    0.32 kB[22m[1m[22m[2m │ gzip:   0.23 kB[22m
+[2mdist/client/[22m[2massets/[22m[36marrow-up-right-CRaF1O8P.js                                    [39m[1m[2m    0.34 kB[22m[1m[22m[2m │ gzip:   0.27 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mpanel-right-QH-Cac_q.js                                       [39m[1m[2m    0.36 kB[22m[1m[22m[2m │ gzip:   0.28 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mchunk-5VM5RSS4-D8Fg1uiK.js                                    [39m[1m[2m    0.37 kB[22m[1m[22m[2m │ gzip:   0.27 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mrotate-cw-BmbdGUIH.js                                         [39m[1m[2m    0.37 kB[22m[1m[22m[2m │ gzip:   0.29 kB[22m
+[2mdist/client/[22m[2massets/[22m[36minit-Dmth1JHB.js                                              [39m[1m[2m    0.38 kB[22m[1m[22m[2m │ gzip:   0.19 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-DADJewWf.js                                             [39m[1m[2m    0.38 kB[22m[1m[22m[2m │ gzip:   0.29 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mconfig-BhGGtL3T.js                                            [39m[1m[2m    0.40 kB[22m[1m[22m[2m │ gzip:   0.27 kB[22m
+[2mdist/client/[22m[2massets/[22m[36missue-trail-Cc_QJTUt.js                                       [39m[1m[2m    0.40 kB[22m[1m[22m[2m │ gzip:   0.26 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mglobe-Wn9BsNkG.js                                             [39m[1m[2m    0.42 kB[22m[1m[22m[2m │ gzip:   0.30 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mredirect-C0rsv6KY.js                                          [39m[1m[2m    0.42 kB[22m[1m[22m[2m │ gzip:   0.31 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mformat-CUYXFfh-.js                                            [39m[1m[2m    0.42 kB[22m[1m[22m[2m │ gzip:   0.31 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mapi-BEKGRnE4.js                                               [39m[1m[2m    0.43 kB[22m[1m[22m[2m │ gzip:   0.27 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mapi-keys-qhQt2e1a.js                                          [39m[1m[2m    0.44 kB[22m[1m[22m[2m │ gzip:   0.29 kB[22m
+[2mdist/client/[22m[2massets/[22m[36meraser-C5bzCs8W.js                                            [39m[1m[2m    0.44 kB[22m[1m[22m[2m │ gzip:   0.32 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mvariable-BavXYV4V.js                                          [39m[1m[2m    0.47 kB[22m[1m[22m[2m │ gzip:   0.32 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mknowledge-C8EvmiWp.js                                         [39m[1m[2m    0.47 kB[22m[1m[22m[2m │ gzip:   0.34 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mrefresh-button-BNUCKyOc.js                                    [39m[1m[2m    0.48 kB[22m[1m[22m[2m │ gzip:   0.34 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mbox-COyFNX3Q.js                                               [39m[1m[2m    0.48 kB[22m[1m[22m[2m │ gzip:   0.33 kB[22m
+[2mdist/client/[22m[2massets/[22m[36muse-intake-ai-Bnonms6h.js                                     [39m[1m[2m    0.49 kB[22m[1m[22m[2m │ gzip:   0.32 kB[22m
+[2mdist/client/[22m[2massets/[22m[36muse-password-login-BtBoy50w.js                                [39m[1m[2m    0.50 kB[22m[1m[22m[2m │ gzip:   0.32 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mrun-dialog-sIiVgbvC.js                                        [39m[1m[2m    0.51 kB[22m[1m[22m[2m │ gzip:   0.35 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mpassword-input-CYDLM0vG.js                                    [39m[1m[2m    0.51 kB[22m[1m[22m[2m │ gzip:   0.35 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mkbd-DvMtaTD8.js                                               [39m[1m[2m    0.52 kB[22m[1m[22m[2m │ gzip:   0.32 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mpage-header-CtFChE5Z.js                                       [39m[1m[2m    0.53 kB[22m[1m[22m[2m │ gzip:   0.33 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mchunk-KQW6MTUR-Crjr1ANc.js                                    [39m[1m[2m    0.53 kB[22m[1m[22m[2m │ gzip:   0.37 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mhourglass-DXrwxhFL.js                                         [39m[1m[2m    0.53 kB[22m[1m[22m[2m │ gzip:   0.34 kB[22m
+[2mdist/client/[22m[2massets/[22m[36minit-api-B23e5Han.js                                          [39m[1m[2m    0.57 kB[22m[1m[22m[2m │ gzip:   0.27 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mswimlanesDiagram-K3J5GTZL-BqneUbfx.js                         [39m[1m[2m    0.58 kB[22m[1m[22m[2m │ gzip:   0.39 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-GHbIouoB.js                                             [39m[1m[2m    0.59 kB[22m[1m[22m[2m │ gzip:   0.39 kB[22m
+[2mdist/client/[22m[2massets/[22m[36msubtasks-C2eSxWpg.js                                          [39m[1m[2m    0.60 kB[22m[1m[22m[2m │ gzip:   0.43 kB[22m
+[2mdist/client/[22m[2massets/[22m[36muse-mention-candidates-Dc3yZ367.js                            [39m[1m[2m    0.60 kB[22m[1m[22m[2m │ gzip:   0.39 kB[22m
+[2mdist/client/[22m[2massets/[22m[36meye-off-CZzjDe82.js                                           [39m[1m[2m    0.60 kB[22m[1m[22m[2m │ gzip:   0.38 kB[22m
+[2mdist/client/[22m[2massets/[22m[36minfoDiagram-5W2HQ5XZ-CPPo0Ypu.js                              [39m[1m[2m    0.62 kB[22m[1m[22m[2m │ gzip:   0.42 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mquery-CQm6eHSn.js                                             [39m[1m[2m    0.64 kB[22m[1m[22m[2m │ gzip:   0.42 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mpage-header-BDx9YpMy.js                                       [39m[1m[2m    0.64 kB[22m[1m[22m[2m │ gzip:   0.37 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mroute-tabs-BOt6ra91.js                                        [39m[1m[2m    0.65 kB[22m[1m[22m[2m │ gzip:   0.39 kB[22m
+[2mdist/client/[22m[2massets/[22m[36muse-refresh-queries-CffmoqDZ.js                               [39m[1m[2m    0.70 kB[22m[1m[22m[2m │ gzip:   0.47 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mprogress-BbawDyNi.js                                          [39m[1m[2m    0.72 kB[22m[1m[22m[2m │ gzip:   0.46 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mplan-links-DXkL6g8g.js                                        [39m[1m[2m    0.82 kB[22m[1m[22m[2m │ gzip:   0.45 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mtab-Ba1_fk6_.js                                               [39m[1m[2m    0.84 kB[22m[1m[22m[2m │ gzip:   0.48 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-Cj6u7WvD.js                                             [39m[1m[2m    0.86 kB[22m[1m[22m[2m │ gzip:   0.53 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-C2cJVTEr.js                                             [39m[1m[2m    0.90 kB[22m[1m[22m[2m │ gzip:   0.50 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-notification-in-app.zh-CN-DqNwCrOm.js      [39m[1m[2m    0.90 kB[22m[1m[22m[2m │ gzip:   0.59 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-notification-in-app.en-US-Biznxunf.js      [39m[1m[2m    0.92 kB[22m[1m[22m[2m │ gzip:   0.48 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mroute-child-page-CF69gqhf.js                                  [39m[1m[2m    0.96 kB[22m[1m[22m[2m │ gzip:   0.51 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-users.zh-CN-CveKNEa7.js                    [39m[1m[2m    0.98 kB[22m[1m[22m[2m │ gzip:   0.65 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-authorization.zh-CN-BautGJal.js            [39m[1m[2m    1.03 kB[22m[1m[22m[2m │ gzip:   0.66 kB[22m
+[2mdist/client/[22m[2massets/[22m[36msizeCapture-INFHLROL-BwCoPqdB.js                              [39m[1m[2m    1.03 kB[22m[1m[22m[2m │ gzip:   0.57 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-authorization.en-US-CYyV2j1B.js            [39m[1m[2m    1.05 kB[22m[1m[22m[2m │ gzip:   0.53 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-users.en-US-B0jrF3RC.js                    [39m[1m[2m    1.08 kB[22m[1m[22m[2m │ gzip:   0.56 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mmembers-BZc-rVkl.js                                           [39m[1m[2m    1.08 kB[22m[1m[22m[2m │ gzip:   0.63 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mform-parts-CQ6b0w4R.js                                        [39m[1m[2m    1.13 kB[22m[1m[22m[2m │ gzip:   0.55 kB[22m
+[2mdist/client/[22m[2massets/[22m[36merrors-COAuZDp7.js                                            [39m[1m[2m    1.16 kB[22m[1m[22m[2m │ gzip:   0.67 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mordinal-DILIJJjt.js                                           [39m[1m[2m    1.20 kB[22m[1m[22m[2m │ gzip:   0.58 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mapi-DGjmhf_b.js                                               [39m[1m[2m    1.24 kB[22m[1m[22m[2m │ gzip:   0.52 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mpassword-reset-capability-CowJNpSE.js                         [39m[1m[2m    1.28 kB[22m[1m[22m[2m │ gzip:   0.62 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mask-agent-DanknnFU.js                                         [39m[1m[2m    1.29 kB[22m[1m[22m[2m │ gzip:   0.63 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mpages-BWeOaPR0.js                                             [39m[1m[2m    1.31 kB[22m[1m[22m[2m │ gzip:   0.63 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mtoggle-CjrQBVGV.js                                            [39m[1m[2m    1.33 kB[22m[1m[22m[2m │ gzip:   0.62 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mprofile-DMNt8WBs.js                                           [39m[1m[2m    1.39 kB[22m[1m[22m[2m │ gzip:   0.67 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-BKkQLoYh.js                                             [39m[1m[2m    1.40 kB[22m[1m[22m[2m │ gzip:   0.74 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-Vcq4gwWv.js                                             [39m[1m[2m    1.49 kB[22m[1m[22m[2m │ gzip:   0.82 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mdetail-CYL7aEBA.js                                            [39m[1m[2m    1.51 kB[22m[1m[22m[2m │ gzip:   0.82 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mplan-BiTiB6Eu.js                                              [39m[1m[2m    1.53 kB[22m[1m[22m[2m │ gzip:   0.85 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mband-CquvqAHh.js                                              [39m[1m[2m    1.54 kB[22m[1m[22m[2m │ gzip:   0.67 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-authentication.zh-CN-D-t5954l.js           [39m[1m[2m    1.57 kB[22m[1m[22m[2m │ gzip:   0.88 kB[22m
+[2mdist/client/[22m[2massets/[22m[36missues-BsAPDYeL.js                                            [39m[1m[2m    1.59 kB[22m[1m[22m[2m │ gzip:   0.80 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mrailroadDiagram-SM67HX2B-BlAUC3Ib.js                          [39m[1m[2m    1.64 kB[22m[1m[22m[2m │ gzip:   0.77 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-file.zh-CN-BILQ30ar.js                     [39m[1m[2m    1.69 kB[22m[1m[22m[2m │ gzip:   0.84 kB[22m
+[2mdist/client/[22m[2massets/[22m[36muser-client-DlTjnYRJ.js                                       [39m[1m[2m    1.69 kB[22m[1m[22m[2m │ gzip:   0.57 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-file.en-US-BGNlVhTf.js                     [39m[1m[2m    1.69 kB[22m[1m[22m[2m │ gzip:   0.69 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mpopover-B7-edjnO.js                                           [39m[1m[2m    1.73 kB[22m[1m[22m[2m │ gzip:   0.74 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-authentication.en-US-DFFrUiQX.js           [39m[1m[2m    1.76 kB[22m[1m[22m[2m │ gzip:   0.78 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mcard-CK98kYFM.js                                              [39m[1m[2m    1.76 kB[22m[1m[22m[2m │ gzip:   0.63 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mabnfDiagram-YUKMZFIV-CU9ztnUD.js                              [39m[1m[2m    1.84 kB[22m[1m[22m[2m │ gzip:   0.91 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mchunk-7TKQ45FW-DtkYAp0r.js                                    [39m[1m[2m    1.88 kB[22m[1m[22m[2m │ gzip:   0.83 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mimport-button-DZT8r2A2.js                                     [39m[1m[2m    1.94 kB[22m[1m[22m[2m │ gzip:   1.09 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mtoggle-group-BUKd9w1T.js                                      [39m[1m[2m    1.96 kB[22m[1m[22m[2m │ gzip:   0.69 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mgeneral-CD_A37gk.js                                           [39m[1m[2m    1.97 kB[22m[1m[22m[2m │ gzip:   0.94 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mnew-gfmQfFLX.js                                               [39m[1m[2m    1.98 kB[22m[1m[22m[2m │ gzip:   0.99 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mtooltip-BBoo4BSf.js                                           [39m[1m[2m    1.99 kB[22m[1m[22m[2m │ gzip:   0.73 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mpegDiagram-BGZESJAR-CB-4Gfo1.js                               [39m[1m[2m    1.99 kB[22m[1m[22m[2m │ gzip:   0.94 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlabels-D-i91UPe.js                                            [39m[1m[2m    2.01 kB[22m[1m[22m[2m │ gzip:   0.90 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mebnfDiagram-VR2GEFS7-DV4wbBsw.js                              [39m[1m[2m    2.04 kB[22m[1m[22m[2m │ gzip:   0.89 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-notification.zh-CN-DxBRjlHr.js             [39m[1m[2m    2.19 kB[22m[1m[22m[2m │ gzip:   1.23 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-notification.en-US-D_fMx0Ra.js             [39m[1m[2m    2.30 kB[22m[1m[22m[2m │ gzip:   0.94 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mapi-CWYuCc1s.js                                               [39m[1m[2m    2.38 kB[22m[1m[22m[2m │ gzip:   0.86 kB[22m
+[2mdist/client/[22m[2massets/[22m[36missue-marks-CXy6ZGQ7.js                                       [39m[1m[2m    2.46 kB[22m[1m[22m[2m │ gzip:   1.20 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mread-only-comment-decoration-Mv_SAiHy-UwWe_pQ8.js             [39m[1m[2m    2.63 kB[22m[1m[22m[2m │ gzip:   1.28 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mroute-dialog-CbgAdORy.js                                      [39m[1m[2m    2.63 kB[22m[1m[22m[2m │ gzip:   1.32 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mroute-dialog-kyin-YwF.js                                      [39m[1m[2m    2.66 kB[22m[1m[22m[2m │ gzip:   1.33 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mroute-dialog-c3U4dUHP.js                                      [39m[1m[2m    2.68 kB[22m[1m[22m[2m │ gzip:   1.34 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mtabs-Cj7k8Nx4.js                                              [39m[1m[2m    2.71 kB[22m[1m[22m[2m │ gzip:   0.93 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-CsVw4AMQ.js                                             [39m[1m[2m    2.77 kB[22m[1m[22m[2m │ gzip:   1.10 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-CfwVkamy.js                                             [39m[1m[2m    2.78 kB[22m[1m[22m[2m │ gzip:   1.19 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mattribution-pRC7ZsJb.js                                       [39m[1m[2m    2.83 kB[22m[1m[22m[2m │ gzip:   1.24 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mforgot-password-Bx4uE64K.js                                   [39m[1m[2m    2.88 kB[22m[1m[22m[2m │ gzip:   1.31 kB[22m
+[2mdist/client/[22m[2massets/[22m[36minput-group-CzpEAA-D.js                                       [39m[1m[2m    2.89 kB[22m[1m[22m[2m │ gzip:   1.06 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mroles-model--5WhRLq4.js                                       [39m[1m[2m    2.92 kB[22m[1m[22m[2m │ gzip:   1.28 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-k7hhgxNZ.js                                             [39m[1m[2m    3.15 kB[22m[1m[22m[2m │ gzip:   1.39 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mnew-app-page-BJEONii4.js                                      [39m[1m[2m    3.22 kB[22m[1m[22m[2m │ gzip:   1.54 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mpage-header-CEB5c1ui.js                                       [39m[1m[2m    3.24 kB[22m[1m[22m[2m │ gzip:   1.27 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mresource-measurement-6uR3Huao-hQr4UI1P.js                     [39m[1m[2m    3.25 kB[22m[1m[22m[2m │ gzip:   1.39 kB[22m
+[2mdist/client/[22m[2massets/[22m[36muse-project-page-BUsyCi8q.js                                  [39m[1m[2m    3.37 kB[22m[1m[22m[2m │ gzip:   1.37 kB[22m
+[2mdist/client/[22m[2massets/[22m[36marc-q9YzJTIU.js                                               [39m[1m[2m    3.43 kB[22m[1m[22m[2m │ gzip:   1.46 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mreset-password-dialog-DuHPIyog.js                             [39m[1m[2m    3.45 kB[22m[1m[22m[2m │ gzip:   1.48 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mregister-CnfNQBuD.js                                          [39m[1m[2m    3.49 kB[22m[1m[22m[2m │ gzip:   1.35 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mreset-password-Cqyvjmpu.js                                    [39m[1m[2m    3.56 kB[22m[1m[22m[2m │ gzip:   1.50 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mcomment-ui-runtime-CAbpuWi_-B-fjSxZ0.js                       [39m[1m[2m    3.66 kB[22m[1m[22m[2m │ gzip:   1.61 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mapps-page-CbpZ9uCb.js                                         [39m[1m[2m    3.77 kB[22m[1m[22m[2m │ gzip:   1.69 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mcheckbox-kI8RL6mN.js                                          [39m[1m[2m    3.78 kB[22m[1m[22m[2m │ gzip:   1.39 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mmembers-C7Irx6Ya.js                                           [39m[1m[2m    3.90 kB[22m[1m[22m[2m │ gzip:   1.77 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-project-reports.zh-CN-DY38kOrJ.js          [39m[1m[2m    4.07 kB[22m[1m[22m[2m │ gzip:   2.31 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-C3ENKpQ4.js                                             [39m[1m[2m    4.09 kB[22m[1m[22m[2m │ gzip:   1.96 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mnew-CUBut8Pf.js                                               [39m[1m[2m    4.10 kB[22m[1m[22m[2m │ gzip:   1.64 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mselect-CKW_4kBC.js                                            [39m[1m[2m    4.11 kB[22m[1m[22m[2m │ gzip:   1.43 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlogin-Btpb_rUG.js                                             [39m[1m[2m    4.14 kB[22m[1m[22m[2m │ gzip:   1.74 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-project-reports.en-US-rxTz3KLJ.js          [39m[1m[2m    4.18 kB[22m[1m[22m[2m │ gzip:   1.88 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mruntime-policy-fields-DK3fou_l.js                             [39m[1m[2m    4.21 kB[22m[1m[22m[2m │ gzip:   1.59 kB[22m
+[2mdist/client/[22m[2massets/[22m[36menvironments-page-BdcbrVrN.js                                 [39m[1m[2m    4.24 kB[22m[1m[22m[2m │ gzip:   1.70 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlabels-ha7HSZUz.js                                            [39m[1m[2m    4.28 kB[22m[1m[22m[2m │ gzip:   1.31 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mdiagram-UMYRVEAY-Cqq1aat3.js                                  [39m[1m[2m    4.35 kB[22m[1m[22m[2m │ gzip:   1.93 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlabels-BHWfWGK_.js                                            [39m[1m[2m    4.43 kB[22m[1m[22m[2m │ gzip:   1.19 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mruns-1EJ-oadY.js                                              [39m[1m[2m    4.50 kB[22m[1m[22m[2m │ gzip:   1.65 kB[22m
+[2mdist/client/[22m[2massets/[22m[36minit-card-D5UTkPrt.js                                         [39m[1m[2m    4.56 kB[22m[1m[22m[2m │ gzip:   1.68 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mapi-YZQ_2xlA.js                                               [39m[1m[2m    4.62 kB[22m[1m[22m[2m │ gzip:   1.57 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mdefaultLocale-DX6XiGOO.js                                     [39m[1m[2m    4.69 kB[22m[1m[22m[2m │ gzip:   2.18 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mconfirm-dialog-B7XowUji.js                                    [39m[1m[2m    4.84 kB[22m[1m[22m[2m │ gzip:   1.74 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mroles-BHWNsMWl.js                                             [39m[1m[2m    4.88 kB[22m[1m[22m[2m │ gzip:   2.10 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mcomment-ui-runtime-DAKBCpsM-CWS9NIgl.js                       [39m[1m[2m    5.00 kB[22m[1m[22m[2m │ gzip:   2.11 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-CaAnMm8M.js                                             [39m[1m[2m    5.02 kB[22m[1m[22m[2m │ gzip:   2.19 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-dKPLz5TU.js                                             [39m[1m[2m    5.17 kB[22m[1m[22m[2m │ gzip:   2.08 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mchunk-HTAEGDNF-BMHl7pWw.js                                    [39m[1m[2m    5.62 kB[22m[1m[22m[2m │ gzip:   2.60 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mnew-subtask-BHI87asO.js                                       [39m[1m[2m    5.69 kB[22m[1m[22m[2m │ gzip:   2.36 kB[22m
+[2mdist/client/[22m[2massets/[22m[36moverview-D_5rXxVd.js                                          [39m[1m[2m    5.73 kB[22m[1m[22m[2m │ gzip:   2.33 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlinear-DlDP9x1p.js                                            [39m[1m[2m    5.81 kB[22m[1m[22m[2m │ gzip:   2.38 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mrequest-page-BZtgr1nA.js                                      [39m[1m[2m    5.89 kB[22m[1m[22m[2m │ gzip:   2.26 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-ttLchNZA.js                                             [39m[1m[2m    6.15 kB[22m[1m[22m[2m │ gzip:   2.50 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mdiagram-YEKJPTXX-Dk5kJCDj.js                                  [39m[1m[2m    6.26 kB[22m[1m[22m[2m │ gzip:   2.70 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mpieDiagram-CAPJLFHJ-B7nB_Nsf.js                               [39m[1m[2m    6.39 kB[22m[1m[22m[2m │ gzip:   2.67 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mdevice-CMRN3Y62.js                                            [39m[1m[2m    6.55 kB[22m[1m[22m[2m │ gzip:   2.46 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mreleases-V7VFxoT3.js                                          [39m[1m[2m    6.61 kB[22m[1m[22m[2m │ gzip:   2.14 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mconfig-CBs-BBGL.js                                            [39m[1m[2m    6.83 kB[22m[1m[22m[2m │ gzip:   2.48 kB[22m
+[2mdist/client/[22m[2massets/[22m[36muse-notify-BSR78vsh.js                                        [39m[1m[2m    7.24 kB[22m[1m[22m[2m │ gzip:   2.36 kB[22m
+[2mdist/client/[22m[2massets/[22m[36maccept-invitation-page-DdQktjc2.js                            [39m[1m[2m    7.27 kB[22m[1m[22m[2m │ gzip:   2.73 kB[22m
+[2mdist/client/[22m[2massets/[22m[36menvironment-page-Bu7-sG8t.js                                  [39m[1m[2m    7.38 kB[22m[1m[22m[2m │ gzip:   2.63 kB[22m
+[2mdist/client/[22m[2massets/[22m[36msettings-dialog-NfEtUU6D.js                                   [39m[1m[2m    7.54 kB[22m[1m[22m[2m │ gzip:   2.05 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mproject-settings-DV4y_gu-.js                                  [39m[1m[2m    7.79 kB[22m[1m[22m[2m │ gzip:   2.83 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mwebhook-section-CYG4FeC0.js                                   [39m[1m[2m    7.90 kB[22m[1m[22m[2m │ gzip:   2.72 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mdiagram-PFPMY2P6-vVPT_5Cd.js                                  [39m[1m[2m    8.39 kB[22m[1m[22m[2m │ gzip:   3.74 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mconnect-DF-0Xa5G.js                                           [39m[1m[2m    8.77 kB[22m[1m[22m[2m │ gzip:   3.58 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mrole-detail-Cy2Abe4c.js                                       [39m[1m[2m    8.80 kB[22m[1m[22m[2m │ gzip:   3.70 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mstates-plb7ys0Q.js                                            [39m[1m[2m    9.20 kB[22m[1m[22m[2m │ gzip:   3.01 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-agent-sessions.zh-CN-BF6iMt7y.js           [39m[1m[2m    9.45 kB[22m[1m[22m[2m │ gzip:   4.18 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-agent-sessions.en-US-B2RFXZ4w.js           [39m[1m[2m    9.47 kB[22m[1m[22m[2m │ gzip:   3.61 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mauth-shell-BDLEYvS8.js                                        [39m[1m[2m    9.76 kB[22m[1m[22m[2m │ gzip:   3.41 kB[22m
+[2mdist/client/[22m[2massets/[22m[36minbox-item-CKUB7Vic.js                                        [39m[1m[2m    9.89 kB[22m[1m[22m[2m │ gzip:   3.95 kB[22m
+[2mdist/client/[22m[2massets/[22m[36muse-releases-DMyZ80hJ.js                                      [39m[1m[2m   10.03 kB[22m[1m[22m[2m │ gzip:   3.55 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mcynefinDiagram-3GCD6N5R-B3YIDNwt.js                           [39m[1m[2m   10.13 kB[22m[1m[22m[2m │ gzip:   3.65 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mtool-slots-fields-BFS90ceP.js                                 [39m[1m[2m   10.38 kB[22m[1m[22m[2m │ gzip:   3.93 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mgraph-Bmn_pINc.js                                             [39m[1m[2m   10.47 kB[22m[1m[22m[2m │ gzip:   3.68 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mchunk-FVRAUYC3-C7Wpc81v.js                                    [39m[1m[2m   10.75 kB[22m[1m[22m[2m │ gzip:   4.44 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mgit-pCjSWxqC.js                                               [39m[1m[2m   10.90 kB[22m[1m[22m[2m │ gzip:   3.89 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mdiagram-ZIFT7M5P-DSHO3oRz.js                                  [39m[1m[2m   11.15 kB[22m[1m[22m[2m │ gzip:   4.33 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mproject-detail-CLuXcUsH.js                                    [39m[1m[2m   11.51 kB[22m[1m[22m[2m │ gzip:   4.12 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mpreferences-Bt2y2odl.js                                       [39m[1m[2m   11.71 kB[22m[1m[22m[2m │ gzip:   4.27 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mgit-DG2vOYS3.js                                               [39m[1m[2m   11.99 kB[22m[1m[22m[2m │ gzip:   3.68 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-CjPbmSG8.js                                             [39m[1m[2m   12.50 kB[22m[1m[22m[2m │ gzip:   4.55 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mcomment-ui-runtime-DTaaZdXC-BrxLJQxj.js                       [39m[1m[2m   12.89 kB[22m[1m[22m[2m │ gzip:   4.26 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mapi-keys-BqCeBrEp.js                                          [39m[1m[2m   13.87 kB[22m[1m[22m[2m │ gzip:   4.50 kB[22m
+[2mdist/client/[22m[2massets/[22m[36missue-runs-D3IOENi8.js                                        [39m[1m[2m   15.04 kB[22m[1m[22m[2m │ gzip:   5.60 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mtime-DKiCDrqd.js                                              [39m[1m[2m   15.14 kB[22m[1m[22m[2m │ gzip:   4.93 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mconnection-dialogs-DGXxm0Jg.js                                [39m[1m[2m   15.66 kB[22m[1m[22m[2m │ gzip:   5.31 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mchunk-AW2ZBBNX-BqYM-G6e.js                                    [39m[1m[2m   15.75 kB[22m[1m[22m[2m │ gzip:   4.42 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mdiagram-OVF4WLC6-DXYvihLp.js                                  [39m[1m[2m   16.11 kB[22m[1m[22m[2m │ gzip:   5.75 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-BydQ93eg.js                                             [39m[1m[2m   16.35 kB[22m[1m[22m[2m │ gzip:   5.14 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-knowledge.zh-CN-CHdQzSTR.js                [39m[1m[2m   16.43 kB[22m[1m[22m[2m │ gzip:   6.61 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-knowledge.en-US-8FGoVKKi.js                [39m[1m[2m   16.75 kB[22m[1m[22m[2m │ gzip:   5.74 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mknowledge-search-Da0NdMyq.js                                  [39m[1m[2m   16.84 kB[22m[1m[22m[2m │ gzip:   5.12 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mkeys-api-BLPv5uwN.js                                          [39m[1m[2m   17.26 kB[22m[1m[22m[2m │ gzip:   5.58 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mishikawaDiagram-K3B6WC7H-BBmwwNFW.js                          [39m[1m[2m   17.60 kB[22m[1m[22m[2m │ gzip:   6.69 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales-CCZmUu6g.js                                           [39m[1m[2m   18.24 kB[22m[1m[22m[2m │ gzip:   6.49 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mnew-uEdnGpra.js                                               [39m[1m[2m   18.37 kB[22m[1m[22m[2m │ gzip:   6.94 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-8KmaA6cl.js                                             [39m[1m[2m   19.35 kB[22m[1m[22m[2m │ gzip:   6.44 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-BxPxmLwT.js                                             [39m[1m[2m   20.58 kB[22m[1m[22m[2m │ gzip:   6.40 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mkanban-definition-P3RFRI5V-fc48kfIx.js                        [39m[1m[2m   20.74 kB[22m[1m[22m[2m │ gzip:   7.31 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mskill-workbench-DUK9bn0H.js                                   [39m[1m[2m   21.27 kB[22m[1m[22m[2m │ gzip:   7.03 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mmindmap-definition-LZFPQGKD-DzsgePUR.js                       [39m[1m[2m   23.40 kB[22m[1m[22m[2m │ gzip:   7.91 kB[22m
+[2mdist/client/[22m[2massets/[22m[36msankeyDiagram-UM26HJRW-QckeVcYA.js                            [39m[1m[2m   23.42 kB[22m[1m[22m[2m │ gzip:   8.59 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mjourneyDiagram-COXZFDF6-D9cZIVNa.js                           [39m[1m[2m   23.61 kB[22m[1m[22m[2m │ gzip:   8.36 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-BZKO6BZC.js                                             [39m[1m[2m   23.82 kB[22m[1m[22m[2m │ gzip:   8.40 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mintake-panel-dzzO29Bk.js                                      [39m[1m[2m   23.91 kB[22m[1m[22m[2m │ gzip:   7.98 kB[22m
+[2mdist/client/[22m[2massets/[22m[36misArguments-DSkg8Y-j.js                                       [39m[1m[2m   24.55 kB[22m[1m[22m[2m │ gzip:   8.16 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mpage-MyHCw_yR.js                                              [39m[1m[2m   24.80 kB[22m[1m[22m[2m │ gzip:   7.34 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mwardleyDiagram-YMQ3BMBF-DPfpr7Tq.js                           [39m[1m[2m   26.13 kB[22m[1m[22m[2m │ gzip:   6.96 kB[22m
+[2mdist/client/[22m[2massets/[22m[36muse-tab-param-Z7ZYqwGZ.js                                     [39m[1m[2m   27.53 kB[22m[1m[22m[2m │ gzip:   8.55 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-releases.zh-CN-Bc9EK9k8.js                 [39m[1m[2m   28.26 kB[22m[1m[22m[2m │ gzip:  10.17 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mrich-text-editor-DUBq1uW2.js                                  [39m[1m[2m   28.34 kB[22m[1m[22m[2m │ gzip:  10.61 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlink-bar-eCaB1xiG.js                                          [39m[1m[2m   29.04 kB[22m[1m[22m[2m │ gzip:   9.13 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-releases.en-US-SS9f05Um.js                 [39m[1m[2m   29.39 kB[22m[1m[22m[2m │ gzip:   9.48 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mgitGraphDiagram-XJZIOB7I-DU4UT7Zz.js                          [39m[1m[2m   29.97 kB[22m[1m[22m[2m │ gzip:   8.89 kB[22m
+[2mdist/client/[22m[2massets/[22m[36merDiagram-O2IAPWRE-BsrPBLbd.js                                [39m[1m[2m   30.87 kB[22m[1m[22m[2m │ gzip:  10.63 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mrequirementDiagram-X7JNWC4A-CtweUDFr.js                       [39m[1m[2m   31.26 kB[22m[1m[22m[2m │ gzip:   9.86 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mtimeline-definition-YOQAKGHF-D-atW8pg.js                      [39m[1m[2m   31.42 kB[22m[1m[22m[2m │ gzip:  10.48 kB[22m
+[2mdist/client/[22m[2massets/[22m[36msessions-CepbHEPf.js                                          [39m[1m[2m   32.03 kB[22m[1m[22m[2m │ gzip:   9.15 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mquadrantDiagram-GDMTTRAM-DykTGi9W.js                          [39m[1m[2m   34.53 kB[22m[1m[22m[2m │ gzip:  10.14 kB[22m
+[2mdist/client/[22m[2massets/[22m[36msettings-B3qGU2d8.js                                          [39m[1m[2m   34.80 kB[22m[1m[22m[2m │ gzip:  10.78 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mprofile-forms-B7ibOBsV.js                                     [39m[1m[2m   35.28 kB[22m[1m[22m[2m │ gzip:  12.41 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mapp-page-FWU-aDjb.js                                          [39m[1m[2m   35.35 kB[22m[1m[22m[2m │ gzip:  10.69 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mhighlight-rect-DBcYVJDv-pyS33xnV.js                           [39m[1m[2m   36.75 kB[22m[1m[22m[2m │ gzip:  10.94 kB[22m
+[2mdist/client/[22m[2massets/[22m[36muse-environment-check-BGtBwhOU.js                             [39m[1m[2m   37.30 kB[22m[1m[22m[2m │ gzip:  10.92 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-projects.zh-CN-7qv8dbTy.js                 [39m[1m[2m   39.08 kB[22m[1m[22m[2m │ gzip:  13.92 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-projects.en-US-CD95Ibae.js                 [39m[1m[2m   39.11 kB[22m[1m[22m[2m │ gzip:  12.66 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-agents.en-US-Brdr5D1Z.js                   [39m[1m[2m   39.80 kB[22m[1m[22m[2m │ gzip:  13.65 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/app-plugin-agents.zh-CN-BgF1UCP7.js                   [39m[1m[2m   40.02 kB[22m[1m[22m[2m │ gzip:  15.15 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-BR5go6Vz.js                                             [39m[1m[2m   42.29 kB[22m[1m[22m[2m │ gzip:  13.75 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mstateDiagram-v2-TBUQTH76-vFEuwXR9.js                          [39m[1m[2m   42.37 kB[22m[1m[22m[2m │ gzip:  14.17 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mvennDiagram-BLWOH2XV-C09t-1ft.js                              [39m[1m[2m   42.43 kB[22m[1m[22m[2m │ gzip:  15.82 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mxychartDiagram-TAQBALBS-C5S6X5Q3.js                           [39m[1m[2m   43.77 kB[22m[1m[22m[2m │ gzip:  12.31 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mblockDiagram-E7TT5TSB-ibSTzIAl.js                             [39m[1m[2m   44.17 kB[22m[1m[22m[2m │ gzip:  14.40 kB[22m
+[2mdist/client/[22m[2massets/[22m[36msession-kAaYxaRQ.js                                           [39m[1m[2m   45.99 kB[22m[1m[22m[2m │ gzip:  14.34 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mdagre-W4DXFKR2-DWwNG6WQ.js                                    [39m[1m[2m   46.60 kB[22m[1m[22m[2m │ gzip:  16.64 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-rnNZzID6.js                                             [39m[1m[2m   47.72 kB[22m[1m[22m[2m │ gzip:  14.68 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mclassDiagram-v2-K4WV4PDN-BguHdHfT.js                          [39m[1m[2m   50.03 kB[22m[1m[22m[2m │ gzip:  16.09 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mganttDiagram-R7TSEDQI-Ckh79HJJ.js                             [39m[1m[2m   55.58 kB[22m[1m[22m[2m │ gzip:  19.36 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-DeqFFMJL.js                                             [39m[1m[2m   60.22 kB[22m[1m[22m[2m │ gzip:  18.99 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/studio.en-US-DN_2eE0F.js                              [39m[1m[2m   64.17 kB[22m[1m[22m[2m │ gzip:  19.81 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mflowDiagram-OXPTDLAJ-3Tz6TFAS.js                              [39m[1m[2m   64.22 kB[22m[1m[22m[2m │ gzip:  20.61 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mc4Diagram-CRA5TL53-DeP4dwrh.js                                [39m[1m[2m   66.01 kB[22m[1m[22m[2m │ gzip:  18.95 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales/studio.zh-CN-BjkY6NH6.js                              [39m[1m[2m   74.97 kB[22m[1m[22m[2m │ gzip:  25.44 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mcose-bilkent-JH36ORCC-BhGo3rM0.js                             [39m[1m[2m   81.75 kB[22m[1m[22m[2m │ gzip:  22.50 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mdiagram-2UJZ2QOL-C-0SNkhI.js                                  [39m[1m[2m   82.19 kB[22m[1m[22m[2m │ gzip:  25.42 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mphone-bar-DmS9jWmV.js                                         [39m[1m[2m   84.31 kB[22m[1m[22m[2m │ gzip:  27.00 kB[22m
+[2mdist/client/[22m[2massets/[22m[36missues-view-DeZtvhgF.js                                       [39m[1m[2m   93.88 kB[22m[1m[22m[2m │ gzip:  31.03 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mstate-Bkcu8asR.js                                             [39m[1m[2m  105.39 kB[22m[1m[22m[2m │ gzip:  33.55 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mlocales-Cc9otbRe.js                                           [39m[1m[2m  111.99 kB[22m[1m[22m[2m │ gzip:  37.40 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mswimlanes-N4OXWK64-Bxurrg3f.js                                [39m[1m[2m  112.19 kB[22m[1m[22m[2m │ gzip:  40.82 kB[22m
+[2mdist/client/[22m[2massets/[22m[36msequenceDiagram-ZO4K6R2Y-D605Bdor.js                          [39m[1m[2m  119.45 kB[22m[1m[22m[2m │ gzip:  32.16 kB[22m
+[2mdist/client/[22m[2massets/[22m[36marchitectureDiagram-47P4ROYG-DhHfSkMJ.js                      [39m[1m[2m  152.05 kB[22m[1m[22m[2m │ gzip:  43.25 kB[22m
+[2mdist/client/[22m[2massets/[22m[36musecaseDiagram-VIAY4XPW-BvQgARGB.js                           [39m[1m[2m  190.65 kB[22m[1m[22m[2m │ gzip:  51.00 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mkatex-C5jXJg4s.js                                             [39m[1m[2m  261.33 kB[22m[1m[22m[2m │ gzip:  77.57 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mpptx-Cuv9Umkd.js                                              [39m[1m[2m  272.21 kB[22m[1m[22m[2m │ gzip:  78.98 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mxlsx-C8skREnt.js                                              [39m[1m[2m  281.35 kB[22m[1m[22m[2m │ gzip:  87.52 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mBarChart-DnroS5pN.js                                          [39m[1m[2m  330.46 kB[22m[1m[22m[2m │ gzip:  93.55 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mcytoscape.esm-Ix0LnXOy.js                                     [39m[1m[2m  443.83 kB[22m[1m[22m[2m │ gzip: 142.41 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mnew-project-labels-B6LxPCXc.js                                [39m[1m[2m  477.59 kB[22m[1m[22m[2m │ gzip: 154.48 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-fSdbED15.js                                             [39m[1m[33m  509.67 kB[39m[22m[2m │ gzip: 160.93 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mcynefin-EF2NZ3EQ-BuUTqcz6.js                                  [39m[1m[33m  657.87 kB[39m[22m[2m │ gzip: 139.87 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mmermaid.core-dbstvi81.js                                      [39m[1m[33m  661.16 kB[39m[22m[2m │ gzip: 160.71 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mrenderer-module-contract-Cu-GKuPd-pOhvCtIJ.js                 [39m[1m[33m  672.59 kB[39m[22m[2m │ gzip: 191.53 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mdocx-BiykVBMF.js                                              [39m[1m[33m  808.46 kB[39m[22m[2m │ gzip: 244.55 kB[22m
+[2mdist/client/[22m[2massets/[22m[36melk-IJKZMXRS-DwZGWVvR.js                                      [39m[1m[33m1,478.41 kB[39m[22m[2m │ gzip: 453.93 kB[22m
+[2mdist/client/[22m[2massets/[22m[36mindex-CWuJUenn.js                                             [39m[1m[33m2,391.24 kB[39m[22m[2m │ gzip: 720.31 kB[22m
+[33m
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[32m✓ built in 38.92s[39m
+
+> Build server workspace dependencies
+Scope: 61 of 89 workspace projects
+../../tools/dev-config build$ node ./scripts/build.ts
+../../tools/dev-config build: Done
+../../libs/agent-protocol build$ tsc -p tsconfig.json
+../../libs/acp-bridge build$ tsc -p tsconfig.json
+../../libs/cli-envelope build$ tsc -p tsconfig.json
+../../libs/i18n build$ tsc -p tsconfig.json
+../../libs/cli-envelope build: Done
+../../libs/service-provider build$ tsc -p tsconfig.json
+../../libs/service-provider build: Done
+../../libs/repository-input build$ tsc -p tsconfig.json
+../../libs/i18n build: Done
+../../libs/realtime build$ tsc -p tsconfig.json
+../../libs/acp-bridge build: Done
+../../libs/caching build$ tsc -p tsconfig.json
+../../libs/repository-input build: Done
+../../libs/queue build$ tsc -p tsconfig.json
+../../libs/realtime build: Done
+../../libs/jobs build$ tsc -p tsconfig.json
+../../libs/caching build: Done
+../../app/app-websocket build$ node ./scripts/clean-dist.mjs && tsc -p tsconfig.json
+../../libs/agent-protocol build: Done
+../../libs/config build$ pnpm clean && tsc -p tsconfig.json
+../../libs/queue build: Done
+../../libs/drive build$ tsc -p tsconfig.json
+../../libs/jobs build: Done
+../../libs/logging build$ tsc -p tsconfig.json
+../../libs/config build: $ node ./scripts/clean-dist.mjs
+../../app/app-websocket build: Done
+../../libs/secrets build$ tsc -p tsconfig.json
+../../libs/drive build: Done
+../../libs/session build$ tsc -p tsconfig.json
+../../libs/config build: Done
+../../libs/snowflake build$ tsc -p tsconfig.json
+../../libs/logging build: Done
+../../libs/mailer build$ tsc -p tsconfig.json
+../../libs/secrets build: Done
+../../libs/markdown-mermaid build$ tsc -p tsconfig.json
+../../libs/snowflake build: Done
+../../libs/session build: Done
+../../libs/mailer build: Done
+../../libs/markdown-mermaid build: Done
+../../app/app-cli-client build$ tsc -p tsconfig.json
+../../libs/api-client build$ tsc -p tsconfig.json
+../../libs/db build$ node ./scripts/clean-dist.mjs && tsc -p tsconfig.build.json
+../../libs/api-client build: Done
+../../libs/db build: Done
+../../app/app-cli-client build: Done
+../../app/agent-runner build$ tsc -p tsconfig.json
+../../app/app-client build$ pnpm clean && tsc -p tsconfig.json
+../../libs/db-testkit build$ tsc -p tsconfig.build.json
+../../libs/authorization build$ tsc -p tsconfig.json
+../../app/app-client build: $ node ./scripts/clean-dist.mjs
+../../libs/authorization build: Done
+../../app/app-client build: Done
+../../libs/db-testkit build: Done
+../../app/agent-runner build: Done
+../../libs/db-postgres build$ tsc -p tsconfig.build.json
+../../libs/db-mssql build$ tsc -p tsconfig.build.json
+../../libs/db-mysql build$ tsc -p tsconfig.build.json
+../../libs/db-sqlite build$ tsc -p tsconfig.build.json
+../../libs/db-mysql build: Done
+../../libs/db-oracle build$ tsc -p tsconfig.build.json
+../../libs/db-mssql build: Done
+../../libs/db-postgres build: Done
+../../libs/db-sqlite build: Done
+../../libs/db-oracle build: Done
+../../libs/db-testing build$ tsc -p tsconfig.build.json
+../../libs/db-testing build: Done
+../../app/app-server build$ pnpm clean && tsc -p tsconfig.json && node ./scripts/copy-swagger-ui.mjs
+../../app/app-server build: $ node ./scripts/clean-dist.mjs
+../../app/app-server build: Done
+../../app/app-cli build$ node ./scripts/build.mjs
+../../app/app-host build$ node ./scripts/clean-dist.mjs && tsc -p tsconfig.json
+../../plugins/app-plugin-i18n build$ tsc -p tsconfig.json
+../../plugins/app-plugin-i18n build: Done
+../../app/app-host build: Done
+../../app/app-cli build: Done
+../../tools/app-testing build$ tsc -p tsconfig.build.json
+../../app/app-host-docker build$ node ./scripts/clean-dist.mjs && tsc -p tsconfig.json
+../../app/app-host-docker build: Done
+../../tools/app-testing build: Done
+../../plugins/app-plugin-file build$ node ./scripts/clean-dist.mjs && tsc -p tsconfig.json
+../../plugins/app-plugin-authentication build$ pnpm clean && tsc -p tsconfig.json && tsc -p tsconfig.migrations.json && nocobase-db-manifests
+../../plugins/app-plugin-authentication build: $ node ./scripts/clean-dist.mjs
+../../plugins/app-plugin-file build: Done
+../../plugins/app-plugin-authentication build: Done
+../../plugins/app-plugin-agent-sessions build$ tsc -p tsconfig.json && nocobase-db-manifests
+../../plugins/app-plugin-authorization build$ tsc -p tsconfig.json && nocobase-db-manifests
+../../plugins/app-plugin-authorization build: Done
+../../plugins/app-plugin-agent-sessions build: Done
+../../plugins/app-plugin-agents build$ tsc -p tsconfig.json && nocobase-db-manifests
+../../plugins/app-plugin-api-keys build$ pnpm clean && tsc -p tsconfig.json && tsc -p tsconfig.migrations.json && nocobase-db-manifests
+.../app-plugin-authz-default-access build$ tsc -p tsconfig.json && nocobase-db-manifests
+.../app-plugin-authz-restriction-rules build$ tsc -p tsconfig.json && nocobase-db-manifests
+../../plugins/app-plugin-api-keys build: $ node ./scripts/clean-dist.mjs
+.../app-plugin-authz-default-access build: Done
+.../app-plugin-authz-sharing-rules build$ tsc -p tsconfig.json && nocobase-db-manifests
+.../app-plugin-authz-restriction-rules build: Done
+.../plugins/app-plugin-database-explorer build$ tsc -p tsconfig.json
+../../plugins/app-plugin-api-keys build: Done
+../../plugins/app-plugin-knowledge build$ tsc -p tsconfig.json && nocobase-db-manifests
+.../app-plugin-authz-sharing-rules build: Done
+../../plugins/app-plugin-notification build$ node ./scripts/clean-dist.mjs && tsc -p tsconfig.json && nocobase-db-manifests
+.../plugins/app-plugin-database-explorer build: Done
+../../plugins/app-plugin-releases build$ tsc -p tsconfig.json && nocobase-db-manifests
+../../plugins/app-plugin-agents build: Done
+../../plugins/app-plugin-scheduler build$ pnpm clean && tsc -p tsconfig.json && nocobase-db-manifests
+../../plugins/app-plugin-scheduler build: $ node ./scripts/clean-dist.mjs
+../../plugins/app-plugin-knowledge build: Done
+../../plugins/app-plugin-notification build: Done
+../../plugins/app-plugin-scheduler build: Done
+../../plugins/app-plugin-releases build: Done
+.../app-plugin-notification-in-app build$ node ./scripts/clean-dist.mjs && tsc -p tsconfig.json && nocobase-db-manifests
+.../app-plugin-notification-providers build$ node ./scripts/clean-dist.mjs && tsc -p tsconfig.json
+../../plugins/app-plugin-users build$ tsc -p tsconfig.json && nocobase-db-manifests
+.../app-plugin-notification-providers build: Done
+.../app-plugin-notification-in-app build: Done
+../../plugins/app-plugin-users build: Done
+../../plugins/app-plugin-projects build$ tsc -p tsconfig.json && nocobase-db-manifests
+../../plugins/app-plugin-projects build: Done
+../../plugins/app-plugin-project-reports build$ tsc -p tsconfig.json && node scripts/copy-runner.mjs && nocobase-db-manifests
+../../plugins/app-plugin-project-reports build: Done
+
+> Build server
+
+> Rewrite server path aliases
+Copied 0 Collection metadata files into dist/database
+
+> Record the runner and CLI versions Studio serves
+Recorded @nocobase/agent-runner@0.1.0-beta.9, @nocobase/studio-cli@1.0.0-beta.58 in /home/runner/work/temp/temp/source/packages/apps/studio/dist/server/agents/served-versions.json
+
+> Pack the runner and CLI Studio serves into dist/runners
+$ pnpm pack --pack-destination /tmp/nocobase-cli-c5mbno
+package: @nocobase/agent-runner@0.1.0-beta.9
+Tarball Contents
+bin/run.js
+bin/source-hooks.js
+dist/agent/adapters/classify.d.ts
+dist/agent/adapters/classify.d.ts.map
+dist/agent/adapters/classify.js
+dist/agent/adapters/classify.js.map
+dist/agent/adapters/claude.d.ts
+dist/agent/adapters/claude.d.ts.map
+dist/agent/adapters/claude.js
+dist/agent/adapters/claude.js.map
+dist/agent/adapters/codex.d.ts
+dist/agent/adapters/codex.d.ts.map
+dist/agent/adapters/codex.js
+dist/agent/adapters/codex.js.map
+dist/agent/adapters/codex/classify.d.ts
+dist/agent/adapters/codex/classify.d.ts.map
+dist/agent/adapters/codex/classify.js
+dist/agent/adapters/codex/classify.js.map
+dist/agent/adapters/codex/protocol.d.ts
+dist/agent/adapters/codex/protocol.d.ts.map
+dist/agent/adapters/codex/protocol.js
+dist/agent/adapters/codex/protocol.js.map
+dist/agent/adapters/codex/rpc.d.ts
+dist/agent/adapters/codex/rpc.d.ts.map
+dist/agent/adapters/codex/rpc.js
+dist/agent/adapters/codex/rpc.js.map
+dist/agent/adapters/codex/util.d.ts
+dist/agent/adapters/codex/util.d.ts.map
+dist/agent/adapters/codex/util.js
+dist/agent/adapters/codex/util.js.map
+dist/agent/adapters/detect-exec.d.ts
+dist/agent/adapters/detect-exec.d.ts.map
+dist/agent/adapters/detect-exec.js
+dist/agent/adapters/detect-exec.js.map
+dist/agent/adapters/detection.d.ts
+dist/agent/adapters/detection.d.ts.map
+dist/agent/adapters/detection.js
+dist/agent/adapters/detection.js.map
+dist/agent/adapters/echo.d.ts
+dist/agent/adapters/echo.d.ts.map
+dist/agent/adapters/echo.js
+dist/agent/adapters/echo.js.map
+dist/agent/adapters/models.d.ts
+dist/agent/adapters/models.d.ts.map
+dist/agent/adapters/models.js
+dist/agent/adapters/models.js.map
+dist/agent/adapters/opencode.d.ts
+dist/agent/adapters/opencode.d.ts.map
+dist/agent/adapters/opencode.js
+dist/agent/adapters/opencode.js.map
+dist/agent/adapters/opencode/classify.d.ts
+dist/agent/adapters/opencode/classify.d.ts.map
+dist/agent/adapters/opencode/classify.js
+dist/agent/adapters/opencode/classify.js.map
+dist/agent/adapters/opencode/client.d.ts
+dist/agent/adapters/opencode/client.d.ts.map
+dist/agent/adapters/opencode/client.js
+dist/agent/adapters/opencode/client.js.map
+dist/agent/adapters/opencode/server.d.ts
+dist/agent/adapters/opencode/server.d.ts.map
+dist/agent/adapters/opencode/server.js
+dist/agent/adapters/opencode/server.js.map
+dist/agent/adapters/opencode/util.d.ts
+dist/agent/adapters/opencode/util.d.ts.map
+dist/agent/adapters/opencode/util.js
+dist/agent/adapters/opencode/util.js.map
+dist/agent/adapters/pi.d.ts
+dist/agent/adapters/pi.d.ts.map
+dist/agent/adapters/pi.js
+dist/agent/adapters/pi.js.map
+dist/agent/adapters/pi/extension.d.ts
+dist/agent/adapters/pi/extension.d.ts.map
+dist/agent/adapters/pi/extension.js
+dist/agent/adapters/pi/extension.js.map
+dist/agent/adapters/pi/protocol.d.ts
+dist/agent/adapters/pi/protocol.d.ts.map
+dist/agent/adapters/pi/protocol.js
+dist/agent/adapters/pi/protocol.js.map
+dist/agent/adapters/pi/util.d.ts
+dist/agent/adapters/pi/util.d.ts.map
+dist/agent/adapters/pi/util.js
+dist/agent/adapters/pi/util.js.map
+dist/agent/adapters/registry.d.ts
+dist/agent/adapters/registry.d.ts.map
+dist/agent/adapters/registry.js
+dist/agent/adapters/registry.js.map
+dist/agent/adapters/session-recovery.d.ts
+dist/agent/adapters/session-recovery.d.ts.map
+dist/agent/adapters/session-recovery.js
+dist/agent/adapters/session-recovery.js.map
+dist/agent/adapters/types.d.ts
+dist/agent/adapters/types.d.ts.map
+dist/agent/adapters/types.js
+dist/agent/adapters/types.js.map
+dist/agent/cli.d.ts
+dist/agent/cli.d.ts.map
+dist/agent/cli.js
+dist/agent/cli.js.map
+dist/agent/codex-home.d.ts
+dist/agent/codex-home.d.ts.map
+dist/agent/codex-home.js
+dist/agent/codex-home.js.map
+dist/agent/credentials.d.ts
+dist/agent/credentials.d.ts.map
+dist/agent/credentials.js
+dist/agent/credentials.js.map
+dist/agent/env.d.ts
+dist/agent/env.d.ts.map
+dist/agent/env.js
+dist/agent/env.js.map
+dist/agent/git-credentials.d.ts
+dist/agent/git-credentials.d.ts.map
+dist/agent/git-credentials.js
+dist/agent/git-credentials.js.map
+dist/agent/keychain-guard.d.ts
+dist/agent/keychain-guard.d.ts.map
+dist/agent/keychain-guard.js
+dist/agent/keychain-guard.js.map
+dist/agent/mounts.d.ts
+dist/agent/mounts.d.ts.map
+dist/agent/mounts.js
+dist/agent/mounts.js.map
+dist/agent/prepare/cli.d.ts
+dist/agent/prepare/cli.d.ts.map
+dist/agent/prepare/cli.js
+dist/agent/prepare/cli.js.map
+dist/agent/prepare/dirs.d.ts
+dist/agent/prepare/dirs.d.ts.map
+dist/agent/prepare/dirs.js
+dist/agent/prepare/dirs.js.map
+dist/agent/prepare/index.d.ts
+dist/agent/prepare/index.d.ts.map
+dist/agent/prepare/index.js
+dist/agent/prepare/index.js.map
+dist/agent/prepare/mounts.d.ts
+dist/agent/prepare/mounts.d.ts.map
+dist/agent/prepare/mounts.js
+dist/agent/prepare/mounts.js.map
+dist/agent/prepare/skills.d.ts
+dist/agent/prepare/skills.d.ts.map
+dist/agent/prepare/skills.js
+dist/agent/prepare/skills.js.map
+dist/agent/prepare/types.d.ts
+dist/agent/prepare/types.d.ts.map
+dist/agent/prepare/types.js
+dist/agent/prepare/types.js.map
+dist/agent/prepare/variables.d.ts
+dist/agent/prepare/variables.d.ts.map
+dist/agent/prepare/variables.js
+dist/agent/prepare/variables.js.map
+dist/agent/prepare/workspace.d.ts
+dist/agent/prepare/workspace.d.ts.map
+dist/agent/prepare/workspace.js
+dist/agent/prepare/workspace.js.map
+dist/agent/runner-tools.d.ts
+dist/agent/runner-tools.d.ts.map
+dist/agent/runner-tools.js
+dist/agent/runner-tools.js.map
+dist/agent/skills.d.ts
+dist/agent/skills.d.ts.map
+dist/agent/skills.js
+dist/agent/skills.js.map
+dist/agent/worker.d.ts
+dist/agent/worker.d.ts.map
+dist/agent/worker.js
+dist/agent/worker.js.map
+dist/commands.d.ts
+dist/commands.d.ts.map
+dist/commands.js
+dist/commands.js.map
+dist/commands/config/models.d.ts
+dist/commands/config/models.d.ts.map
+dist/commands/config/models.js
+dist/commands/config/models.js.map
+dist/commands/config/set.d.ts
+dist/commands/config/set.d.ts.map
+dist/commands/config/set.js
+dist/commands/config/set.js.map
+dist/commands/env.d.ts
+dist/commands/env.d.ts.map
+dist/commands/env.js
+dist/commands/env.js.map
+dist/commands/gc.d.ts
+dist/commands/gc.d.ts.map
+dist/commands/gc.js
+dist/commands/gc.js.map
+dist/commands/logs.d.ts
+dist/commands/logs.d.ts.map
+dist/commands/logs.js
+dist/commands/logs.js.map
+dist/commands/register.d.ts
+dist/commands/register.d.ts.map
+dist/commands/register.js
+dist/commands/register.js.map
+dist/commands/service/install.d.ts
+dist/commands/service/install.d.ts.map
+dist/commands/service/install.js
+dist/commands/service/install.js.map
+dist/commands/service/uninstall.d.ts
+dist/commands/service/uninstall.d.ts.map
+dist/commands/service/uninstall.js
+dist/commands/service/uninstall.js.map
+dist/commands/start.d.ts
+dist/commands/start.d.ts.map
+dist/commands/start.js
+dist/commands/start.js.map
+dist/commands/status.d.ts
+dist/commands/status.d.ts.map
+dist/commands/status.js
+dist/commands/status.js.map
+dist/commands/stop.d.ts
+dist/commands/stop.d.ts.map
+dist/commands/stop.js
+dist/commands/stop.js.map
+dist/commands/uninstall.d.ts
+dist/commands/uninstall.d.ts.map
+dist/commands/uninstall.js
+dist/commands/uninstall.js.map
+dist/commands/unregister.d.ts
+dist/commands/unregister.d.ts.map
+dist/commands/unregister.js
+dist/commands/unregister.js.map
+dist/commands/update.d.ts
+dist/commands/update.d.ts.map
+dist/commands/update.js
+dist/commands/update.js.map
+dist/core/artifacts.d.ts
+dist/core/artifacts.d.ts.map
+dist/core/artifacts.js
+dist/core/artifacts.js.map
+dist/core/checkout.d.ts
+dist/core/checkout.d.ts.map
+dist/core/checkout.js
+dist/core/checkout.js.map
+dist/core/events.d.ts
+dist/core/events.d.ts.map
+dist/core/events.js
+dist/core/events.js.map
+dist/core/git-hooks.d.ts
+dist/core/git-hooks.d.ts.map
+dist/core/git-hooks.js
+dist/core/git-hooks.js.map
+dist/core/git-retry.d.ts
+dist/core/git-retry.d.ts.map
+dist/core/git-retry.js
+dist/core/git-retry.js.map
+dist/core/git.d.ts
+dist/core/git.d.ts.map
+dist/core/git.js
+dist/core/git.js.map
+dist/core/isolation.d.ts
+dist/core/isolation.d.ts.map
+dist/core/isolation.js
+dist/core/isolation.js.map
+dist/core/job-worker.d.ts
+dist/core/job-worker.d.ts.map
+dist/core/job-worker.js
+dist/core/job-worker.js.map
+dist/core/jobs/build.d.ts
+dist/core/jobs/build.d.ts.map
+dist/core/jobs/build.js
+dist/core/jobs/build.js.map
+dist/core/jobs/env.d.ts
+dist/core/jobs/env.d.ts.map
+dist/core/jobs/env.js
+dist/core/jobs/env.js.map
+dist/core/jobs/git.d.ts
+dist/core/jobs/git.d.ts.map
+dist/core/jobs/git.js
+dist/core/jobs/git.js.map
+dist/core/jobs/process.d.ts
+dist/core/jobs/process.d.ts.map
+dist/core/jobs/process.js
+dist/core/jobs/process.js.map
+dist/core/jobs/types.d.ts
+dist/core/jobs/types.d.ts.map
+dist/core/jobs/types.js
+dist/core/jobs/types.js.map
+dist/core/lease.d.ts
+dist/core/lease.d.ts.map
+dist/core/lease.js
+dist/core/lease.js.map
+dist/core/local-policy.d.ts
+dist/core/local-policy.d.ts.map
+dist/core/local-policy.js
+dist/core/local-policy.js.map
+dist/core/loop.d.ts
+dist/core/loop.d.ts.map
+dist/core/loop.js
+dist/core/loop.js.map
+dist/core/model-list.d.ts
+dist/core/model-list.d.ts.map
+dist/core/model-list.js
+dist/core/model-list.js.map
+dist/core/pnpm-store.d.ts
+dist/core/pnpm-store.d.ts.map
+dist/core/pnpm-store.js
+dist/core/pnpm-store.js.map
+dist/core/process-tree.d.ts
+dist/core/process-tree.d.ts.map
+dist/core/process-tree.js
+dist/core/process-tree.js.map
+dist/core/run-temp.d.ts
+dist/core/run-temp.d.ts.map
+dist/core/run-temp.js
+dist/core/run-temp.js.map
+dist/core/run-worktrees.d.ts
+dist/core/run-worktrees.d.ts.map
+dist/core/run-worktrees.js
+dist/core/run-worktrees.js.map
+dist/core/service.d.ts
+dist/core/service.d.ts.map
+dist/core/service.js
+dist/core/service.js.map
+dist/core/supervisor.d.ts
+dist/core/supervisor.d.ts.map
+dist/core/supervisor.js
+dist/core/supervisor.js.map
+dist/core/task-git.d.ts
+dist/core/task-git.d.ts.map
+dist/core/task-git.js
+dist/core/task-git.js.map
+dist/core/tool-capabilities.d.ts
+dist/core/tool-capabilities.d.ts.map
+dist/core/tool-capabilities.js
+dist/core/tool-capabilities.js.map
+dist/core/update.d.ts
+dist/core/update.d.ts.map
+dist/core/update.js
+dist/core/update.js.map
+dist/core/worker-main.d.ts
+dist/core/worker-main.d.ts.map
+dist/core/worker-main.js
+dist/core/worker-main.js.map
+dist/core/workspaces.d.ts
+dist/core/workspaces.d.ts.map
+dist/core/workspaces.js
+dist/core/workspaces.js.map
+dist/host.d.ts
+dist/host.d.ts.map
+dist/host.js
+dist/host.js.map
+dist/index.d.ts
+dist/index.d.ts.map
+dist/index.js
+dist/index.js.map
+dist/lib/command.d.ts
+dist/lib/command.d.ts.map
+dist/lib/command.js
+dist/lib/command.js.map
+dist/lib/config.d.ts
+dist/lib/config.d.ts.map
+dist/lib/config.js
+dist/lib/config.js.map
+dist/lib/disk-full.d.ts
+dist/lib/disk-full.d.ts.map
+dist/lib/disk-full.js
+dist/lib/disk-full.js.map
+dist/lib/home.d.ts
+dist/lib/home.d.ts.map
+dist/lib/home.js
+dist/lib/home.js.map
+dist/lib/http.d.ts
+dist/lib/http.d.ts.map
+dist/lib/http.js
+dist/lib/http.js.map
+dist/lib/install.d.ts
+dist/lib/install.d.ts.map
+dist/lib/install.js
+dist/lib/install.js.map
+dist/lib/pass-env.d.ts
+dist/lib/pass-env.d.ts.map
+dist/lib/pass-env.js
+dist/lib/pass-env.js.map
+dist/lib/paths.d.ts
+dist/lib/paths.d.ts.map
+dist/lib/paths.js
+dist/lib/paths.js.map
+dist/lib/self.d.ts
+dist/lib/self.d.ts.map
+dist/lib/self.js
+dist/lib/self.js.map
+dist/lib/size.d.ts
+dist/lib/size.d.ts.map
+dist/lib/size.js
+dist/lib/size.js.map
+dist/lib/slots.d.ts
+dist/lib/slots.d.ts.map
+dist/lib/slots.js
+dist/lib/slots.js.map
+dist/protocol/index.d.ts
+dist/protocol/index.d.ts.map
+dist/protocol/index.js
+dist/protocol/index.js.map
+dist/run.d.ts
+dist/run.d.ts.map
+dist/run.js
+dist/run.js.map
+package.json
+README.md
+Tarball Details
+/tmp/nocobase-cli-c5mbno/nocobase-agent-runner-0.1.0-beta.9.tgz
+$ tar -xzf /tmp/nocobase-cli-c5mbno/nocobase-agent-runner-0.1.0-beta.9.tgz -C /tmp/nocobase-cli-c5mbno/package --strip-components=1
+$ pnpm pack --pack-destination /tmp/nocobase-cli-c5mbno/vendor
+package: @nocobase/agent-protocol@0.1.0-beta.8
+Tarball Contents
+dist/commands.d.ts
+dist/commands.d.ts.map
+dist/commands.js
+dist/commands.js.map
+dist/dist.d.ts
+dist/dist.d.ts.map
+dist/dist.js
+dist/dist.js.map
+dist/errors.d.ts
+dist/errors.d.ts.map
+dist/errors.js
+dist/errors.js.map
+dist/events.d.ts
+dist/events.d.ts.map
+dist/events.js
+dist/events.js.map
+dist/index.d.ts
+dist/index.d.ts.map
+dist/index.js
+dist/index.js.map
+dist/jobs.d.ts
+dist/jobs.d.ts.map
+dist/jobs.js
+dist/jobs.js.map
+dist/policy.d.ts
+dist/policy.d.ts.map
+dist/policy.js
+dist/policy.js.map
+dist/redact.d.ts
+dist/redact.d.ts.map
+dist/redact.js
+dist/redact.js.map
+dist/routes.d.ts
+dist/routes.d.ts.map
+dist/routes.js
+dist/routes.js.map
+dist/run.d.ts
+dist/run.d.ts.map
+dist/run.js
+dist/run.js.map
+dist/runner.d.ts
+dist/runner.d.ts.map
+dist/runner.js
+dist/runner.js.map
+dist/version.d.ts
+dist/version.d.ts.map
+dist/version.js
+dist/version.js.map
+dist/workspaces.d.ts
+dist/workspaces.d.ts.map
+dist/workspaces.js
+dist/workspaces.js.map
+package.json
+README.md
+Tarball Details
+/tmp/nocobase-cli-c5mbno/vendor/nocobase-agent-protocol-0.1.0-beta.8.tgz
+$ pnpm pack --pack-destination /tmp/nocobase-cli-c5mbno/vendor
+package: @nocobase/app-cli-client@0.1.0-beta.7
+Tarball Contents
+dist/acp-service.d.ts
+dist/acp-service.d.ts.map
+dist/acp-service.js
+dist/acp-service.js.map
+dist/acp.d.ts
+dist/acp.d.ts.map
+dist/acp.js
+dist/acp.js.map
+dist/brand.d.ts
+dist/brand.d.ts.map
+dist/brand.js
+dist/brand.js.map
+dist/commands.d.ts
+dist/commands.d.ts.map
+dist/commands.js
+dist/commands.js.map
+dist/completion.d.ts
+dist/completion.d.ts.map
+dist/completion.js
+dist/completion.js.map
+dist/config.d.ts
+dist/config.d.ts.map
+dist/config.js
+dist/config.js.map
+dist/docs.d.ts
+dist/docs.d.ts.map
+dist/docs.js
+dist/docs.js.map
+dist/dynamic/execute.d.ts
+dist/dynamic/execute.d.ts.map
+dist/dynamic/execute.js
+dist/dynamic/execute.js.map
+dist/dynamic/files.d.ts
+dist/dynamic/files.d.ts.map
+dist/dynamic/files.js
+dist/dynamic/files.js.map
+dist/dynamic/help.d.ts
+dist/dynamic/help.d.ts.map
+dist/dynamic/help.js
+dist/dynamic/help.js.map
+dist/dynamic/index.d.ts
+dist/dynamic/index.d.ts.map
+dist/dynamic/index.js
+dist/dynamic/index.js.map
+dist/dynamic/manifest.d.ts
+dist/dynamic/manifest.d.ts.map
+dist/dynamic/manifest.js
+dist/dynamic/manifest.js.map
+dist/dynamic/output.d.ts
+dist/dynamic/output.d.ts.map
+dist/dynamic/output.js
+dist/dynamic/output.js.map
+dist/dynamic/parse.d.ts
+dist/dynamic/parse.d.ts.map
+dist/dynamic/parse.js
+dist/dynamic/parse.js.map
+dist/dynamic/rest.d.ts
+dist/dynamic/rest.d.ts.map
+dist/dynamic/rest.js
+dist/dynamic/rest.js.map
+dist/dynamic/session.d.ts
+dist/dynamic/session.d.ts.map
+dist/dynamic/session.js
+dist/dynamic/session.js.map
+dist/dynamic/ticket.d.ts
+dist/dynamic/ticket.d.ts.map
+dist/dynamic/ticket.js
+dist/dynamic/ticket.js.map
+dist/hooks/command-not-found.d.ts
+dist/hooks/command-not-found.d.ts.map
+dist/hooks/command-not-found.js
+dist/hooks/command-not-found.js.map
+dist/index.d.ts
+dist/index.d.ts.map
+dist/index.js
+dist/index.js.map
+dist/install.d.ts
+dist/install.d.ts.map
+dist/install.js
+dist/install.js.map
+dist/lib/command.d.ts
+dist/lib/command.d.ts.map
+dist/lib/command.js
+dist/lib/command.js.map
+dist/lib/credentials.d.ts
+dist/lib/credentials.d.ts.map
+dist/lib/credentials.js
+dist/lib/credentials.js.map
+dist/lib/device.d.ts
+dist/lib/device.d.ts.map
+dist/lib/device.js
+dist/lib/device.js.map
+dist/lib/envelope.d.ts
+dist/lib/envelope.d.ts.map
+dist/lib/envelope.js
+dist/lib/envelope.js.map
+dist/lib/files.d.ts
+dist/lib/files.d.ts.map
+dist/lib/files.js
+dist/lib/files.js.map
+dist/lib/globals.d.ts
+dist/lib/globals.d.ts.map
+dist/lib/globals.js
+dist/lib/globals.js.map
+dist/lib/http.d.ts
+dist/lib/http.d.ts.map
+dist/lib/http.js
+dist/lib/http.js.map
+dist/lib/mime.d.ts
+dist/lib/mime.d.ts.map
+dist/lib/mime.js
+dist/lib/mime.js.map
+dist/lib/secrets/index.d.ts
+dist/lib/secrets/index.d.ts.map
+dist/lib/secrets/index.js
+dist/lib/secrets/index.js.map
+dist/lib/secrets/macos.d.ts
+dist/lib/secrets/macos.d.ts.map
+dist/lib/secrets/macos.js
+dist/lib/secrets/macos.js.map
+dist/lib/secrets/secret-service.d.ts
+dist/lib/secrets/secret-service.d.ts.map
+dist/lib/secrets/secret-service.js
+dist/lib/secrets/secret-service.js.map
+dist/lib/secrets/store.d.ts
+dist/lib/secrets/store.d.ts.map
+dist/lib/secrets/store.js
+dist/lib/secrets/store.js.map
+dist/lib/secrets/windows.d.ts
+dist/lib/secrets/windows.d.ts.map
+dist/lib/secrets/windows.js
+dist/lib/secrets/windows.js.map
+dist/lib/update-hint.d.ts
+dist/lib/update-hint.d.ts.map
+dist/lib/update-hint.js
+dist/lib/update-hint.js.map
+dist/login.d.ts
+dist/login.d.ts.map
+dist/login.js
+dist/login.js.map
+dist/logout.d.ts
+dist/logout.d.ts.map
+dist/logout.js
+dist/logout.js.map
+dist/parse/arguments.d.ts
+dist/parse/arguments.d.ts.map
+dist/parse/arguments.js
+dist/parse/arguments.js.map
+dist/parse/exit.d.ts
+dist/parse/exit.d.ts.map
+dist/parse/exit.js
+dist/parse/exit.js.map
+dist/parse/help.d.ts
+dist/parse/help.d.ts.map
+dist/parse/help.js
+dist/parse/help.js.map
+dist/parse/index.d.ts
+dist/parse/index.d.ts.map
+dist/parse/index.js
+dist/parse/index.js.map
+dist/parse/manifest.d.ts
+dist/parse/manifest.d.ts.map
+dist/parse/manifest.js
+dist/parse/manifest.js.map
+dist/profile.d.ts
+dist/profile.d.ts.map
+dist/profile.js
+dist/profile.js.map
+dist/request.d.ts
+dist/request.d.ts.map
+dist/request.js
+dist/request.js.map
+dist/run.d.ts
+dist/run.d.ts.map
+dist/run.js
+dist/run.js.map
+dist/skills.d.ts
+dist/skills.d.ts.map
+dist/skills.js
+dist/skills.js.map
+dist/update.d.ts
+dist/update.d.ts.map
+dist/update.js
+dist/update.js.map
+dist/whoami.d.ts
+dist/whoami.d.ts.map
+dist/whoami.js
+dist/whoami.js.map
+package.json
+README.md
+Tarball Details
+/tmp/nocobase-cli-c5mbno/vendor/nocobase-app-cli-client-0.1.0-beta.7.tgz
+$ pnpm pack --pack-destination /tmp/nocobase-cli-c5mbno/vendor
+package: @nocobase/cli-envelope@0.1.0-beta.1
+Tarball Contents
+dist/index.d.ts
+dist/index.d.ts.map
+dist/index.js
+dist/index.js.map
+node-guard.d.ts
+node-guard.js
+package.json
+README.md
+Tarball Details
+/tmp/nocobase-cli-c5mbno/vendor/nocobase-cli-envelope-0.1.0-beta.1.tgz
+$ pnpm pack --pack-destination /tmp/nocobase-cli-c5mbno/vendor
+package: @nocobase/acp-bridge@0.1.0-beta.1
+Tarball Contents
+CHANGELOG.md
+dist/agent-process.d.ts
+dist/agent-process.d.ts.map
+dist/agent-process.js
+dist/agent-process.js.map
+dist/agents.d.ts
+dist/agents.d.ts.map
+dist/agents.js
+dist/agents.js.map
+dist/bridge.d.ts
+dist/bridge.d.ts.map
+dist/bridge.js
+dist/bridge.js.map
+dist/folders.d.ts
+dist/folders.d.ts.map
+dist/folders.js
+dist/folders.js.map
+dist/index.d.ts
+dist/index.d.ts.map
+dist/index.js
+dist/index.js.map
+dist/protocol.d.ts
+dist/protocol.d.ts.map
+dist/protocol.js
+dist/protocol.js.map
+dist/session.d.ts
+dist/session.d.ts.map
+dist/session.js
+dist/session.js.map
+package.json
+README.md
+Tarball Details
+/tmp/nocobase-cli-c5mbno/vendor/nocobase-acp-bridge-0.1.0-beta.1.tgz
+$ npm install --omit=dev --omit=optional --omit=peer --ignore-scripts --no-audit --no-fund --no-package-lock
+
+added 46 packages in 5s
+$ tar -czf /home/runner/work/temp/temp/source/packages/apps/studio/dist/runners/stable/nocobase-runner/0.1.0-beta.9/nocobase-runner-v0.1.0-beta.9-universal.tar.gz -C /tmp/nocobase-cli-c5mbno/targets/universal nocobase-runner
+Packed nocobase-runner 0.1.0-beta.9 for universal into /home/runner/work/temp/temp/source/packages/apps/studio/dist/runners/stable/nocobase-runner/0.1.0-beta.9
+Packed nocobase-runner 0.1.0-beta.9 (stable, the machine's Node.js) into /home/runner/work/temp/temp/source/packages/apps/studio/dist/runners/stable/nocobase-runner:
+  universal  0.1.0-beta.9/nocobase-runner-v0.1.0-beta.9-universal.tar.gz  9193493 bytes  sha256 d8fe3c9d9afd288cd9ce2ccfa82d374cb7f53e0e6151c46c8672f5ce1ac57caa
+Skills: nb-studio-cli
+$ pnpm pack --pack-destination /tmp/nocobase-cli-u31qJQ/vendor
+package: @nocobase/app-cli-client@0.1.0-beta.7
+Tarball Contents
+dist/acp-service.d.ts
+dist/acp-service.d.ts.map
+dist/acp-service.js
+dist/acp-service.js.map
+dist/acp.d.ts
+dist/acp.d.ts.map
+dist/acp.js
+dist/acp.js.map
+dist/brand.d.ts
+dist/brand.d.ts.map
+dist/brand.js
+dist/brand.js.map
+dist/commands.d.ts
+dist/commands.d.ts.map
+dist/commands.js
+dist/commands.js.map
+dist/completion.d.ts
+dist/completion.d.ts.map
+dist/completion.js
+dist/completion.js.map
+dist/config.d.ts
+dist/config.d.ts.map
+dist/config.js
+dist/config.js.map
+dist/docs.d.ts
+dist/docs.d.ts.map
+dist/docs.js
+dist/docs.js.map
+dist/dynamic/execute.d.ts
+dist/dynamic/execute.d.ts.map
+dist/dynamic/execute.js
+dist/dynamic/execute.js.map
+dist/dynamic/files.d.ts
+dist/dynamic/files.d.ts.map
+dist/dynamic/files.js
+dist/dynamic/files.js.map
+dist/dynamic/help.d.ts
+dist/dynamic/help.d.ts.map
+dist/dynamic/help.js
+dist/dynamic/help.js.map
+dist/dynamic/index.d.ts
+dist/dynamic/index.d.ts.map
+dist/dynamic/index.js
+dist/dynamic/index.js.map
+dist/dynamic/manifest.d.ts
+dist/dynamic/manifest.d.ts.map
+dist/dynamic/manifest.js
+dist/dynamic/manifest.js.map
+dist/dynamic/output.d.ts
+dist/dynamic/output.d.ts.map
+dist/dynamic/output.js
+dist/dynamic/output.js.map
+dist/dynamic/parse.d.ts
+dist/dynamic/parse.d.ts.map
+dist/dynamic/parse.js
+dist/dynamic/parse.js.map
+dist/dynamic/rest.d.ts
+dist/dynamic/rest.d.ts.map
+dist/dynamic/rest.js
+dist/dynamic/rest.js.map
+dist/dynamic/session.d.ts
+dist/dynamic/session.d.ts.map
+dist/dynamic/session.js
+dist/dynamic/session.js.map
+dist/dynamic/ticket.d.ts
+dist/dynamic/ticket.d.ts.map
+dist/dynamic/ticket.js
+dist/dynamic/ticket.js.map
+dist/hooks/command-not-found.d.ts
+dist/hooks/command-not-found.d.ts.map
+dist/hooks/command-not-found.js
+dist/hooks/command-not-found.js.map
+dist/index.d.ts
+dist/index.d.ts.map
+dist/index.js
+dist/index.js.map
+dist/install.d.ts
+dist/install.d.ts.map
+dist/install.js
+dist/install.js.map
+dist/lib/command.d.ts
+dist/lib/command.d.ts.map
+dist/lib/command.js
+dist/lib/command.js.map
+dist/lib/credentials.d.ts
+dist/lib/credentials.d.ts.map
+dist/lib/credentials.js
+dist/lib/credentials.js.map
+dist/lib/device.d.ts
+dist/lib/device.d.ts.map
+dist/lib/device.js
+dist/lib/device.js.map
+dist/lib/envelope.d.ts
+dist/lib/envelope.d.ts.map
+dist/lib/envelope.js
+dist/lib/envelope.js.map
+dist/lib/files.d.ts
+dist/lib/files.d.ts.map
+dist/lib/files.js
+dist/lib/files.js.map
+dist/lib/globals.d.ts
+dist/lib/globals.d.ts.map
+dist/lib/globals.js
+dist/lib/globals.js.map
+dist/lib/http.d.ts
+dist/lib/http.d.ts.map
+dist/lib/http.js
+dist/lib/http.js.map
+dist/lib/mime.d.ts
+dist/lib/mime.d.ts.map
+dist/lib/mime.js
+dist/lib/mime.js.map
+dist/lib/secrets/index.d.ts
+dist/lib/secrets/index.d.ts.map
+dist/lib/secrets/index.js
+dist/lib/secrets/index.js.map
+dist/lib/secrets/macos.d.ts
+dist/lib/secrets/macos.d.ts.map
+dist/lib/secrets/macos.js
+dist/lib/secrets/macos.js.map
+dist/lib/secrets/secret-service.d.ts
+dist/lib/secrets/secret-service.d.ts.map
+dist/lib/secrets/secret-service.js
+dist/lib/secrets/secret-service.js.map
+dist/lib/secrets/store.d.ts
+dist/lib/secrets/store.d.ts.map
+dist/lib/secrets/store.js
+dist/lib/secrets/store.js.map
+dist/lib/secrets/windows.d.ts
+dist/lib/secrets/windows.d.ts.map
+dist/lib/secrets/windows.js
+dist/lib/secrets/windows.js.map
+dist/lib/update-hint.d.ts
+dist/lib/update-hint.d.ts.map
+dist/lib/update-hint.js
+dist/lib/update-hint.js.map
+dist/login.d.ts
+dist/login.d.ts.map
+dist/login.js
+dist/login.js.map
+dist/logout.d.ts
+dist/logout.d.ts.map
+dist/logout.js
+dist/logout.js.map
+dist/parse/arguments.d.ts
+dist/parse/arguments.d.ts.map
+dist/parse/arguments.js
+dist/parse/arguments.js.map
+dist/parse/exit.d.ts
+dist/parse/exit.d.ts.map
+dist/parse/exit.js
+dist/parse/exit.js.map
+dist/parse/help.d.ts
+dist/parse/help.d.ts.map
+dist/parse/help.js
+dist/parse/help.js.map
+dist/parse/index.d.ts
+dist/parse/index.d.ts.map
+dist/parse/index.js
+dist/parse/index.js.map
+dist/parse/manifest.d.ts
+dist/parse/manifest.d.ts.map
+dist/parse/manifest.js
+dist/parse/manifest.js.map
+dist/profile.d.ts
+dist/profile.d.ts.map
+dist/profile.js
+dist/profile.js.map
+dist/request.d.ts
+dist/request.d.ts.map
+dist/request.js
+dist/request.js.map
+dist/run.d.ts
+dist/run.d.ts.map
+dist/run.js
+dist/run.js.map
+dist/skills.d.ts
+dist/skills.d.ts.map
+dist/skills.js
+dist/skills.js.map
+dist/update.d.ts
+dist/update.d.ts.map
+dist/update.js
+dist/update.js.map
+dist/whoami.d.ts
+dist/whoami.d.ts.map
+dist/whoami.js
+dist/whoami.js.map
+package.json
+README.md
+Tarball Details
+/tmp/nocobase-cli-u31qJQ/vendor/nocobase-app-cli-client-0.1.0-beta.7.tgz
+$ pnpm pack --pack-destination /tmp/nocobase-cli-u31qJQ/vendor
+package: @nocobase/acp-bridge@0.1.0-beta.1
+Tarball Contents
+CHANGELOG.md
+dist/agent-process.d.ts
+dist/agent-process.d.ts.map
+dist/agent-process.js
+dist/agent-process.js.map
+dist/agents.d.ts
+dist/agents.d.ts.map
+dist/agents.js
+dist/agents.js.map
+dist/bridge.d.ts
+dist/bridge.d.ts.map
+dist/bridge.js
+dist/bridge.js.map
+dist/folders.d.ts
+dist/folders.d.ts.map
+dist/folders.js
+dist/folders.js.map
+dist/index.d.ts
+dist/index.d.ts.map
+dist/index.js
+dist/index.js.map
+dist/protocol.d.ts
+dist/protocol.d.ts.map
+dist/protocol.js
+dist/protocol.js.map
+dist/session.d.ts
+dist/session.d.ts.map
+dist/session.js
+dist/session.js.map
+package.json
+README.md
+Tarball Details
+/tmp/nocobase-cli-u31qJQ/vendor/nocobase-acp-bridge-0.1.0-beta.1.tgz
+$ pnpm pack --pack-destination /tmp/nocobase-cli-u31qJQ/vendor
+package: @nocobase/agent-protocol@0.1.0-beta.8
+Tarball Contents
+dist/commands.d.ts
+dist/commands.d.ts.map
+dist/commands.js
+dist/commands.js.map
+dist/dist.d.ts
+dist/dist.d.ts.map
+dist/dist.js
+dist/dist.js.map
+dist/errors.d.ts
+dist/errors.d.ts.map
+dist/errors.js
+dist/errors.js.map
+dist/events.d.ts
+dist/events.d.ts.map
+dist/events.js
+dist/events.js.map
+dist/index.d.ts
+dist/index.d.ts.map
+dist/index.js
+dist/index.js.map
+dist/jobs.d.ts
+dist/jobs.d.ts.map
+dist/jobs.js
+dist/jobs.js.map
+dist/policy.d.ts
+dist/policy.d.ts.map
+dist/policy.js
+dist/policy.js.map
+dist/redact.d.ts
+dist/redact.d.ts.map
+dist/redact.js
+dist/redact.js.map
+dist/routes.d.ts
+dist/routes.d.ts.map
+dist/routes.js
+dist/routes.js.map
+dist/run.d.ts
+dist/run.d.ts.map
+dist/run.js
+dist/run.js.map
+dist/runner.d.ts
+dist/runner.d.ts.map
+dist/runner.js
+dist/runner.js.map
+dist/version.d.ts
+dist/version.d.ts.map
+dist/version.js
+dist/version.js.map
+dist/workspaces.d.ts
+dist/workspaces.d.ts.map
+dist/workspaces.js
+dist/workspaces.js.map
+package.json
+README.md
+Tarball Details
+/tmp/nocobase-cli-u31qJQ/vendor/nocobase-agent-protocol-0.1.0-beta.8.tgz
+$ pnpm pack --pack-destination /tmp/nocobase-cli-u31qJQ/vendor
+package: @nocobase/cli-envelope@0.1.0-beta.1
+Tarball Contents
+dist/index.d.ts
+dist/index.d.ts.map
+dist/index.js
+dist/index.js.map
+node-guard.d.ts
+node-guard.js
+package.json
+README.md
+Tarball Details
+/tmp/nocobase-cli-u31qJQ/vendor/nocobase-cli-envelope-0.1.0-beta.1.tgz
+$ npm install --omit=dev --omit=optional --omit=peer --ignore-scripts --no-audit --no-fund --no-package-lock
+
+added 44 packages in 876ms
+$ tar -czf /home/runner/work/temp/temp/source/packages/apps/studio/dist/runners/stable/nb-studio/1.0.0-beta.58/nb-studio-v1.0.0-beta.58-universal.tar.gz -C /tmp/nocobase-cli-u31qJQ/targets/universal nb-studio
+Packed nb-studio 1.0.0-beta.58 for universal into /home/runner/work/temp/temp/source/packages/apps/studio/dist/runners/stable/nb-studio/1.0.0-beta.58
+Packed nb-studio 1.0.0-beta.58 (stable, the machine's Node.js) into /home/runner/work/temp/temp/source/packages/apps/studio/dist/runners/stable/nb-studio:
+  universal  1.0.0-beta.58/nb-studio-v1.0.0-beta.58-universal.tar.gz  2658471 bytes  sha256 ce39412b4ba0e4a43cbc7b9b650bcdb6d8d83e41e9f01a2905e005819d1e4d09
+Packed nocobase-runner 0.1.0-beta.9, nb-studio 1.0.0-beta.58 into /home/runner/work/temp/temp/source/packages/apps/studio/dist/runners
+
+> Extract environment
+No supported server environment entries found; skipped dist/.env
+
+> Generate variables manifest
+API_BODY_LIMIT                     api.bodyLimit
+                                   The largest request body any /api route accepts, such as 10mb; off when unset.
+API_TIMEOUT                        api.timeout
+                                   How long an /api request may take before it is answered 503 REQUEST_TIMEOUT, such as 30s; off when unset.
+API_KEYS_MAX_SCOPED_KEY_DAYS       apiKeys.maxScopedKeyDays
+                                   The most days an API key with a scope may live; unset, such a key may never expire.
+APP_PUBLIC_ORIGIN                  app.publicOrigin
+                                   The origin browsers reach the application at, such as https://apps.example.com, for callbacks and redirects.
+APP_SAMPLE_DATA                    app.sampleData  [first start]
+                                   Load sample data while the database is first installed: seeds declared with sample: true and sampleDataToken registrations.
+AUTH_SECRET                        auth.secret  [secret, generate:secret]
+                                   The legacy sign-in secret; keys are derived from SECRETS_KEYS when it is set.
+DB_DATABASE                        database.connections.main.database
+                                   The database name of the main database connection.
+DB_DIALECT                         database.connections.main.dialect
+                                   The dialect of the main database connection, such as sqlite, postgres or mysql; its driver must be installed.
+DB_FILENAME                        database.connections.main.filename
+                                   The SQLite file of the main database connection.
+DB_HOST                            database.connections.main.host
+                                   The host of the main database connection.
+DB_PASSWORD                        database.connections.main.password  [secret]
+                                   The password of the main database connection.
+DB_PORT                            database.connections.main.port
+                                   The port of the main database connection.
+DB_SSL                             database.connections.main.ssl
+                                   Whether the main database connection uses TLS.
+DB_USERNAME                        database.connections.main.username
+                                   The user name of the main database connection.
+APP_DEFAULT_LOCALE                 i18n.defaultLocale
+                                   The language the application starts in, such as zh-CN.
+RESEND_API_KEY                     notification.channels.system-email.apiKey  [secret]
+SMTP_PASSWORD                      notification.channels.system-email.auth.pass  [secret]
+RELEASES_HOST_ENABLED              releases.host.enabled
+                                   Whether this application runs its own App Host for the in-process environments; a preview of it sets false.
+SCHEDULER_JOBS                     scheduler.jobs
+                                   The jobs configuration scheduled jobs run on; jobs.default when unset.
+SECRETS_KEYS                       secrets.keys  [secret, generate:secretKeys]
+                                   The master keys stored secrets are encrypted with, as version:key pairs, the current one first.
+APP_SERVER_HOST                    server.host
+                                   The address the server listens on.
+APP_SERVER_PORT                    server.port
+                                   The port the server listens on.
+APP_SERVER_START_LOG               server.startLog
+                                   Whether the server logs its address once it is ready.
+SESSION_SECRET                     session.secret  [secret, generate:secret]
+                                   The legacy session signing secret; keys are derived from SECRETS_KEYS when it is set.
+SNOWFLAKE_WORKER_ID                snowflake.workerId
+                                   A worker ID unique to each concurrently running instance, 0 to 1023.
+APP_VITE_DEV_URL                   spa.viteDevUrl
+                                   The Vite dev server pnpm dev proxies the client to; false or 0 serves the built client.
+STUDIO_MANAGER_IDLE_MINUTES        studio.agents.managerIdleMinutes
+                                   Idle timeout since the latest manager completion, in minutes; 15 by default, 0 disables recovery.
+STUDIO_MANAGER_IDLE_SWEEP_MINUTES  studio.agents.managerIdleSweepMinutes
+                                   Interval in minutes between manager idle checks; 5 by default, must be positive.
+INITIAL_ADMIN_EMAIL                users.initialAdmin.email  [first start]
+                                   The first administrator’s email address; admin@nocobase.com when unset.
+INITIAL_ADMIN_PASSWORD             users.initialAdmin.password  [secret, generate:password, first start]
+                                   The first administrator’s password.
+INITIAL_ADMIN_USERNAME             users.initialAdmin.username  [first start]
+                                   The first administrator’s user name, 3–30 letters, digits, underscores or dots; nocobase when unset.
+APP_BASE_PATH                      (runtime)
+                                   The path the application is served under; its name follows from it.
+APP_CONFIG_FILE                    (runtime)
+                                   The configuration file to read instead of config.yml in the deployment root.
+NOCOBASE_STRICT_STARTUP            (runtime)
+                                   Set to true to exit the process as soon as startup fails.
+
+Wrote /home/runner/work/temp/temp/source/packages/apps/studio/dist/variables.json
+
+> Generate server package
+Generated dist/package.json with 116 production dependencies and 48 vendored workspace packages.
+Recorded a relocatable client and build time 2026-10-15T05:34:30.835Z
+
+> Install server production dependencies
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Progress: resolved 256, reused 0, downloaded 0, added 0
+
+devDependencies: skipped
+
+Packages: +601
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 615, reused 11, downloaded 0, added 0
+Progress: resolved 615, reused 23, downloaded 0, added 0
+Progress: resolved 615, reused 542, downloaded 0, added 0
+Progress: resolved 615, reused 542, downloaded 59, added 601, done
+Done in 6.2s using pnpm v11.7.0
+
+> Materialize server dependency links
+
+> Retarget native modules
+Native modules target this machine (linux-x64, Node 24, ABI 137).
+Deploying elsewhere? Rebuild with --target linux-x64 (or linux-arm64, linux-x64-musl) and --node-version.
+
+> Prune deployment artifacts
+Removed 17900 declaration, source map, and documentation files from the deployment tree (202.2 MB).
+
+> Verify server dependencies
+Verified 36 package(s) imported by server, database, and CLI code — all reach the deployment.
+
+Build complete: dist/client, dist/server, dist/cli, dist/.env, dist/variables.json, and dist/package.json
