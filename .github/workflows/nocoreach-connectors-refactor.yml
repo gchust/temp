@@ -48,7 +48,7 @@ jobs:
         run: |
           set -euo pipefail
           cp -R ../harness/nocoreach/connector-plugins/implementation/patch/. .
-          node ../harness/nocoreach/connector-plugins/implementation/apply.mjs "$PWD"
+          node ../harness/nocoreach/connector-plugins/implementation/pipeline.mjs "$PWD"
           pnpm install --no-frozen-lockfile > ../artifacts/install-refactor.log 2>&1 || { tail -100 ../artifacts/install-refactor.log; exit 1; }
           pnpm connectors:prepare
       - name: Run connector and public source regression tests
