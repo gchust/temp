@@ -1,0 +1,1 @@
+$ tsc -p tsconfig.json && node scripts/copy-runner.mjs && nocobase-db-manifests

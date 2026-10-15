@@ -1,0 +1,30 @@
+$ node ./scripts/check-openapi.mjs
+Checking the API document of default (packages/templates/app-template-default)
+Error: Cannot resolve @nocobase/app-server/router from /home/runner/work/temp/temp/source/packages/templates/app-template-default.
+    at resolveFrom (/home/runner/work/temp/temp/source/scripts/check-openapi-app.mjs:89:9)
+    at load (/home/runner/work/temp/temp/source/scripts/check-openapi-app.mjs:95:38)
+    at main (/home/runner/work/temp/temp/source/scripts/check-openapi-app.mjs:109:5)
+    at <anonymous> (/home/runner/work/temp/temp/source/scripts/check-openapi-app.mjs:217:3)
+    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    at async node:internal/modules/esm/loader:647:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+  default: 1 problem
+    could not build the document: the application did not start (exit code 1); see the output above.
+      Fix: Fix the start-up error printed above; the check starts the application on SQLite test databases the way its tests do.
+Checking the API document of examples (packages/templates/app-template-examples)
+Error: Cannot resolve @nocobase/app-server/router from /home/runner/work/temp/temp/source/packages/templates/app-template-examples.
+    at resolveFrom (/home/runner/work/temp/temp/source/scripts/check-openapi-app.mjs:89:9)
+    at load (/home/runner/work/temp/temp/source/scripts/check-openapi-app.mjs:95:38)
+    at main (/home/runner/work/temp/temp/source/scripts/check-openapi-app.mjs:109:5)
+    at <anonymous> (/home/runner/work/temp/temp/source/scripts/check-openapi-app.mjs:217:3)
+    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    at async node:internal/modules/esm/loader:647:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+  examples: 1 problem
+    could not build the document: the application did not start (exit code 1); see the output above.
+      Fix: Fix the start-up error printed above; the check starts the application on SQLite test databases the way its tests do.
+Checking the API document of studio (packages/apps/studio)
+  ok: 548 routes, 577 documented operations
+
+The rules are in packages/app/app-skills/skills/nocobase-app-development/references/http-api.md ("API documentation"). Re-run the check with `node scripts/check-openapi.mjs <default|examples>`.
+[ELIFECYCLE] Command failed with exit code 1.

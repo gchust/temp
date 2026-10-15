@@ -1,0 +1,12 @@
+✔ rejects local paths, embedded credentials and option injection (1.489446ms)
+✔ handles rename records, binary files and unusual file names (2.227276ms)
+✔ ignores declarations in comments and strings and declines parameterized tests (0.504423ms)
+✔ collects real Git deltas, not commit-message estimates (128.324783ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 198.136151
