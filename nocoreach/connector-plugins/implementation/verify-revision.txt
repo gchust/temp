@@ -1,0 +1,3 @@
+Six-plugin batch: GitHub, Discourse, packages, Hacker News, X, Discord/Slack.
+Browser checks preserve successful structured receipts separately from last-sync timestamps.
+Revision: 2026-10-15-six-plugins-receipt-check
