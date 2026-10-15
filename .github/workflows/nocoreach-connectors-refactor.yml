@@ -3,7 +3,7 @@ on:
   push:
     paths:
       - '.github/workflows/nocoreach-connectors-refactor.yml'
-      - 'nocoreach/connector-plugins/implementation/**'
+      - 'nocoreach/connector-plugins/implementation/verify-revision.txt'
   workflow_dispatch:
 permissions:
   contents: read
@@ -51,24 +51,21 @@ jobs:
           node ../harness/nocoreach/connector-plugins/implementation/apply.mjs "$PWD"
           pnpm install --no-frozen-lockfile > ../artifacts/install-refactor.log 2>&1 || { tail -100 ../artifacts/install-refactor.log; exit 1; }
           pnpm connectors:prepare
-      - name: Run registry and GitHub regression tests
+      - name: Run connector and public source regression tests
         working-directory: source
         run: |
           set -euo pipefail
-          pnpm exec vitest run tests/nocoreach/connector-registry.test.ts tests/nocoreach/github 2>&1 | tee ../artifacts/connector-tests.log
+          pnpm exec vitest run tests/nocoreach/connector tests/nocoreach/github tests/nocoreach/community tests/nocoreach/packages tests/nocoreach/hackernews tests/nocoreach/public-sources tests/nocoreach/project-runs 2>&1 | tee ../artifacts/connector-tests.log
       - name: Check server types including plugin composition
         working-directory: source
         run: |
           set -euo pipefail
           pnpm exec tsc -p tsconfig.server.json --noEmit 2>&1 | tee ../artifacts/server-types.log
-      - name: Confirm actual CLI development options
-        working-directory: source
-        run: pnpm nocobase dev --help
       - name: Install the pinned Chromium browser
         working-directory: source
         run: |
           pnpm exec playwright install --with-deps chromium > ../artifacts/browser-install.log 2>&1 || { tail -100 ../artifacts/browser-install.log; exit 1; }
-      - name: Start real NocoReach and validate migrated GitHub UI
+      - name: Start real NocoReach and validate connector UI
         working-directory: source
         run: |
           set -euo pipefail
