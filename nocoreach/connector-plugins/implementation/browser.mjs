@@ -10,6 +10,7 @@ const root = path.resolve(process.argv[2]);
 const artifacts = path.resolve(process.argv[3]);
 const require = createRequire(path.join(root, 'package.json'));
 const { chromium, expect } = require('@playwright/test');
+const messages = JSON.parse(await readFile(path.join(root, 'shared/i18n/en.json'), 'utf8'));
 const isolated = await mkdtemp(path.join(tmpdir(), 'nocoreach-connectors-'));
 await mkdir(artifacts, { recursive: true });
 const username = 'connectorqa';
@@ -22,14 +23,24 @@ let logs = '';
 let child;
 let browser;
 let context;
-const report = { scope: 'Real NocoReach application with simulated upstream APIs; no production account or remote writes.', base: '', checks: [], pageErrors: [], failedRequests: [] };
+const report = { scope: 'Real NocoReach application with simulated upstream APIs. This verifies only the connector packages listed in the checks, not the unfinished full migration.', base: '', checks: [], pageErrors: [], failedRequests: [] };
 const record = (name, details = {}) => { report.checks.push({ name, passed: true, ...details }); console.log('APP_BROWSER_PASS', name, JSON.stringify(details)); };
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const targets = [
+  { card: 'github', resource: 'nrGitHub', action: 'sync', button: 'common.syncNow', metric: status => status.latest?.stars },
+  { card: 'github-traffic', resource: 'nrGitHub' },
+  { card: 'github-discussions', resource: 'nrGitHub' },
+  { card: 'discourse', resource: 'nrCommunity', action: 'sync', button: 'common.syncNow', metric: status => status.total },
+  { card: 'packages', resource: 'nrPackages', action: 'sync', button: 'common.syncNow', metric: status => status.packages?.length },
+  { card: 'mentions', resource: 'nrHackerNews', action: 'sync', button: 'common.syncNow', metric: status => status.total },
+  { card: 'social', resource: 'nrX', action: 'check', button: 'common.searchNow', metric: status => status.total },
+  { card: 'discord', resource: 'nrChat', action: 'sync', button: 'common.readNow', platform: 'discord', metric: status => status.discord?.channels?.length },
+  { card: 'slack', resource: 'nrChat', action: 'sync', button: 'common.readNow', platform: 'slack', metric: status => status.slack?.channels?.length },
+];
 
 try {
   child = spawn('pnpm', ['dev'], {
-    cwd: root,
-    detached: true,
+    cwd: root, detached: true,
     env: { ...process.env, APP_CONFIG_FILE: config, APP_STORAGE_DIR: path.join(isolated, 'storage'), DB_FILENAME: path.join(isolated, 'database.sqlite'), APP_PUBLIC_ORIGIN: origin, INITIAL_ADMIN_USERNAME: username, INITIAL_ADMIN_EMAIL: 'connector-qa@example.test', INITIAL_ADMIN_PASSWORD: password, SECRETS_KEYS: '1:' + randomBytes(32).toString('hex'), NODE_OPTIONS: '--max-old-space-size=6144' },
     stdio: ['ignore', 'pipe', 'pipe'],
   });
@@ -53,24 +64,21 @@ try {
   }
   if (!base) throw new Error('Application did not print a Local URL: ' + logs.slice(-14000));
   report.base = base;
-  const health = await fetch(base + '/api/healthz', { signal: AbortSignal.timeout(10_000) });
-  assert.equal(health.status, 200);
-  record('real-application-health', { status: health.status, base });
+  assert.equal((await fetch(base + '/api/healthz', { signal: AbortSignal.timeout(10_000) })).status, 200);
+  record('real-application-health', { status: 200, base });
 
   browser = await chromium.launch({ headless: true });
-  context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, locale: 'en-US' });
   const page = await context.newPage();
   page.on('pageerror', error => report.pageErrors.push(error.message));
-  page.on('response', response => {
-    if (response.status() >= 500) report.failedRequests.push({ status: response.status(), url: response.url() });
-  });
+  page.on('response', response => { if (response.status() >= 500) report.failedRequests.push({ status: response.status(), url: response.url() }); });
   page.setDefaultTimeout(30_000);
   await page.goto(base + '/login', { waitUntil: 'domcontentloaded' });
   await page.getByLabel(/Username or email|用户名或邮箱/, { exact: true }).fill(username);
   await page.getByLabel(/Password|密码/, { exact: true }).fill(password);
   const loginResponse = page.waitForResponse(response => response.url().includes('/api/auth/sign-in/'));
   await page.getByRole('button', { name: /^Sign in$|^登录$/ }).click();
-  assert.equal((await loginResponse).status(), 200, 'Synthetic test administrator signs in through the actual application');
+  assert.equal((await loginResponse).status(), 200);
   await page.waitForURL(url => !url.pathname.endsWith('/login'));
   record('real-login-with-synthetic-admin');
   await context.tracing.start({ screenshots: true, snapshots: true, sources: false });
@@ -79,38 +87,59 @@ try {
   await indicator.waitFor({ state: 'visible' });
   await expect(indicator).toHaveAttribute('role', 'img');
   await page.locator('[data-source-id="github"]').waitFor({ state: 'visible' });
-  // Keep the application's CSRF/origin enforcement enabled. The authenticated page
-  // makes this local status request with the same origin and cookies as its own UI.
-  const mock = await page.evaluate(async url => {
-    const response = await fetch(url, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ projectId: '1' }) });
-    return { status: response.status, body: await response.json() };
-  }, base + '/api/nocoreach/nrMock/status');
-  assert.equal(mock.status, 200, JSON.stringify(mock.body));
-  const mockStatus = mock.body.data ?? mock.body;
+  // Browser-origin calls retain the application's authentication and CSRF enforcement.
+  async function status(resource) {
+    const result = await page.evaluate(async ({ url }) => {
+      const response = await fetch(url, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ projectId: '1' }) });
+      return { status: response.status, body: await response.json() };
+    }, { url: base + '/api/nocoreach/' + resource + '/status' });
+    assert.equal(result.status, 200, resource + ': ' + JSON.stringify(result.body));
+    return result.body.data ?? result.body;
+  }
+  const mockStatus = await status('nrMock');
   assert.equal(mockStatus.globalEnabled, true);
   assert.equal(mockStatus.environment, 'test');
-  await page.screenshot({ path: path.join(artifacts, 'connections.png'), fullPage: true });
   record('existing-connections-page-and-mock-isolation', { environment: mockStatus.environment });
+  await page.screenshot({ path: path.join(artifacts, 'connections.png'), fullPage: true });
 
-  const statusResponses = [];
-  page.on('response', response => {
-    if (response.url().includes('nrGitHub') && response.url().includes('status')) statusResponses.push({ status: response.status(), url: response.url() });
-  });
-  for (const id of ['github', 'github-traffic', 'github-discussions']) {
-    const opener = page.locator(`[data-source-id="${id}"]`).getByRole('button');
-    await opener.click();
+  for (const target of targets) {
+    await page.locator(`[data-source-id="${target.card}"]`).getByRole('button').click();
     const dialog = page.getByRole('dialog');
     await dialog.waitFor({ state: 'visible' });
-    await page.screenshot({ path: path.join(artifacts, id + '-connection.png'), fullPage: true });
+    const before = await status(target.resource);
+    assert.equal(target.platform ? before[target.platform]?.connected : before.connected, true, target.card + ' should have a seeded connection');
+    if (target.action) {
+      const label = messages[target.button];
+      assert.equal(typeof label, 'string', 'Use the actual application translation key');
+      const button = dialog.getByRole('button', { name: label, exact: true });
+      await expect(button).toBeEnabled({ timeout: 60_000 });
+      const responsePromise = page.waitForResponse(response => response.url().includes(`/${target.resource}/${target.action}`), { timeout: 60_000 });
+      await button.click();
+      const response = await responsePromise;
+      assert.equal(response.status(), 200, target.card + ' sync HTTP result');
+      let after = await status(target.resource);
+      const finish = Date.now() + 60_000;
+      while ((after.syncing || after.checking) && Date.now() < finish) { await sleep(500); after = await status(target.resource); }
+      assert.ok(!after.syncing && !after.checking, target.card + ' background read must complete');
+      const lastRun = target.platform ? after[target.platform]?.lastRun : after.lastSync ?? after.lastRun;
+      assert.equal(lastRun?.ok, true, target.card + ' must not report a partial/error result');
+      assert.ok(Number(target.metric(after)) > 0, target.card + ' should expose nonempty fixture data after reading');
+      const again = await status(target.resource);
+      assert.equal(target.metric(again), target.metric(after), target.card + ' results persist across subsequent status reads');
+      record('ui-read-and-persisted-result-' + target.card, { resource: target.resource, action: target.action, metric: target.metric(after) });
+    }
+    await expect(dialog.locator('.nr-error[role="alert"]')).toHaveCount(0);
+    await page.screenshot({ path: path.join(artifacts, target.card + '-connection.png'), fullPage: true });
     await dialog.getByRole('button', { name: /^Close$|^关闭$/ }).click();
     await dialog.waitFor({ state: 'hidden' });
-    record('github-connection-dialog-' + id);
+    record('connection-dialog-' + target.card);
   }
-  assert.ok(statusResponses.length > 0, 'The UI requested the migrated GitHub resource');
-  for (const response of statusResponses) assert.equal(response.status, 200, 'Migrated GitHub status resource answers successfully');
-  record('migrated-github-api-used-by-ui', { successfulResponses: statusResponses.length });
-  assert.deepEqual(report.pageErrors, [], 'No uncaught browser exception');
-  assert.deepEqual(report.failedRequests, [], 'No server 5xx responses');
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.locator('[data-source-id="github"]').waitFor({ state: 'visible' });
+  assert.equal((await status('nrGitHub')).connected, true);
+  record('page-reload-retains-real-server-state');
+  assert.deepEqual(report.pageErrors, []);
+  assert.deepEqual(report.failedRequests, []);
   record('no-uncaught-browser-or-server-errors');
   report.status = 'passed';
 } catch (error) {
@@ -121,24 +150,13 @@ try {
   const pages = context?.pages() ?? [];
   if (pages[0]) {
     try { await pages[0].screenshot({ path: path.join(artifacts, 'failure.png'), fullPage: true }); } catch { /* Keep the original error. */ }
-    try {
-      const text = await pages[0].locator('body').innerText();
-      await writeFile(path.join(artifacts, 'failure-dom.txt'), text);
-      console.error('FAILURE_PAGE', pages[0].url(), text.slice(0, 8000));
-    } catch { /* Keep the original error. */ }
+    try { const text = await pages[0].locator('body').innerText(); await writeFile(path.join(artifacts, 'failure-dom.txt'), text); console.error('FAILURE_PAGE', pages[0].url(), text.slice(0, 8000)); } catch { /* Keep the original error. */ }
   }
   process.exitCode = 1;
 } finally {
-  if (context) {
-    try { await context.tracing.stop({ path: path.join(artifacts, 'browser-trace.zip') }); } catch { /* No trace exists before login. */ }
-    await context.close();
-  }
+  if (context) { try { await context.tracing.stop({ path: path.join(artifacts, 'browser-trace.zip') }); } catch { /* No trace exists before login. */ } await context.close(); }
   if (browser) await browser.close();
-  if (child?.pid) {
-    try { process.kill(-child.pid, 'SIGTERM'); } catch { /* Already stopped. */ }
-    await sleep(800);
-    try { process.kill(-child.pid, 'SIGKILL'); } catch { /* Already stopped. */ }
-  }
+  if (child?.pid) { try { process.kill(-child.pid, 'SIGTERM'); } catch { /* Already stopped. */ } await sleep(800); try { process.kill(-child.pid, 'SIGKILL'); } catch { /* Already stopped. */ } }
   await writeFile(path.join(artifacts, 'browser-result.json'), JSON.stringify(report, null, 2));
   console.log('APP_BROWSER_RESULT', JSON.stringify(report));
   await rm(isolated, { recursive: true, force: true });
