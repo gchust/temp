@@ -43,6 +43,17 @@ jobs:
           git switch -c refactor/connector-plugins
           npm install --global pnpm@11.7.0
           pnpm install --frozen-lockfile > ../artifacts/install-baseline.log 2>&1 || { tail -100 ../artifacts/install-baseline.log; exit 1; }
+      - name: Inspect and compare the unmodified capture regression
+        working-directory: source
+        run: |
+          set -euo pipefail
+          find tests/nocoreach -iname '*capture*' -type f -print -exec cat {} \;
+          set +e
+          pnpm exec vitest run tests/nocoreach --maxWorkers=2 --reporter=dot > ../artifacts/baseline-tests.log 2>&1
+          result=$?
+          set -e
+          printf '%s\n' "$result" > ../artifacts/baseline-tests.exit
+          tail -140 ../artifacts/baseline-tests.log
       - name: Apply production code and regression tests
         working-directory: source
         run: |
@@ -52,11 +63,15 @@ jobs:
           pnpm install --no-frozen-lockfile > ../artifacts/install-refactor.log 2>&1 || { tail -100 ../artifacts/install-refactor.log; exit 1; }
           pnpm connectors:prepare
       - name: Run all NocoReach server-domain regression tests
+        id: tests
+        continue-on-error: true
         working-directory: source
         run: |
           set -euo pipefail
           pnpm exec vitest run tests/nocoreach --maxWorkers=2 --reporter=dot 2>&1 | tee ../artifacts/connector-tests.log
       - name: Check server types including plugin composition
+        id: types
+        continue-on-error: true
         working-directory: source
         run: |
           set -euo pipefail
@@ -66,10 +81,21 @@ jobs:
         run: |
           pnpm exec playwright install --with-deps chromium > ../artifacts/browser-install.log 2>&1 || { tail -100 ../artifacts/browser-install.log; exit 1; }
       - name: Start real NocoReach and validate connector UI
+        id: browser
+        continue-on-error: true
         working-directory: source
         run: |
           set -euo pipefail
           node ../harness/nocoreach/connector-plugins/implementation/browser.mjs "$PWD" "$(realpath ../artifacts)" 2>&1 | tee ../artifacts/browser-run.log
+      - name: Require all refactor acceptance gates
+        if: always()
+        env:
+          TESTS: ${{ steps.tests.outcome }}
+          TYPES: ${{ steps.types.outcome }}
+          BROWSER: ${{ steps.browser.outcome }}
+        run: |
+          printf 'tests=%s types=%s browser=%s\n' "$TESTS" "$TYPES" "$BROWSER"
+          test "$TESTS" = success && test "$TYPES" = success && test "$BROWSER" = success
       - name: Preserve the exact branch diff
         if: always()
         working-directory: source
