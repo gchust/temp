@@ -1,3 +1,5 @@
-Six-plugin batch: GitHub, Discourse, packages, Hacker News, X, Discord/Slack.
-Browser checks preserve successful structured receipts separately from last-sync timestamps.
-Revision: 2026-10-15-six-plugins-receipt-check
+base=4367128dce60e93116a6cd089c605b190f7a523a
+branch=refactor/connector-plugins
+stage=provider-adapter-closure-and-shutdown-compatibility
+harness_revision=5182a003d5ccff7797f191b38c52a54f4c222ae4
+Require full regression tests, all application types, production build and real application browser checks. No original-repository push or PR until all migration work is complete.
