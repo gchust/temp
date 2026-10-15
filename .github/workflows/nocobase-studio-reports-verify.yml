@@ -55,6 +55,7 @@ jobs:
         working-directory: source
         run: bash "$GITHUB_WORKSPACE/nocobase/studio-project-reports/checks.sh"
       - name: Export evidence and final source
+        id: export
         if: always()
         run: |
           printf '{"collector":"%s","install":"%s","checks":"%s","commit":"%s"}\n' '${{ steps.collector.outcome }}' '${{ steps.install.outcome }}' '${{ steps.checks.outcome }}' "$GITHUB_SHA" > evidence/status.json
@@ -64,15 +65,25 @@ jobs:
           git -C source diff --cached --stat > evidence/diff-stat.log
           git -C source write-tree > evidence/candidate-tree.txt
           node -e "const fs=require('fs');const cp=require('child_process');const paths=cp.execFileSync('git',['-C','source','diff','--cached','--name-only','-z'],{encoding:'utf8'}).split('\0').filter(Boolean);const manifest=[];for(const path of paths){const dest='evidence/final/'+path;fs.mkdirSync(require('path').dirname(dest),{recursive:true});fs.copyFileSync('source/'+path,dest);manifest.push({path,size:fs.statSync(dest).size,sha:cp.execFileSync('git',['-C','source','hash-object',path],{encoding:'utf8'}).trim()});}fs.writeFileSync('evidence/manifest.json',JSON.stringify(manifest,null,2));for(const f of fs.readdirSync('evidence').filter(x=>x.endsWith('.log'))){const p='evidence/'+f;const s=fs.readFileSync(p,'utf8');if(s.length>150000)fs.writeFileSync(p,s.slice(-150000));}"
+      - name: Package verified source and review
+        id: package
+        if: steps.checks.outcome == 'success' && steps.export.outcome == 'success'
+        continue-on-error: true
+        run: node nocobase/studio-project-reports/package-delivery.mjs source evidence delivery 2>&1 | tee evidence/delivery.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: studio-reports-verification
-          path: |
-            evidence
-            source/packages/apps/studio/test-results
-            source/packages/apps/studio/playwright-report
+          path: evidence
+          include-hidden-files: true
           retention-days: 3
+      - uses: actions/upload-artifact@v4
+        if: steps.package.outcome == 'success'
+        with:
+          name: studio-project-reports-delivery
+          path: delivery
+          include-hidden-files: true
+          retention-days: 7
       - name: Save readable results in temporary repository
         if: always()
         env:
@@ -94,4 +105,5 @@ jobs:
           if test '${{ steps.prepare.outputs.phase }}' = full; then
             test '${{ steps.install.outcome }}' = success
             test '${{ steps.checks.outcome }}' = success
+            test '${{ steps.package.outcome }}' = success
           fi
