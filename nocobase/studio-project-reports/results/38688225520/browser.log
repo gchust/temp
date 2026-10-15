@@ -1,0 +1,6 @@
+Studio e2e server: http://127.0.0.1:37957/main (ready in 14 s, data in /tmp/studio-e2e-BX6gKM)
+
+Running 1 test using 1 worker
+
+[1/1] [e2e] › e2e/project-reports.test.ts:18:1 › project report settings, runner publication, history, permissions and responsive UI
+  1 passed (55.3s)

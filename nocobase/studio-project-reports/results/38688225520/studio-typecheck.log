@@ -1,0 +1,1 @@
+$ tsc --noEmit && tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.server.json --noEmit

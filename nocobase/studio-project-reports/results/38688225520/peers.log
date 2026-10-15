@@ -1,0 +1,2 @@
+$ node ./scripts/check-peer-deps.mjs
+Checked 46 packages — no peer dependency violations.

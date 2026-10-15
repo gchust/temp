@@ -1,0 +1,16 @@
+From https://github.com/nocobase/nocobase
+ * branch              feat/v3-project-reports -> FETCH_HEAD
+/home/runner/work/temp/temp/delivery/studio-project-reports.bundle is okay
+{
+  "repository": "nocobase/nocobase",
+  "branch": "feat/v3-project-reports",
+  "baseCommit": "98b386237a9fabcb7a86c47b4a46c4980c1d3e13",
+  "expectedRemoteHead": "f5264d1aa0b2365ac4cafc0040386fa1912e1d02",
+  "candidateCommit": "85b0d4a77416ca6f61e3f5f57600a8048be8d84f",
+  "candidateTree": "ff24be167d246da1b6c7b651e73e2f3aa8574a21",
+  "verificationRun": "38688225520",
+  "verificationToolingCommit": "3a00f9147d490833699c8d679e187d4357d48e9c",
+  "sourceBranchUpdated": false,
+  "pullRequestCreated": false,
+  "verification": "Scoped checks and Chromium end-to-end test passed for this tree. Runner publication used a protocol fixture; collector tests used real local Git histories."
+}
