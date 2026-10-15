@@ -24,11 +24,12 @@ await edit(plugin + 'server/service.ts', (text) => text
   .replace("status: current.summary ? partial ? 'partial' : 'ready' : current.state === 'failed' ? 'failed' : 'generating',", "status: current.state === 'queued' || current.state === 'active' ? 'generating' : current.summary ? partial ? 'partial' : 'ready' : 'failed',")
 );
 await edit(plugin + 'client/components/ui/button.tsx', (text) => "import type { ReactElement } from 'react';\n" + text
-  .replace('const buttonVariants = cva(', `const buttonVariants: (props?: {
+  .replace('const buttonVariants = cva(', `type ButtonVariants = {
     variant?: 'default' | 'outline' | 'secondary' | 'ghost' | 'destructive' | 'link' | null;
     size?: 'default' | 'xs' | 'sm' | 'lg' | 'icon' | 'icon-xs' | 'icon-sm' | 'icon-lg' | null;
-    className?: string; class?: string;
-  }) => string = cva(`)
-  .replace('}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {', '}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>): ReactElement {')
+  };
+const buttonVariants: (props?: ButtonVariants) => string = cva(`)
+  .replace('}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {', "}: Omit<ButtonPrimitive.Props, 'className'> & { className?: string } & VariantProps<typeof buttonVariants>): ReactElement {")
+  .replace('className={cn(buttonVariants({ variant, size, className }))}', 'className={cn(buttonVariants({ variant, size }), className)}')
 );
 await edit(plugin + 'client/components/ui/input.tsx', (text) => "import type { ReactElement } from 'react';\n" + text.replace('}: React.ComponentProps<\'input\'>) {', '}: React.ComponentProps<\'input\'>): ReactElement {'));
