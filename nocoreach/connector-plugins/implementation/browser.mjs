@@ -75,24 +75,25 @@ try {
   record('real-login-with-synthetic-admin');
   // Start traces after login so passwords are not retained in the published evidence.
   await context.tracing.start({ screenshots: true, snapshots: true, sources: false });
-  const mockResponse = page.waitForResponse(response => response.url().includes('/nrMock/status'));
   await page.goto(base + '/connections', { waitUntil: 'domcontentloaded' });
-  const mock = await mockResponse;
+  const indicator = page.getByTestId('mock-environment-indicator');
+  await indicator.waitFor({ state: 'visible' });
+  await expect(indicator).toHaveAttribute('role', 'img');
+  // Use the authenticated browser context for an explicit local status check. A response
+  // from the previous document may disappear during navigation and must not be reused.
+  const mock = await context.request.post(base + '/api/nocoreach/nrMock/status', { data: { projectId: '1' } });
   assert.equal(mock.status(), 200);
   const mockPayload = await mock.json();
   const mockStatus = mockPayload.data ?? mockPayload;
   assert.equal(mockStatus.globalEnabled, true, 'The server must confirm this is a mock deployment');
   assert.equal(mockStatus.environment, 'test');
-  const indicator = page.getByTestId('mock-environment-indicator');
-  await indicator.waitFor({ state: 'visible' });
-  await expect(indicator).toHaveAttribute('role', 'img');
   await page.locator('[data-source-id="github"]').waitFor({ state: 'visible' });
   await page.screenshot({ path: path.join(artifacts, 'connections.png'), fullPage: true });
   record('existing-connections-page-and-mock-isolation', { environment: mockStatus.environment });
 
   const statusResponses = [];
   page.on('response', response => {
-    if (response.url().includes('nrGitHub') && response.url().includes('status')) statusResponses.push(response);
+    if (response.url().includes('nrGitHub') && response.url().includes('status')) statusResponses.push({ status: response.status(), url: response.url() });
   });
   for (const id of ['github', 'github-traffic', 'github-discussions']) {
     const opener = page.locator(`[data-source-id="${id}"]`).getByRole('button');
@@ -105,7 +106,7 @@ try {
     record('github-connection-dialog-' + id);
   }
   assert.ok(statusResponses.length > 0, 'The UI requested the migrated GitHub resource');
-  for (const response of statusResponses) assert.equal(response.status(), 200, 'Migrated GitHub status resource answers successfully');
+  for (const response of statusResponses) assert.equal(response.status, 200, 'Migrated GitHub status resource answers successfully');
   record('migrated-github-api-used-by-ui', { successfulResponses: statusResponses.length });
   assert.deepEqual(report.pageErrors, [], 'No uncaught browser exception');
   assert.deepEqual(report.failedRequests, [], 'No server 5xx responses');
