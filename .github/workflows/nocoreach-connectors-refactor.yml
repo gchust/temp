@@ -13,7 +13,7 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 35
     env:
       CI: 'true'
     steps:
@@ -42,67 +42,99 @@ jobs:
           mkdir -p ../artifacts
           git switch -c refactor/connector-plugins
           npm install --global pnpm@11.7.0
-          pnpm install --frozen-lockfile > ../artifacts/install-baseline.log 2>&1 || { tail -100 ../artifacts/install-baseline.log; exit 1; }
-      - name: Inspect and compare the unmodified capture regression
+          pnpm install --frozen-lockfile > ../artifacts/install-baseline.log 2>&1 || { tail -80 ../artifacts/install-baseline.log; exit 1; }
+      - name: Compare unmodified shutdown regression
         working-directory: source
         run: |
-          set -euo pipefail
-          find tests/nocoreach -iname '*capture*' -type f -print -exec cat {} \;
           set +e
-          pnpm exec vitest run tests/nocoreach --maxWorkers=2 --reporter=dot > ../artifacts/baseline-tests.log 2>&1
+          pnpm exec vitest run tests/nocoreach/source-project-runs.test.ts --maxWorkers=2 --reporter=dot > ../artifacts/baseline-shutdown.log 2>&1
           result=$?
-          set -e
-          printf '%s\n' "$result" > ../artifacts/baseline-tests.exit
-          tail -140 ../artifacts/baseline-tests.log
+          printf '%s\n' "$result" > ../artifacts/baseline-shutdown.exit
+          tail -45 ../artifacts/baseline-shutdown.log
+          exit 0
       - name: Apply production code and regression tests
         working-directory: source
         run: |
           set -euo pipefail
           cp -R ../harness/nocoreach/connector-plugins/implementation/patch/. .
           node ../harness/nocoreach/connector-plugins/implementation/pipeline.mjs "$PWD"
-          pnpm install --no-frozen-lockfile > ../artifacts/install-refactor.log 2>&1 || { tail -100 ../artifacts/install-refactor.log; exit 1; }
+          pnpm install --no-frozen-lockfile > ../artifacts/install-refactor.log 2>&1 || { tail -80 ../artifacts/install-refactor.log; exit 1; }
           pnpm connectors:prepare
-      - name: Run all NocoReach server-domain regression tests
+      - name: Run NocoReach regression tests without dropping failures
         id: tests
         continue-on-error: true
         working-directory: source
         run: |
-          set -euo pipefail
-          pnpm exec vitest run tests/nocoreach --maxWorkers=2 --reporter=dot 2>&1 | tee ../artifacts/connector-tests.log
-      - name: Check server types including plugin composition
+          set +e
+          pnpm exec vitest run tests/nocoreach --maxWorkers=2 --reporter=dot > ../artifacts/connector-tests.log 2>&1
+          result=$?
+          printf '%s\n' "$result" > ../artifacts/tests.exit
+          tail -85 ../artifacts/connector-tests.log
+          exit "$result"
+      - name: Check application and plugin types
         id: types
         continue-on-error: true
         working-directory: source
         run: |
-          set -euo pipefail
-          pnpm exec tsc -p tsconfig.server.json --noEmit 2>&1 | tee ../artifacts/server-types.log
+          set +e
+          pnpm typecheck > ../artifacts/types.log 2>&1
+          result=$?
+          printf '%s\n' "$result" > ../artifacts/types.exit
+          tail -85 ../artifacts/types.log
+          exit "$result"
+      - name: Build the production distribution
+        id: build
+        continue-on-error: true
+        working-directory: source
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
+        run: |
+          set +e
+          pnpm build > ../artifacts/build.log 2>&1
+          result=$?
+          printf '%s\n' "$result" > ../artifacts/build.exit
+          tail -85 ../artifacts/build.log
+          exit "$result"
       - name: Install the pinned Chromium browser
         working-directory: source
         run: |
-          pnpm exec playwright install --with-deps chromium > ../artifacts/browser-install.log 2>&1 || { tail -100 ../artifacts/browser-install.log; exit 1; }
+          pnpm exec playwright install --with-deps chromium > ../artifacts/browser-install.log 2>&1 || { tail -60 ../artifacts/browser-install.log; exit 1; }
       - name: Start real NocoReach and validate connector UI
         id: browser
         continue-on-error: true
         working-directory: source
         run: |
-          set -euo pipefail
-          node ../harness/nocoreach/connector-plugins/implementation/browser.mjs "$PWD" "$(realpath ../artifacts)" 2>&1 | tee ../artifacts/browser-run.log
+          set +e
+          node ../harness/nocoreach/connector-plugins/implementation/browser.mjs "$PWD" "$(realpath ../artifacts)" > ../artifacts/browser-run.log 2>&1
+          result=$?
+          printf '%s\n' "$result" > ../artifacts/browser.exit
+          tail -55 ../artifacts/browser-run.log
+          exit "$result"
       - name: Require all refactor acceptance gates
         if: always()
         env:
           TESTS: ${{ steps.tests.outcome }}
           TYPES: ${{ steps.types.outcome }}
+          BUILD: ${{ steps.build.outcome }}
           BROWSER: ${{ steps.browser.outcome }}
         run: |
-          printf 'tests=%s types=%s browser=%s\n' "$TESTS" "$TYPES" "$BROWSER"
-          test "$TESTS" = success && test "$TYPES" = success && test "$BROWSER" = success
+          node --input-type=module <<'NODE'
+          import { mkdirSync, writeFileSync, appendFileSync } from 'node:fs';
+          const gates = Object.fromEntries(['TESTS','TYPES','BUILD','BROWSER'].map(k => [k.toLowerCase(), process.env[k] || 'not-run']));
+          const result = { scope: 'Incremental connector migration, not full delivery', branch: 'refactor/connector-plugins', base: '4367128dce60e93116a6cd089c605b190f7a523a', harness: process.env.GITHUB_SHA, gates, passed: Object.values(gates).every(v => v === 'success') };
+          mkdirSync('artifacts', { recursive: true });
+          writeFileSync('artifacts/acceptance-summary.json', JSON.stringify(result, null, 2));
+          console.log('ACCEPTANCE_SUMMARY', JSON.stringify(result));
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, '## NocoReach connector verification\n\n```json\n' + JSON.stringify(result, null, 2) + '\n```\n');
+          if (!result.passed) process.exitCode = 1;
+          NODE
       - name: Preserve the exact branch diff
         if: always()
         working-directory: source
         run: |
           mkdir -p ../artifacts
           git add -N .
-          git diff --stat | tee ../artifacts/diff-stat.txt
+          git diff --stat > ../artifacts/diff-stat.txt
           git diff --binary > ../artifacts/connector-refactor.patch
           git branch --show-current | tee ../artifacts/branch.txt
           git rev-parse HEAD | tee ../artifacts/base-sha.txt
