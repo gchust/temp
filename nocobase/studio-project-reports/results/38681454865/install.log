@@ -1,0 +1,99 @@
+Scope: 62 of 89 workspace projects
+? Verifying lockfile against supply-chain policies (2359 entries)...
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Progress: resolved 77, reused 0, downloaded 0, added 0
+Progress: resolved 90, reused 0, downloaded 0, added 0
+Progress: resolved 105, reused 0, downloaded 0, added 0
+Progress: resolved 122, reused 0, downloaded 0, added 0
+Progress: resolved 133, reused 0, downloaded 0, added 0
+Progress: resolved 136, reused 0, downloaded 0, added 0
+Progress: resolved 137, reused 0, downloaded 0, added 0
+Progress: resolved 138, reused 0, downloaded 0, added 0
+Progress: resolved 139, reused 0, downloaded 0, added 0
+Progress: resolved 141, reused 0, downloaded 0, added 0
+Progress: resolved 149, reused 0, downloaded 0, added 0
+Progress: resolved 155, reused 0, downloaded 0, added 0
+Progress: resolved 163, reused 0, downloaded 0, added 0
+[WARN] Request took 10045ms: https://registry.npmjs.org/tailwindcss
+Progress: resolved 167, reused 0, downloaded 0, added 0
+docs                                     | [WARN] deprecated eslint@9.39.5
+Progress: resolved 193, reused 0, downloaded 0, added 0
+Progress: resolved 198, reused 0, downloaded 0, added 0
+✓ Lockfile passes supply-chain policies (2359 entries in 20.1s)
+Progress: resolved 310, reused 0, downloaded 0, added 0
+Progress: resolved 568, reused 0, downloaded 0, added 0
+Progress: resolved 833, reused 0, downloaded 0, added 0
+Progress: resolved 909, reused 0, downloaded 0, added 0
+Progress: resolved 915, reused 0, downloaded 0, added 0
+Progress: resolved 921, reused 0, downloaded 0, added 0
+Progress: resolved 1015, reused 0, downloaded 0, added 0
+Progress: resolved 1126, reused 0, downloaded 0, added 0
+Progress: resolved 1375, reused 0, downloaded 0, added 0
+Progress: resolved 1423, reused 0, downloaded 0, added 0
+Progress: resolved 1567, reused 0, downloaded 0, added 0
+Progress: resolved 1691, reused 0, downloaded 0, added 0
+Progress: resolved 1715, reused 0, downloaded 0, added 0
+Progress: resolved 1819, reused 0, downloaded 0, added 0
+Progress: resolved 2012, reused 0, downloaded 0, added 0
+Progress: resolved 2264, reused 0, downloaded 0, added 0
+Progress: resolved 2357, reused 0, downloaded 0, added 0
+Progress: resolved 2359, reused 0, downloaded 0, added 0
+[WARN] 17 deprecated subdependencies found: @npmcli/move-file@2.0.1, are-we-there-yet@3.0.1, fstream@1.0.12, gauge@4.0.4, glob@10.5.0, glob@7.2.3, glob@8.1.0, inflight@1.0.6, npmlog@6.0.2, q@1.5.1, rimraf@2.6.3, rimraf@3.0.2, stable@0.1.8, svgo@1.1.1, tar@6.2.1, uuid@3.4.0, whatwg-encoding@3.1.1
+Progress: resolved 2359, reused 0, downloaded 0, added 0, done
+[WARN] Issues with peer dependencies found. Run "pnpm peers check" to list them.
+.                                        |    +1666 ++++++++++++++++++++++++++++
+.../node_modules/oracledb install$ node package/install.js
+.../esbuild@0.25.12/node_modules/esbuild postinstall$ node install.js
+.../esbuild@0.28.2/node_modules/esbuild postinstall$ node install.js
+.../node_modules/oracledb install: oracledb ********************************************************************************
+.../node_modules/oracledb install: oracledb ** Node-oracledb 6.10.0 installed in Node.js 24.21.0 (linux, x64)
+.../node_modules/oracledb install: oracledb ** To use node-oracledb in Thin mode, no additional steps are needed.
+.../node_modules/oracledb install: oracledb ** To use the optional Thick mode, the Oracle Client libraries (64-bit)
+.../node_modules/oracledb install: oracledb ** must be available, see the installation instructions:
+.../node_modules/oracledb install: oracledb **   https://node-oracledb.readthedocs.io/en/latest/user_guide/installation.html#node-oracledb-installation-on-linux
+.../node_modules/oracledb install: oracledb ********************************************************************************
+.../node_modules/oracledb install: Done
+.../esbuild@0.25.12/node_modules/esbuild postinstall: Done
+.../esbuild@0.28.2/node_modules/esbuild postinstall: Done
+[WARN] Failed to create bin at /home/runner/work/temp/temp/source/packages/apps/studio/node_modules/.bin/app-host-docker. ENOENT: no such file or directory, open '/home/runner/work/temp/temp/source/packages/app/app-host-docker/dist/cli.js'
+[WARN] Failed to create bin at /home/runner/work/temp/temp/source/packages/app/app-host-docker/node_modules/.bin/app-host. ENOENT: no such file or directory, open '/home/runner/work/temp/temp/source/packages/app/app-host/dist/cli.js'
+[WARN] Failed to create bin at /home/runner/work/temp/temp/source/packages/plugins/app-plugin-releases/node_modules/.bin/app-host. ENOENT: no such file or directory, open '/home/runner/work/temp/temp/source/packages/app/app-host/dist/cli.js'
+[WARN] Failed to create bin at /home/runner/work/temp/temp/source/packages/plugins/app-plugin-releases/node_modules/.bin/app-host-docker. ENOENT: no such file or directory, open '/home/runner/work/temp/temp/source/packages/app/app-host-docker/dist/cli.js'
+[WARN] Failed to create bin at /home/runner/work/temp/temp/source/packages/app/app-host-docker/node_modules/.bin/app-host. ENOENT: no such file or directory, open '/home/runner/work/temp/temp/source/packages/app/app-host-docker/node_modules/@nocobase/app-host/dist/cli.js'
+. postinstall$ node ./scripts/sync-skills.mjs
+. postinstall: Linked 3 skill(s) into .agents/skills.
+. postinstall: Linked 3 skill(s) into .claude/skills.
+. postinstall: Done
+. prepare$ pnpm dev-config:build && husky
+. prepare: $ pnpm --filter @nocobase/dev-config build
+. prepare: $ node ./scripts/build.ts
+. prepare: HUSKY=0 skip install
+. prepare: Done
+[WARN] Failed to create bin at /home/runner/work/temp/temp/source/packages/plugins/app-plugin-releases/node_modules/.bin/app-host. ENOENT: no such file or directory, open '/home/runner/work/temp/temp/source/packages/plugins/app-plugin-releases/node_modules/@nocobase/app-host/dist/cli.js'
+[WARN] Failed to create bin at /home/runner/work/temp/temp/source/packages/plugins/app-plugin-releases/node_modules/.bin/app-host-docker. ENOENT: no such file or directory, open '/home/runner/work/temp/temp/source/packages/plugins/app-plugin-releases/node_modules/@nocobase/app-host-docker/dist/cli.js'
+[WARN] Failed to create bin at /home/runner/work/temp/temp/source/packages/apps/studio/node_modules/.bin/app-host-docker. ENOENT: no such file or directory, open '/home/runner/work/temp/temp/source/packages/apps/studio/node_modules/@nocobase/app-host-docker/dist/cli.js'
+packages/apps/studio postinstall$ nocobase skills sync
+packages/apps/studio postinstall: Synchronized NocoBase package skills for @nocobase/studio
+packages/apps/studio postinstall:   copy nocobase-app-plugin-agent-sessions (@nocobase/app-plugin-agent-sessions)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-agents (@nocobase/app-plugin-agents)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-api-keys (@nocobase/app-plugin-api-keys)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-authentication (@nocobase/app-plugin-authentication)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-authorization (@nocobase/app-plugin-authorization)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-authz-default-access (@nocobase/app-plugin-authz-default-access)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-authz-restriction-rules (@nocobase/app-plugin-authz-restriction-rules)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-authz-sharing-rules (@nocobase/app-plugin-authz-sharing-rules)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-database-explorer (@nocobase/app-plugin-database-explorer)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-file (@nocobase/app-plugin-file)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-i18n (@nocobase/app-plugin-i18n)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-notification (@nocobase/app-plugin-notification)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-notification-in-app (@nocobase/app-plugin-notification-in-app)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-projects (@nocobase/app-plugin-projects)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-scheduler (@nocobase/app-plugin-scheduler)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-template-print (@nocobase/app-plugin-template-print)
+packages/apps/studio postinstall:   copy nocobase-app-plugin-users (@nocobase/app-plugin-users)
+packages/apps/studio postinstall:   copy nocobase-app-development (@nocobase/app-skills)
+packages/apps/studio postinstall:   copy nocobase-app-upgrade (@nocobase/app-skills)
+packages/apps/studio postinstall:   copy nocobase-deployment (@nocobase/app-skills)
+packages/apps/studio postinstall:   copy nocobase-db (@nocobase/db)
+packages/apps/studio postinstall: Done
+Done in 1m 3.4s using pnpm v11.7.0

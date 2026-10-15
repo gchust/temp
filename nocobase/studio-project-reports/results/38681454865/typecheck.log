@@ -1,0 +1,25 @@
+$ tsc -p tsconfig.json --noEmit
+client/components/ui/button.tsx(6,7): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+client/components/ui/button.tsx(43,10): error TS9007: Function must have an explicit return type annotation with --isolatedDeclarations.
+client/components/ui/input.tsx(6,10): error TS9007: Function must have an explicit return type annotation with --isolatedDeclarations.
+server/service.ts(238,9): error TS9008: Method must have an explicit return type annotation with --isolatedDeclarations.
+shared/api.ts(9,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(10,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(13,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(15,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(16,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(40,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(46,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(55,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(64,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(90,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(92,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(101,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(113,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(117,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(170,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(176,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(196,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+/home/runner/work/temp/temp/source/packages/plugins/app-plugin-project-reports:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @nocobase/app-plugin-project-reports@0.0.1 typecheck: `tsc -p tsconfig.json --noEmit`
+Exit status 2

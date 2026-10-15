@@ -1,0 +1,33 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.10 [39m[90m/home/runner/work/temp/temp/source/packages/plugins/app-plugin-projects[39m
+
+ [31m❯[39m tests/domains/reports/daily.test.ts [2m([22m[2m1 test[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 933[2mms[22m[39m
+[31m     [31m×[31m counts each event kind once, uses a half-open window and respects project visibility[39m[33m 931[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/domains/reports/daily.test.ts[2m > [22mdaily issue facts[2m > [22mcounts each event kind once, uses a half-open window and respects project visibility
+[31m[1mDomainError[22m: revision is required.[39m
+[36m [2m❯[22m invalid server/kernel/errors.ts:[2m45:10[22m[39m
+    [90m 43|[39m   details[33m?[39m[33m:[39m [33mReadonly[39m[33m<[39m[33mRecord[39m[33m<[39mstring[33m,[39m unknown[33m>>[39m[33m,[39m
+    [90m 44|[39m )[33m:[39m [33mDomainError[39m {
+    [90m 45|[39m   [35mreturn[39m [35mnew[39m [33mDomainError[39m([32m'invalid'[39m[33m,[39m code[33m,[39m message[33m,[39m details)[33m;[39m
+    [90m   |[39m          [31m^[39m
+    [90m 46|[39m }
+    [90m 47|[39m
+[90m [2m❯[22m Object.update server/domains/issues/issue.service.ts:[2m318:15[22m[39m
+[90m [2m❯[22m tests/domains/reports/daily.test.ts:[2m27:31[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m   Start at [22m 04:29:24
+[2m   Duration [22m 5.44s[2m (transform 2.75s, setup 145ms, import 3.67s, tests 933ms, environment 561ms)[22m
+
+
+::error file=/home/runner/work/temp/temp/source/packages/plugins/app-plugin-projects/server/kernel/errors.ts,title=tests/domains/reports/daily.test.ts > daily issue facts > counts each event kind once%2C uses a half-open window and respects project visibility,line=45,column=10::DomainError: revision is required.%0A ❯ invalid server/kernel/errors.ts:45:10%0A ❯ Object.update server/domains/issues/issue.service.ts:318:15%0A ❯ tests/domains/reports/daily.test.ts:27:31%0A%0A⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯%0ASerialized Error: { kind: 'invalid', code: 'REVISION_REQUIRED', details: undefined, domain: undefined, resource: undefined }%0A
+undefined
+/home/runner/work/temp/temp/source/packages/plugins/app-plugin-projects:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 1: vitest run tests/domains/reports/daily.test.ts
