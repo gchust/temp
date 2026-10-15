@@ -1,0 +1,59 @@
+name: Studio reports local verification bundle
+on:
+  push:
+    paths:
+      - '.github/workflows/nocobase-studio-reports-local-bundle.yml'
+permissions:
+  contents: read
+concurrency:
+  group: studio-reports-local-bundle
+  cancel-in-progress: true
+jobs:
+  bundle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: nocobase/nocobase
+          ref: 98b386237a9fabcb7a86c47b4a46c4980c1d3e13
+          path: source
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Prepare Node and pnpm
+        run: npm install --global pnpm@11.7.0
+      - name: Export public source and runtime
+        run: |
+          mkdir -p export/runtime/bin export/runtime/lib
+          tar -czf export/source.tar.gz -C source .
+          cp "$(command -v node)" export/runtime/bin/node
+          cp -a "$(npm root -g)/pnpm" export/runtime/lib/pnpm
+          ln -s ../lib/pnpm/bin/pnpm.cjs export/runtime/bin/pnpm
+          tar -czf export/runtime.tar.gz -C export/runtime .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: studio-reports-source-runtime
+          path: |
+            export/source.tar.gz
+            export/runtime.tar.gz
+          retention-days: 2
+      - name: Prepare locked Studio dependencies
+        working-directory: source
+        env:
+          HUSKY: '0'
+        run: pnpm --filter '@nocobase/studio...' install --frozen-lockfile
+      - name: Export offline dependencies and generated development configuration
+        working-directory: source
+        run: |
+          find . -type d \( -name node_modules -o -name dist -o -name .agents \) -prune -print0 > ../export/dependency-paths
+          tar --null -T ../export/dependency-paths -czf ../export/dependencies.tar.gz
+          sha256sum ../export/*.tar.gz > ../export/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: studio-reports-dependencies
+          path: |
+            export/dependencies.tar.gz
+            export/SHA256SUMS
+          retention-days: 2
