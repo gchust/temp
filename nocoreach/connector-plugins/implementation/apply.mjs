@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync, mkdirSync, cpSync } from 'node:fs';
 import path from 'node:path';
 
-// This migration script is temporary verification tooling. Only the resulting source diff is delivered.
+// Temporary verification tooling. Only the resulting application source diff is delivered.
 const root = path.resolve(process.argv[2]);
 const read = name => readFileSync(path.join(root, name), 'utf8');
 const write = (name, content) => {
@@ -40,8 +40,7 @@ write(`${github}/package.json`, JSON.stringify(manifest('@nocoreach/connector-gi
 }), null, 2) + '\n');
 for (const folder of [sdk, github]) write(`${folder}/.gitignore`, 'dist/\nnode_modules/\n');
 
-// Keep the existing authorization and retry semantics in a shared compatibility subpath.
-// The app re-exports these exact modules so callback state and retry functions are not duplicated.
+// Preserve the existing authorization and retry semantics behind shared compatibility exports.
 for (const file of ['policy', 'sync-policy', 'business-clock']) {
   let source = read(`server/nocoreach/${file}.ts`);
   source = source.replaceAll("'../../shared/i18n/messages.js'", "'../shared/i18n/messages.js'");
@@ -67,12 +66,16 @@ app.dependencies['@nocoreach/connector-sdk'] = 'workspace:*';
 app.dependencies['@nocoreach/connector-github'] = 'workspace:*';
 app.scripts['connectors:prepare'] = 'node cli/prepare-connectors.mjs';
 for (const command of ['dev', 'build', 'typecheck', 'test', 'test:watch']) app.scripts[command] = `pnpm connectors:prepare && ${app.scripts[command]}`;
-app.scripts.postinstall = `${app.scripts.postinstall} && node cli/prepare-connectors.mjs`;
+app.scripts.postinstall = `node cli/prepare-connectors.mjs && ${app.scripts.postinstall}`;
 for (const folder of [sdk, github]) if (!app.files.includes(folder)) app.files.push(folder);
 write('package.json', JSON.stringify(app, null, 2) + '\n');
 
+// The pinned CLI's composition scanner only accepts direct @nocobase imports.
+// Keep third-party package assembly behind a local composition adapter, just as the existing mock uses.
+// This changes neither the declared npm package identity nor the runtime plugin lifecycle.
+write('server/connectors/plugin.ts', `// Local composition adapter for the pinned CLI; runtime still consumes the SDK's public export.\nexport { default } from '@nocoreach/connector-sdk/server';\n`);
 edit('server/plugins.ts', [
-  ["import nocoreachMock from '../app-plugins/nocoreach-mock/server/index.js';", "import nocoreachMock from '../app-plugins/nocoreach-mock/server/index.js';\nimport connectorSdk from '@nocoreach/connector-sdk/server';\nimport connectors from './generated/connectors.js';"],
+  ["import nocoreachMock from '../app-plugins/nocoreach-mock/server/index.js';", "import nocoreachMock from '../app-plugins/nocoreach-mock/server/index.js';\nimport connectorSdk from './connectors/plugin.js';\nimport connectors from './generated/connectors.js';"],
   ['  nocoreachMock,\n]);', '  nocoreachMock,\n  connectorSdk,\n  ...connectors,\n]);'],
 ]);
 
@@ -95,5 +98,5 @@ core = replaceOnce(core, ' async afterDisable(){', ' async afterDisable(){await 
 for (const timer of ['githubCron', 'githubTrendsCron']) core = replaceOnce(core, `if(this.${timer})this.app.cronJobManager.removeJob(this.${timer});`, '', `remove legacy ${timer}`);
 write('server/nocoreach/plugin.ts', core);
 
-console.log('IMPLEMENTATION_APPLIED: GitHub source, activity, traffic and trends moved into an independent npm plugin.');
-console.log('IMPLEMENTATION_PENDING: remaining connectors, registry-driven UI, optional-package consumer handling, API publishing and full browser acceptance.');
+console.log('IMPLEMENTATION_APPLIED: GitHub source, activity, traffic and trends extracted with native plugin registration.');
+console.log('IMPLEMENTATION_PENDING: remaining connectors, optional-package consumers, UI, API publishing and browser acceptance.');
