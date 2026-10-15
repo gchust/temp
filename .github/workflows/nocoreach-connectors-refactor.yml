@@ -51,11 +51,11 @@ jobs:
           node ../harness/nocoreach/connector-plugins/implementation/pipeline.mjs "$PWD"
           pnpm install --no-frozen-lockfile > ../artifacts/install-refactor.log 2>&1 || { tail -100 ../artifacts/install-refactor.log; exit 1; }
           pnpm connectors:prepare
-      - name: Run connector and public source regression tests
+      - name: Run all NocoReach server-domain regression tests
         working-directory: source
         run: |
           set -euo pipefail
-          pnpm exec vitest run tests/nocoreach/connector tests/nocoreach/github tests/nocoreach/community tests/nocoreach/packages tests/nocoreach/hackernews tests/nocoreach/public-sources tests/nocoreach/project-runs 2>&1 | tee ../artifacts/connector-tests.log
+          pnpm exec vitest run tests/nocoreach --maxWorkers=2 --reporter=dot 2>&1 | tee ../artifacts/connector-tests.log
       - name: Check server types including plugin composition
         working-directory: source
         run: |
