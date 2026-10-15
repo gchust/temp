@@ -1,0 +1,34 @@
+$ vitest run && node --test tests/collector.test.mjs
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.10 [39m[90m/home/runner/work/temp/temp/source/packages/plugins/app-plugin-project-reports[39m
+
+ [32m✓[39m [30m[43m node [49m[39m tests/schema.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m [30m[43m node [49m[39m tests/dates.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m [30m[42m client [49m[39m tests/client/trend.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m [30m[43m node [49m[39m tests/service.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 16002[2mms[22m[39m
+     [33m[2m✓[22m[39m uses idempotent day keys and does not fabricate an issue [33m 2467[2mms[22m[39m
+     [33m[2m✓[22m[39m claims a report on the normal runner protocol with an isolated read-only workspace [33m 1784[2mms[22m[39m
+     [33m[2m✓[22m[39m stores facts before a summary and retains a published report after failed regeneration [33m 1267[2mms[22m[39m
+     [33m[2m✓[22m[39m rejects a foreign run, missing facts and revoked owner permissions [33m 2051[2mms[22m[39m
+     [33m[2m✓[22m[39m never serves a private project report to an unrelated member [33m 2391[2mms[22m[39m
+     [33m[2m✓[22m[39m enforces settings revisions and rejects unfinished calendar days [33m 2293[2mms[22m[39m
+     [33m[2m✓[22m[39m does not dispatch more than two reports at once [33m 1808[2mms[22m[39m
+     [33m[2m✓[22m[39m serializes concurrent publication and preserves the first accepted summary [33m 1939[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[32m18 passed[39m[22m[90m (18)[39m
+[2m   Start at [22m 04:40:18
+[2m   Duration [22m 19.71s[2m (transform 2.84s, setup 170ms, import 3.85s, tests 16.05s, environment 657ms)[22m
+
+✔ rejects local paths, embedded credentials and option injection (0.978263ms)
+✔ handles rename records, binary files and unusual file names (1.276524ms)
+✔ ignores declarations in comments and strings and declines parameterized tests (0.353085ms)
+✔ collects real Git deltas, not commit-message estimates (90.007428ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 138.918156

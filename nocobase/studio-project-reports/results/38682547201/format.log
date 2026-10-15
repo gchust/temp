@@ -1,0 +1,54 @@
+[90mpackages/plugins/app-plugin-project-reports/CHANGELOG.md[39m 25ms (unchanged)
+packages/plugins/app-plugin-project-reports/client/api.ts 70ms
+[90mpackages/plugins/app-plugin-project-reports/client/components/page-container.tsx[39m 8ms (unchanged)
+[90mpackages/plugins/app-plugin-project-reports/client/components/page-header.tsx[39m 7ms (unchanged)
+packages/plugins/app-plugin-project-reports/client/components/ui/button.tsx 10ms
+packages/plugins/app-plugin-project-reports/client/components/ui/input.tsx 4ms
+packages/plugins/app-plugin-project-reports/client/index.ts 4ms
+packages/plugins/app-plugin-project-reports/client/locales/en-US.ts 7ms
+[90mpackages/plugins/app-plugin-project-reports/client/locales/index.ts[39m 2ms (unchanged)
+packages/plugins/app-plugin-project-reports/client/locales/zh-CN.ts 6ms
+packages/plugins/app-plugin-project-reports/client/page.tsx 51ms
+packages/plugins/app-plugin-project-reports/client/report-card.tsx 32ms
+packages/plugins/app-plugin-project-reports/client/settings.tsx 16ms
+packages/plugins/app-plugin-project-reports/client/trend-data.ts 7ms
+packages/plugins/app-plugin-project-reports/client/trend.tsx 20ms
+packages/plugins/app-plugin-project-reports/database/migrations/202610150001_project_reports.ts 10ms
+packages/plugins/app-plugin-project-reports/eslint.config.js 20ms
+packages/plugins/app-plugin-project-reports/package.json 4ms
+[90mpackages/plugins/app-plugin-project-reports/README.md[39m 29ms (unchanged)
+[90mpackages/plugins/app-plugin-project-reports/runner/collector.d.mts[39m 1ms (unchanged)
+packages/plugins/app-plugin-project-reports/runner/collector.mjs 45ms
+packages/plugins/app-plugin-project-reports/scripts/copy-runner.mjs 2ms
+packages/plugins/app-plugin-project-reports/server/errors.ts 1ms
+packages/plugins/app-plugin-project-reports/server/index.ts 2ms
+packages/plugins/app-plugin-project-reports/server/provider.ts 6ms
+packages/plugins/app-plugin-project-reports/server/routes.ts 35ms
+packages/plugins/app-plugin-project-reports/server/runtime.ts 17ms
+packages/plugins/app-plugin-project-reports/server/service.ts 65ms
+packages/plugins/app-plugin-project-reports/server/store.ts 12ms
+packages/plugins/app-plugin-project-reports/server/tokens.ts 1ms
+packages/plugins/app-plugin-project-reports/shared/api.ts 33ms
+packages/plugins/app-plugin-project-reports/shared/contracts.ts 5ms
+packages/plugins/app-plugin-project-reports/shared/dates.ts 10ms
+packages/plugins/app-plugin-project-reports/tests/client/trend.test.tsx 4ms
+packages/plugins/app-plugin-project-reports/tests/collector.test.mjs 8ms
+packages/plugins/app-plugin-project-reports/tests/dates.test.ts 3ms
+packages/plugins/app-plugin-project-reports/tests/schema.test.ts 6ms
+packages/plugins/app-plugin-project-reports/tests/service.test.ts 15ms
+packages/plugins/app-plugin-project-reports/tsconfig.json 1ms
+packages/plugins/app-plugin-project-reports/vitest.config.ts 2ms
+packages/plugins/app-plugin-projects/server/domains/reports/daily.ts 11ms
+[90mpackages/plugins/app-plugin-projects/server/domains/reports/index.ts[39m 1ms (unchanged)
+packages/plugins/app-plugin-projects/server/domains/reports/report.service.ts 82ms
+packages/plugins/app-plugin-projects/tests/domains/reports/daily.test.ts 5ms
+[90mpackages/plugins/app-plugin-agents/server/core/runs/ports.ts[39m 11ms (unchanged)
+packages/plugins/app-plugin-agents/server/core/callers/index.ts 5ms
+packages/plugins/app-plugin-agents/server/composition.ts 36ms
+packages/plugins/app-plugin-agents/tests/server/core/callers/action-ceiling.test.ts 3ms
+packages/apps/studio/e2e/project-reports.test.ts 9ms
+[90mpackages/apps/studio/e2e/support/runner.ts[39m 15ms (unchanged)
+[90mpackages/apps/studio/client/plugins.ts[39m 3ms (unchanged)
+[90mpackages/apps/studio/client/styles.css[39m 28ms (unchanged)
+[90mpackages/apps/studio/server/plugins.ts[39m 2ms (unchanged)
+[90mpackages/apps/studio/package.json[39m 3ms (unchanged)
