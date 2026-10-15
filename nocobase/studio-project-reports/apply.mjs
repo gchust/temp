@@ -1,5 +1,6 @@
 import { readFile, writeFile, cp, mkdir } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
+import { execFileSync } from 'node:child_process';
 const root = resolve(process.argv[2] ?? 'source');
 const here = dirname(new URL(import.meta.url).pathname);
 await cp(resolve(here, 'patch'), root, { recursive: true });
@@ -31,19 +32,14 @@ await edit('packages/plugins/app-plugin-projects/server/domains/reports/report.s
   text = text.replace('export interface IssueReports {', 'export interface IssueReports {\n  daily(viewer: Viewer, query: { projectId: string; from: Date; to: Date }): Promise<IssueDailyFacts>;');
   return text.replace('    async report(viewer, query) {', '    daily: (viewer, query) => issueDailyFacts(deps.tx.read(), viewer, query),\n\n    async report(viewer, query) {');
 });
-for (const path of ['packages/apps/studio/server/plugins.ts', 'packages/apps/studio/client/plugins.ts']) {
-  await edit(path, (text) => {
-    const side = path.includes('/server/') ? 'server' : 'client';
-    return `import projectReports from '@nocobase/app-plugin-project-reports/${side}';\n` + text.replace('  agentSessions,', '  agentSessions,\n  projectReports,');
-  });
-}
+await edit('packages/apps/studio/server/plugins.ts', (text) => "import projectReports from '@nocobase/app-plugin-project-reports/server';\n" + text.replace('  agentSessions,', '  agentSessions,\n  projectReports,'));
+await edit('packages/apps/studio/client/plugins.ts', (text) => "import projectReports from '@nocobase/app-plugin-project-reports/client';\n" + text);
 await edit('packages/apps/studio/package.json', (text) => {
   const pkg = JSON.parse(text); pkg.dependencies['@nocobase/app-plugin-project-reports'] = 'workspace:^'; return JSON.stringify(pkg, null, 2) + '\n';
 });
 const target = 'packages/plugins/app-plugin-project-reports/client';
-for (const file of ['components/page-container.tsx', 'components/page-header.tsx', 'components/ui/button.tsx', 'components/ui/input.tsx', 'lib/utils.ts']) {
+for (const file of ['components/page-container.tsx', 'components/page-header.tsx', 'components/ui/button.tsx', 'components/ui/input.tsx']) {
   const path = resolve(root, target, file); await mkdir(dirname(path), { recursive: true });
-  let text = await readFile(resolve(root, 'packages/apps/studio/client', file), 'utf8');
-  text = text.replaceAll("'@/lib/utils'", file.includes('/ui/') ? "'../../lib/utils.js'" : "'../lib/utils.js'");
-  await writeFile(path, text);
+  await cp(resolve(root, 'packages/apps/studio/client', file), path);
 }
+for (const script of ['runtime-patches.mjs', 'integration-patches.mjs']) execFileSync(process.execPath, [resolve(here, script), root], { stdio: 'inherit' });
