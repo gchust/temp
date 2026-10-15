@@ -1,0 +1,94 @@
+name: Studio reports isolated verification
+on:
+  push:
+    paths:
+      - '.github/workflows/nocobase-studio-reports-verify.yml'
+      - 'nocobase/studio-project-reports/verify.json'
+permissions:
+  contents: write
+concurrency:
+  group: studio-reports-verification
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: nocobase/nocobase
+          ref: 98b386237a9fabcb7a86c47b4a46c4980c1d3e13
+          path: source
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Prepare changes
+        id: prepare
+        run: |
+          mkdir -p evidence
+          PHASE=$(node -p "JSON.parse(require('fs').readFileSync('nocobase/studio-project-reports/verify.json')).phase")
+          echo "phase=$PHASE" >> "$GITHUB_OUTPUT"
+          REPORTS_PHASE="$PHASE" node nocobase/studio-project-reports/apply.mjs source
+      - name: Test deterministic collector
+        id: collector
+        continue-on-error: true
+        working-directory: source/packages/plugins/app-plugin-project-reports
+        run: node --test tests/collector.test.mjs 2>&1 | tee "$GITHUB_WORKSPACE/evidence/collector.log"
+      - name: Install workspace
+        id: install
+        if: steps.prepare.outputs.phase == 'full'
+        continue-on-error: true
+        working-directory: source
+        env:
+          HUSKY: '0'
+        run: |
+          npm install -g pnpm@11.7.0
+          pnpm --filter '@nocobase/studio...' install --no-frozen-lockfile 2>&1 | tee "$GITHUB_WORKSPACE/evidence/install.log"
+      - name: Typecheck and test plugin
+        id: checks
+        if: steps.install.outcome == 'success'
+        continue-on-error: true
+        working-directory: source
+        run: |
+          pnpm --filter @nocobase/app-plugin-project-reports typecheck 2>&1 | tee "$GITHUB_WORKSPACE/evidence/typecheck.log"
+          pnpm --filter @nocobase/app-plugin-project-reports test 2>&1 | tee "$GITHUB_WORKSPACE/evidence/tests.log"
+          pnpm --filter @nocobase/app-plugin-project-reports build 2>&1 | tee "$GITHUB_WORKSPACE/evidence/build.log"
+      - name: Export evidence
+        if: always()
+        run: |
+          printf '{"collector":"%s","install":"%s","checks":"%s","commit":"%s"}\n' '${{ steps.collector.outcome }}' '${{ steps.install.outcome }}' '${{ steps.checks.outcome }}' "$GITHUB_SHA" > evidence/status.json
+          git -C source add packages/plugins/app-plugin-project-reports packages/plugins/app-plugin-projects/server/domains/reports packages/apps/studio/server/plugins.ts packages/apps/studio/client/plugins.ts packages/apps/studio/package.json .changeset pnpm-lock.yaml
+          git -C source diff --cached --binary > evidence/changes.patch
+          node -e "const fs=require('fs');for(const f of fs.readdirSync('evidence').filter(x=>x.endsWith('.log'))) {const p='evidence/'+f;const s=fs.readFileSync(p,'utf8');if(s.length>100000)fs.writeFileSync(p,s.slice(-100000));}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: studio-reports-verification
+          path: evidence
+          retention-days: 3
+      - name: Save readable logs in temporary repository
+        if: always()
+        env:
+          TOKEN: ${{ github.token }}
+        run: |
+          DEST="nocobase/studio-project-reports/results/$GITHUB_RUN_ID"
+          mkdir -p "$DEST"
+          cp evidence/*.log evidence/status.json "$DEST/" 2>/dev/null || true
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$DEST"
+          git commit -m 'test: record isolated Studio reports verification' || exit 0
+          git -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$TOKEN" | base64 -w0)" pull --rebase origin develop
+          git -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$TOKEN" | base64 -w0)" push origin HEAD:develop
+      - name: Check outcome
+        if: always()
+        run: |
+          test '${{ steps.collector.outcome }}' = success
+          if test '${{ steps.prepare.outputs.phase }}' = full; then
+            test '${{ steps.install.outcome }}' = success
+            test '${{ steps.checks.outcome }}' = success
+          fi
