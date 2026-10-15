@@ -1,0 +1,135 @@
+name: Studio reports verified delivery
+on:
+  push:
+    paths:
+      - '.github/workflows/nocobase-studio-reports-delivery.yml'
+permissions:
+  contents: write
+concurrency:
+  group: studio-reports-delivery
+  cancel-in-progress: false
+jobs:
+  delivery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      VERIFY_RUN: '38687170579'
+      SOURCE_BASE: '98b386237a9fabcb7a86c47b4a46c4980c1d3e13'
+      EXPECTED_HEAD: 'f5264d1aa0b2365ac4cafc0040386fa1912e1d02'
+      SOURCE_BRANCH: 'feat/v3-project-reports'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Require successful verification
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 90); do
+            STATE=$(gh api "repos/gchust/temp/actions/runs/$VERIFY_RUN" --jq '[.status, .conclusion] | @tsv')
+            if [[ "$STATE" == completed* ]]; then
+              test "$STATE" = $'completed\tsuccess' || { echo 'Verification did not succeed; nothing will be delivered.'; exit 1; }
+              break
+            fi
+            if test "$attempt" -eq 90; then echo 'Verification has not finished.'; exit 1; fi
+            sleep 10
+          done
+          git fetch origin develop
+          git reset --hard origin/develop
+          test -f "nocobase/studio-project-reports/results/$VERIFY_RUN/manifest.json"
+      - uses: actions/checkout@v4
+        with:
+          repository: nocobase/nocobase
+          ref: feat/v3-project-reports
+          path: source
+          persist-credentials: false
+      - name: Assemble the exact verified tree on the existing branch
+        run: |
+          set -euo pipefail
+          test "$(git -C source rev-parse HEAD)" = "$EXPECTED_HEAD"
+          test -z "$(git -C source status --porcelain)"
+          git -C source fetch origin "$SOURCE_BASE" --depth=1
+          git -C source read-tree --reset -u "$SOURCE_BASE"
+          node --input-type=module <<'NODE'
+          import { readFileSync, cpSync, lstatSync } from 'node:fs';
+          import { resolve } from 'node:path';
+          import { createHash } from 'node:crypto';
+          const result = resolve(`nocobase/studio-project-reports/results/${process.env.VERIFY_RUN}`);
+          const outcome = JSON.parse(readFileSync(`${result}/status.json`, 'utf8'));
+          for (const key of ['collector', 'install', 'checks']) if (outcome[key] !== 'success') throw new Error(`Failed check: ${key}`);
+          const exits = readFileSync(`${result}/check-exit-codes.txt`, 'utf8').trim().split('\n');
+          const required = ['typecheck', 'test', 'build', 'lint', 'studio-typecheck', 'studio-build', 'browser', 'changesets', 'peers', 'runtime-deps', 'cli-reference', 'openapi', 'frozen-lockfile'];
+          for (const name of required) if (!exits.includes(`${name}=0`)) throw new Error(`Missing successful check: ${name}`);
+          const entries = JSON.parse(readFileSync(`${result}/manifest.json`, 'utf8'));
+          const allowed = /^(?:\.changeset\/|packages\/plugins\/app-plugin-(?:project-reports|projects|agents)\/|packages\/apps\/studio\/|pnpm-lock\.yaml$)/u;
+          for (const entry of entries) {
+            if (!allowed.test(entry.path) || entry.path.split('/').includes('..') || entry.path.includes('\\') || entry.path.includes('/.github/')) throw new Error(`Unexpected delivery path: ${entry.path}`);
+            const source = resolve(result, 'final', entry.path);
+            if (!lstatSync(source).isFile()) throw new Error('Only regular files can be delivered.');
+            const data = readFileSync(source);
+            const sha = createHash('sha1').update(`blob ${data.length}\0`).update(data).digest('hex');
+            if (data.length !== entry.size || sha !== entry.sha) throw new Error(`Corrupt verified file: ${entry.path}`);
+            cpSync(source, resolve('source', entry.path), { recursive: true });
+          }
+          NODE
+          git -C source add -A
+          EXPECTED_TREE=$(tr -d '\r\n' < "nocobase/studio-project-reports/results/$VERIFY_RUN/candidate-tree.txt")
+          test "$(git -C source write-tree)" = "$EXPECTED_TREE"
+          test -z "$(git -C source diff --cached --name-only -- .github/workflows)"
+          git -C source diff --cached --check
+          mkdir -p delivery-evidence
+          git -C source diff --cached --binary > delivery-evidence/sync-from-existing-branch.patch
+          git -C source diff --cached -- pnpm-lock.yaml > delivery-evidence/lockfile.patch
+          git -C source diff --cached --stat > delivery-evidence/diff-stat.txt
+          printf '%s\n' "$EXPECTED_TREE" > delivery-evidence/candidate-tree.txt
+          cp "nocobase/studio-project-reports/results/$VERIFY_RUN/check-exit-codes.txt" delivery-evidence/
+          git -C source config user.name 'gchust'
+          git -C source config user.email '5254737+gchust@users.noreply.github.com'
+          git -C source -c core.hooksPath=/dev/null commit -m 'feat(project-reports): integrate verified daily reports with Studio'
+          git -C source rev-parse HEAD > delivery-evidence/source-commit.txt
+          git -C source bundle create "$GITHUB_WORKSPACE/delivery-evidence/project-reports.bundle" HEAD "^$EXPECTED_HEAD"
+          git -C source bundle verify "$GITHUB_WORKSPACE/delivery-evidence/project-reports.bundle"
+          sha256sum delivery-evidence/project-reports.bundle delivery-evidence/sync-from-existing-branch.patch > delivery-evidence/SHA256SUMS
+      - name: Push only when an explicitly configured source-repository credential is available
+        env:
+          SOURCE_REPO_TOKEN: ${{ secrets.NOCOBASE_REPORTS_PUSH_TOKEN }}
+        run: |
+          set -euo pipefail
+          if test -z "$SOURCE_REPO_TOKEN"; then
+            echo 'Verified bundle created. Cross-repository push is not configured; no original repository ref was changed.'
+            printf 'bundle-ready; source-push-not-configured\n' > delivery-evidence/push-status.txt
+            exit 0
+          fi
+          AUTH="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$SOURCE_REPO_TOKEN" | base64 -w0)"
+          echo "::add-mask::$AUTH"
+          ACTUAL=$(git -C source -c http.extraheader="$AUTH" ls-remote origin "refs/heads/$SOURCE_BRANCH" | cut -f1)
+          test "$ACTUAL" = "$EXPECTED_HEAD" || { echo 'The original branch moved; refusing to overwrite it.'; exit 1; }
+          git -C source -c http.extraheader="$AUTH" push origin "HEAD:refs/heads/$SOURCE_BRANCH"
+          printf 'pushed\n' > delivery-evidence/push-status.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: studio-reports-verified-delivery
+          path: delivery-evidence
+          retention-days: 7
+      - name: Save delivery evidence only in the temporary repository
+        if: success()
+        env:
+          TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          DEST="nocobase/studio-project-reports/delivery/$GITHUB_RUN_ID"
+          mkdir -p "$DEST"
+          cp -a delivery-evidence/. "$DEST/"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$DEST"
+          git commit -m 'test: preserve the verified Studio reports delivery bundle'
+          AUTH="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$TOKEN" | base64 -w0)"
+          echo "::add-mask::$AUTH"
+          git -c http.extraheader="$AUTH" pull --rebase origin develop
+          git -c http.extraheader="$AUTH" push origin HEAD:develop
