@@ -10,27 +10,30 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           repository: nocobase/NocoReach
-          ref: 9167abf46021c80972e786eea6a2446df6882d89
+          ref: 4367128dce60e93116a6cd089c605b190f7a523a
+          fetch-depth: 0
           path: source
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
         with:
           node-version: '24'
+          package-manager-cache: false
       - name: Export source and runtime for local work
         run: |
           mkdir -p export
+          git -C source switch -c refactor/connector-plugins
           tar -czf export/nocoreach-source.tar.gz -C source .
           cp "$(command -v node)" export/node
           tar -czf export/node-runtime.tar.gz -C export node
           rm export/node
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4
         with:
           name: nocoreach-connector-source
           path: export/*.tar.gz
-          retention-days: 3
+          retention-days: 7
       - name: Prepare locked dependencies
         working-directory: source
         run: |
@@ -40,10 +43,10 @@ jobs:
         run: |
           tar -czf export/nocoreach-dependencies.tar.gz -C source node_modules .agents app-plugins/nocoreach-mock/node_modules
           sha256sum export/*.tar.gz > export/SHA256SUMS
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4
         with:
           name: nocoreach-connector-dependencies
           path: |
             export/nocoreach-dependencies.tar.gz
             export/SHA256SUMS
-          retention-days: 3
+          retention-days: 7
