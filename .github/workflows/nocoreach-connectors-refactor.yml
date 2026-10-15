@@ -1,0 +1,74 @@
+name: NocoReach connector refactor verification
+on:
+  push:
+    paths:
+      - '.github/workflows/nocoreach-connectors-refactor.yml'
+      - 'nocoreach/connector-plugins/implementation/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nocoreach-connectors-refactor
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      CI: 'true'
+    steps:
+      - name: Check out isolated verification files
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          path: harness
+          persist-credentials: false
+          sparse-checkout: nocoreach/connector-plugins/implementation
+      - name: Check out the reviewed NocoReach baseline
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          repository: nocobase/NocoReach
+          ref: 4367128dce60e93116a6cd089c605b190f7a523a
+          path: source
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Create the local feature branch and install locked dependencies
+        working-directory: source
+        run: |
+          set -euo pipefail
+          git switch -c refactor/connector-plugins
+          npm install --global pnpm@11.7.0
+          pnpm install --frozen-lockfile
+      - name: Record the repository development guidance
+        working-directory: source
+        run: |
+          cat .agents/skills/nocobase-app-development/SKILL.md
+      - name: Apply production code and regression tests
+        working-directory: source
+        run: |
+          cp -R ../harness/nocoreach/connector-plugins/implementation/patch/. .
+          if test -f ../harness/nocoreach/connector-plugins/implementation/apply.mjs; then
+            node ../harness/nocoreach/connector-plugins/implementation/apply.mjs "$PWD"
+          fi
+          mkdir -p ../artifacts
+          git add -N .
+          git diff --stat | tee ../artifacts/diff-stat.txt
+          git diff --binary > ../artifacts/connector-refactor.patch
+          git branch --show-current | tee ../artifacts/branch.txt
+          git rev-parse HEAD | tee ../artifacts/base-sha.txt
+      - name: Run connector registry regression tests
+        working-directory: source
+        run: |
+          set -euo pipefail
+          pnpm exec vitest run tests/nocoreach/connector-registry.test.ts 2>&1 | tee ../artifacts/connector-tests.log
+      - name: Upload source diff and validation evidence
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4
+        with:
+          name: nocoreach-connectors-refactor-${{ github.run_id }}
+          path: artifacts/
+          retention-days: 14
+          if-no-files-found: warn
