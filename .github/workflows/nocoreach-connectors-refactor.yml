@@ -39,31 +39,44 @@ jobs:
         working-directory: source
         run: |
           set -euo pipefail
+          mkdir -p ../artifacts
           git switch -c refactor/connector-plugins
           npm install --global pnpm@11.7.0
           pnpm install --frozen-lockfile
-      - name: Record the repository development guidance
+      - name: Record applicable development guidance
         working-directory: source
         run: |
-          cat .agents/skills/nocobase-app-development/SKILL.md
+          cat .agents/skills/nocobase-app-development/references/cli.md
+          cat .agents/skills/nocobase-app-development/references/frontend/ui-workflow.md
+          cat .agents/skills/nocobase-app-development/references/plugins.md
       - name: Apply production code and regression tests
         working-directory: source
         run: |
+          set -euo pipefail
           cp -R ../harness/nocoreach/connector-plugins/implementation/patch/. .
-          if test -f ../harness/nocoreach/connector-plugins/implementation/apply.mjs; then
-            node ../harness/nocoreach/connector-plugins/implementation/apply.mjs "$PWD"
-          fi
+          node ../harness/nocoreach/connector-plugins/implementation/apply.mjs "$PWD"
+          pnpm install --no-frozen-lockfile
+          pnpm connectors:prepare
+      - name: Run registry and GitHub regression tests
+        working-directory: source
+        run: |
+          set -euo pipefail
+          pnpm exec vitest run tests/nocoreach/connector-registry.test.ts tests/nocoreach/github 2>&1 | tee ../artifacts/connector-tests.log
+      - name: Check server types including plugin composition
+        working-directory: source
+        run: |
+          set -euo pipefail
+          pnpm exec tsc -p tsconfig.server.json --noEmit 2>&1 | tee ../artifacts/server-types.log
+      - name: Preserve the exact branch diff
+        if: always()
+        working-directory: source
+        run: |
           mkdir -p ../artifacts
           git add -N .
           git diff --stat | tee ../artifacts/diff-stat.txt
           git diff --binary > ../artifacts/connector-refactor.patch
           git branch --show-current | tee ../artifacts/branch.txt
           git rev-parse HEAD | tee ../artifacts/base-sha.txt
-      - name: Run connector registry regression tests
-        working-directory: source
-        run: |
-          set -euo pipefail
-          pnpm exec vitest run tests/nocoreach/connector-registry.test.ts 2>&1 | tee ../artifacts/connector-tests.log
       - name: Upload source diff and validation evidence
         if: always()
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4
