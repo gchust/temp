@@ -8,8 +8,8 @@ describe('daily issue facts', () => {
   it('counts each event kind once, uses a half-open window and respects project visibility', async () => {
     const owner = h.viewer('owner', 'admin');
     const project = await h.services.projects.create(owner, { name: 'Daily facts', visibility: 'members', leadUserId: 'owner' });
-    const issue = await h.services.issues.create(owner, { title: 'Daily work', projectId: project.id, statusKey: 'in_progress' });
-    for (const statusKey of ['done', 'in_progress', 'done', 'cancelled']) await h.services.issues.update(owner, issue.id, { statusKey });
+    let issue = await h.services.issues.create(owner, { title: 'Daily work', projectId: project.id, statusKey: 'in_progress' });
+    for (const statusKey of ['done', 'in_progress', 'done', 'cancelled']) issue = await h.services.issues.update(owner, issue.id, { statusKey, revision: issue.revision });
     const from = new Date('2026-10-14T00:00:00.000Z');
     const to = new Date('2026-10-15T00:00:00.000Z');
     const conn = h.database.connection();
