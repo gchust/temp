@@ -1,0 +1,68 @@
+name: NocoReach connector runner smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [develop]
+    paths:
+      - '.github/workflows/nocoreach-connector-runner-smoke.yml'
+      - 'nocoreach/connector-plugins/environment-smoke/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nocoreach-connector-runner-smoke-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    name: Node 24 and real Chromium smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+        working-directory: nocoreach/connector-plugins/environment-smoke
+    env:
+      CI: 'true'
+    steps:
+      - name: Check out temporary harness only
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            nocoreach/connector-plugins/environment-smoke
+      - name: Set up Node 24
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Check Node and JavaScript syntax
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          node --version | tee artifacts/node-version.txt
+          node --check smoke.mjs
+          node -e 'console.log("NODE_RUNTIME_OK")'
+      - name: Install pinned smoke dependencies
+        run: |
+          set -euo pipefail
+          npm install --ignore-scripts --no-audit --no-fund --package-lock=false 2>&1 | tee artifacts/npm-install.log
+          npm ls --depth=1 --json > artifacts/dependencies.json
+      - name: Install Chromium and its system dependencies
+        run: |
+          set -euo pipefail
+          ./node_modules/.bin/playwright install --with-deps chromium 2>&1 | tee artifacts/browser-install.log
+      - name: Run real Node server and browser smoke test
+        run: |
+          set -euo pipefail
+          node smoke.mjs 2>&1 | tee artifacts/smoke.log
+      - name: Upload logs, screenshots, and trace
+        if: ${{ always() }}
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: nocoreach-connector-runner-smoke-${{ github.run_id }}
+          path: nocoreach/connector-plugins/environment-smoke/artifacts/
+          retention-days: 7
+          if-no-files-found: warn
