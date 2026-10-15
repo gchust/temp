@@ -1,0 +1,11 @@
+$ tsc -p tsconfig.json --noEmit
+client/api.ts(16,153): error TS2322: Type '{ enabled: boolean; agentId: string | null; timezone: string; hour: number; locale: "en" | "zh-CN"; expectedRevision: number; }' is not assignable to type 'BodyInit | undefined'.
+client/api.ts(18,98): error TS2353: Object literal may only specify known properties, and 'date' does not exist in type 'ArrayBuffer | Blob | FormData | ReadableStream<any> | ArrayBufferView<ArrayBuffer> | URLSearchParams'.
+server/runtime.ts(74,29): error TS6133: 'service' is declared but its value is never read.
+server/service.ts(95,239): error TS2339: Property 'executeTakeFirst' does not exist on type 'UpdateQuery<Row>'.
+server/service.ts(141,234): error TS2339: Property 'executeTakeFirst' does not exist on type 'UpdateQuery<Row>'.
+server/service.ts(247,198): error TS2339: Property 'executeTakeFirst' does not exist on type 'UpdateQuery<Row>'.
+server/service.ts(302,45): error TS2353: Object literal may only specify known properties, and 'type' does not exist in type 'ActorRef'.
+/home/runner/work/temp/temp/source/packages/plugins/app-plugin-project-reports:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @nocobase/app-plugin-project-reports@0.0.1 typecheck: `tsc -p tsconfig.json --noEmit`
+Exit status 2

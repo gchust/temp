@@ -1,0 +1,32 @@
+$ tsc -p tsconfig.json && node scripts/copy-runner.mjs && nocobase-db-manifests
+client/api.ts(16,153): error TS2322: Type '{ enabled: boolean; agentId: string | null; timezone: string; hour: number; locale: "en" | "zh-CN"; expectedRevision: number; }' is not assignable to type 'BodyInit | undefined'.
+client/api.ts(18,98): error TS2353: Object literal may only specify known properties, and 'date' does not exist in type 'ArrayBuffer | Blob | FormData | ReadableStream<any> | ArrayBufferView<ArrayBuffer> | URLSearchParams'.
+client/components/ui/button.tsx(6,7): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+client/components/ui/button.tsx(43,10): error TS9007: Function must have an explicit return type annotation with --isolatedDeclarations.
+client/components/ui/input.tsx(6,10): error TS9007: Function must have an explicit return type annotation with --isolatedDeclarations.
+server/runtime.ts(74,29): error TS6133: 'service' is declared but its value is never read.
+server/service.ts(95,239): error TS2339: Property 'executeTakeFirst' does not exist on type 'UpdateQuery<Row>'.
+server/service.ts(102,9): error TS9008: Method must have an explicit return type annotation with --isolatedDeclarations.
+server/service.ts(141,234): error TS2339: Property 'executeTakeFirst' does not exist on type 'UpdateQuery<Row>'.
+server/service.ts(247,198): error TS2339: Property 'executeTakeFirst' does not exist on type 'UpdateQuery<Row>'.
+server/service.ts(302,45): error TS2353: Object literal may only specify known properties, and 'type' does not exist in type 'ActorRef'.
+shared/api.ts(9,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(10,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(11,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(13,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(14,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(26,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(28,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(32,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(37,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(44,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(46,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(50,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(53,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(54,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(65,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(67,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+shared/api.ts(73,14): error TS9010: Variable must have an explicit type annotation with --isolatedDeclarations.
+/home/runner/work/temp/temp/source/packages/plugins/app-plugin-project-reports:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @nocobase/app-plugin-project-reports@0.0.1 build: `tsc -p tsconfig.json && node scripts/copy-runner.mjs && nocobase-db-manifests`
+Exit status 1

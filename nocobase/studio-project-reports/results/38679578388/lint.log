@@ -1,0 +1,43 @@
+$ eslint . --max-warnings 0
+
+/home/runner/work/temp/temp/source/packages/plugins/app-plugin-project-reports/client/page.tsx
+  24:86   warning  Do not call 'new Date()' during render. Components and hooks must be pure. Move this call into an event handler, effect, or state initializer  @eslint-react/purity
+  61:253  warning  Do not use item index in the array as its key                                                                                                  @eslint-react/no-array-index-key
+
+/home/runner/work/temp/temp/source/packages/plugins/app-plugin-project-reports/client/report-card.tsx
+   7:14   error    Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  33:115  warning  Do not use item index in the array as its key                                                                                   @eslint-react/no-array-index-key
+
+/home/runner/work/temp/temp/source/packages/plugins/app-plugin-project-reports/client/trend.tsx
+   8:17  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  21:17  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/home/runner/work/temp/temp/source/packages/plugins/app-plugin-project-reports/runner/collector.mjs
+   12:61  error  Unexpected control character(s) in regular expression: \x00, \x1f  no-control-regex
+   15:21  error  'URL' is not defined                                               no-undef
+   29:17  error  'process' is not defined                                           no-undef
+  219:5   error  'process' is not defined                                           no-undef
+  219:66  error  'process' is not defined                                           no-undef
+  220:42  error  'process' is not defined                                           no-undef
+
+/home/runner/work/temp/temp/source/packages/plugins/app-plugin-project-reports/server/service.ts
+   95:15  error  Unsafe assignment of an error typed value                               @typescript-eslint/no-unsafe-assignment
+   95:30  error  Unsafe call of a type that could not be resolved                        @typescript-eslint/no-unsafe-call
+   96:27  error  Unsafe member access .numUpdatedRows on a type that cannot be resolved  @typescript-eslint/no-unsafe-member-access
+  141:17  error  Unsafe assignment of an error typed value                               @typescript-eslint/no-unsafe-assignment
+  141:32  error  Unsafe call of a type that could not be resolved                        @typescript-eslint/no-unsafe-call
+  142:29  error  Unsafe member access .numUpdatedRows on a type that cannot be resolved  @typescript-eslint/no-unsafe-member-access
+  247:13  error  Unsafe assignment of an error typed value                               @typescript-eslint/no-unsafe-assignment
+  247:28  error  Unsafe call of a type that could not be resolved                        @typescript-eslint/no-unsafe-call
+  248:25  error  Unsafe member access .numUpdatedRows on a type that cannot be resolved  @typescript-eslint/no-unsafe-member-access
+
+/home/runner/work/temp/temp/source/packages/plugins/app-plugin-project-reports/tests/collector.test.mjs
+   1:1   error  Import from `vitest` instead of `node:test`  vitest/no-import-node-test
+  28:98  error  'process' is not defined                     no-undef
+
+✖ 23 problems (20 errors, 3 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
+
+/home/runner/work/temp/temp/source/packages/plugins/app-plugin-project-reports:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @nocobase/app-plugin-project-reports@0.0.1 lint: `eslint . --max-warnings 0`
+Exit status 1
