@@ -1,5 +1,5 @@
 {
-  "candidateSha": "e7596b2b30a984e4ea5dc9f31fd9f158b01af446",
+  "candidateSha": "8224027721482c56a402a4b9e61127fabf3b9dbd",
   "changedFiles": [
     "CHANGELOG.md",
     "client/components/collector-connection.tsx",
