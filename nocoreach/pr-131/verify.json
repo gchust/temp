@@ -1,8 +1,9 @@
 {
-  "candidateSha": "a804fd8eaf27a48b8f170d65054133fdd1dc4d09",
+  "candidateSha": "e7596b2b30a984e4ea5dc9f31fd9f158b01af446",
   "changedFiles": [
     "CHANGELOG.md",
     "client/components/collector-connection.tsx",
+    "client/lib/collector-platforms.ts",
     "client/pages/data-sources.ts",
     "client/pages/source-connections.tsx",
     "client/pages/xiaohongshu-connect.tsx",
