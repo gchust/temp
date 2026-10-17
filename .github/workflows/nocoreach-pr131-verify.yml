@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/nocoreach-pr131-verify.yml'
       - 'nocoreach/pr-131/verify.json'
+      - 'nocoreach/pr-131/browser.mjs'
 
 permissions:
   contents: read
@@ -17,7 +18,7 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 40
     env:
       CI: 'true'
     steps:
@@ -26,7 +27,7 @@ jobs:
         with:
           path: harness
           persist-credentials: false
-          sparse-checkout: nocoreach/pr-131/verify.json
+          sparse-checkout: nocoreach/pr-131
           sparse-checkout-cone-mode: false
 
       - name: Set up Node 24
@@ -115,53 +116,12 @@ jobs:
         working-directory: source
         run: |
           node --input-type=module <<'NODE'
-          import { execFileSync, spawnSync } from 'node:child_process';
-          import { appendFileSync, readFileSync } from 'node:fs';
+          import { execFileSync } from 'node:child_process';
+          import { readFileSync } from 'node:fs';
           const { changedFiles } = JSON.parse(readFileSync('../harness/nocoreach/pr-131/verify.json', 'utf8'));
-          const legacy = 'server/nocoreach/plugin.ts';
-          const files = changedFiles.filter((file) => /\.(?:ts|tsx|js|mjs)$/.test(file) && file !== legacy);
+          const files = changedFiles.filter((file) => /\.(?:ts|tsx|js|mjs)$/.test(file));
           if (files.length) {
             execFileSync('pnpm', ['exec', 'eslint', '--max-warnings', '0', '--', ...files], { stdio: 'inherit' });
-          }
-          if (changedFiles.includes(legacy)) {
-            // This pre-existing aggregation file uses @ts-nocheck and already fails typed lint.
-            // Compare its diagnostics with the exact pre-repair revision; any new diagnostic fails.
-            const baselineSha = '9b39964e3b75425daf5cc89f81d58f3739506f59';
-            execFileSync('git', ['fetch', '--depth=1', 'origin', baselineSha], { stdio: 'inherit' });
-            const lint = () => {
-              const result = spawnSync('pnpm', ['exec', 'eslint', '--format', 'json', '--', legacy], { encoding: 'utf8' });
-              if (result.error || ![0, 1].includes(result.status)) throw result.error || new Error(result.stderr);
-              const messages = JSON.parse(result.stdout).flatMap((entry) => entry.messages);
-              if (messages.some((message) => message.fatal)) throw new Error('ESLint could not parse the aggregation file.');
-              return messages;
-            };
-            const current = lint();
-            const candidate = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
-            let baseline;
-            try {
-              // Use the complete baseline source tree so typed lint sees its original dependency contracts.
-              execFileSync('git', ['checkout', '--detach', baselineSha], { stdio: 'inherit' });
-              baseline = lint();
-            } finally {
-              execFileSync('git', ['checkout', '--detach', candidate], { stdio: 'inherit' });
-              if (execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim() !== candidate) {
-                throw new Error('Failed to restore the candidate before subsequent checks.');
-              }
-            }
-            // Ignore column shifts from removing constructor arguments; retain line, rule, severity and full message.
-            const key = ({ line, ruleId, severity, message }) => JSON.stringify({ line, ruleId, severity, message });
-            const remaining = new Map();
-            for (const message of baseline) remaining.set(key(message), (remaining.get(key(message)) || 0) + 1);
-            const introduced = current.filter((message) => {
-              const count = remaining.get(key(message)) || 0;
-              if (!count) return true;
-              remaining.set(key(message), count - 1);
-              return false;
-            });
-            const summary = { file: legacy, baselineSha, baselineDiagnostics: baseline.length, candidateDiagnostics: current.length, introduced };
-            console.log('LEGACY_LINT_COMPARISON', JSON.stringify(summary));
-            appendFileSync(process.env.GITHUB_STEP_SUMMARY, '\nLegacy aggregation lint comparison:\n\n```json\n' + JSON.stringify(summary, null, 2) + '\n```\n');
-            if (introduced.length) throw new Error('The candidate introduced aggregation-file lint diagnostics.');
           }
           NODE
 
@@ -175,8 +135,6 @@ jobs:
           const { changedFiles } = JSON.parse(readFileSync('../harness/nocoreach/pr-131/verify.json', 'utf8'));
           const preserveStyle = new Set([
             'client/pages/source-connections.tsx',
-            'client/pages/data-sources.ts',
-            'server/nocoreach/plugin.ts',
           ]);
           const files = changedFiles.filter((file) => !preserveStyle.has(file));
           for (const file of changedFiles.filter((file) => preserveStyle.has(file))) {
@@ -218,7 +176,33 @@ jobs:
             'tests/components/youtube-connect.test.tsx',
             'tests/nocoreach/collector-connections.test.ts',
             'tests/nocoreach/collector-connections-app.test.ts',
+            'tests/nocoreach/bilibili-source.test.ts',
+            'tests/nocoreach/xiaohongshu-source.test.ts',
+            'tests/nocoreach/mock-collectors.test.ts',
+            'tests/logic/nocoreach-locale-coverage.test.ts',
+            'tests/logic/app-locale-coverage.test.ts',
             ...changedFiles.filter((file) => /^tests\/(?:components|logic|nocoreach)\/.*\.test\.tsx?$/.test(file)),
           ])];
           execFileSync('pnpm', ['exec', 'vitest', 'run', ...files, '--maxWorkers=2', '--passWithNoTests=false'], { stdio: 'inherit' });
           NODE
+
+      - name: Install Chromium for the targeted browser check
+        id: browser-install
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        working-directory: source
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Check Collector display and native keyboard navigation in a disposable app
+        if: ${{ !cancelled() && steps.browser-install.outcome == 'success' }}
+        working-directory: source
+        run: node ../harness/nocoreach/pr-131/browser.mjs "$PWD" "$GITHUB_WORKSPACE/artifacts"
+
+      - name: Upload targeted browser evidence
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4
+        with:
+          name: nocoreach-pr131-browser-${{ github.run_id }}
+          path: artifacts/
+          retention-days: 14
+          if-no-files-found: warn
+
