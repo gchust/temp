@@ -1,5 +1,5 @@
 {
-  "candidateSha": "1066d8d5b28fed6fdfede01da337bb3ec98e5ddf",
+  "candidateSha": "d63c3c00a02df890e0749e107543d1c53845acb7",
   "changedFiles": [
     "CHANGELOG.md",
     "client/components/collector-connection.tsx",
@@ -11,6 +11,7 @@
     "package.json",
     "server/nocoreach/bilibili-source.ts",
     "server/nocoreach/collector-connections.ts",
+    "server/nocoreach/xiaohongshu-adapter.ts",
     "server/nocoreach/xiaohongshu-source.ts",
     "tests/components/bilibili-connect.test.tsx",
     "tests/components/collector-connection.test.tsx",

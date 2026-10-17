@@ -178,6 +178,8 @@ jobs:
             'tests/nocoreach/collector-connections-app.test.ts',
             'tests/nocoreach/bilibili-source.test.ts',
             'tests/nocoreach/xiaohongshu-source.test.ts',
+            'tests/nocoreach/xiaohongshu-collector.test.ts',
+            'tests/logic/xiaohongshu-errors.test.ts',
             'tests/nocoreach/mock-collectors.test.ts',
             'tests/logic/nocoreach-locale-coverage.test.ts',
             'tests/logic/app-locale-coverage.test.ts',
