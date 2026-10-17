@@ -1,0 +1,19 @@
+{
+  "candidateSha": "fa09d9da00ee21fad9e60dc451aac27a0ad0e3f4",
+  "changedFiles": [
+    "CHANGELOG.md",
+    "client/components/collector-connection.tsx",
+    "client/pages/bilibili-connect.tsx",
+    "client/pages/source-connections.tsx",
+    "client/pages/xiaohongshu-connect.tsx",
+    "client/pages/youtube-connect.tsx",
+    "server/nocoreach/bilibili-source.ts",
+    "server/nocoreach/collector-connections.ts",
+    "server/nocoreach/xiaohongshu-source.ts",
+    "server/nocoreach/youtube-source.ts",
+    "tests/components/bilibili-connect.test.tsx",
+    "tests/components/collector-connection.test.tsx",
+    "tests/components/xiaohongshu-connect.test.tsx",
+    "tests/components/youtube-connect.test.tsx"
+  ]
+}

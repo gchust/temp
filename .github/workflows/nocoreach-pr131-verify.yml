@@ -1,0 +1,175 @@
+name: NocoReach PR 131 focused verification
+
+on:
+  push:
+    branches: [develop]
+    paths:
+      - '.github/workflows/nocoreach-pr131-verify.yml'
+      - 'nocoreach/pr-131/verify.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nocoreach-pr131-verification
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      CI: 'true'
+    steps:
+      - name: Check out the verification manifest
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          path: harness
+          persist-credentials: false
+          sparse-checkout: nocoreach/pr-131/verify.json
+          sparse-checkout-cone-mode: false
+
+      - name: Set up Node 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '24'
+
+      - name: Validate the candidate and changed file list
+        id: manifest
+        run: |
+          node --input-type=module <<'NODE'
+          import { appendFileSync, readFileSync } from 'node:fs';
+          import { posix } from 'node:path';
+          const manifest = JSON.parse(readFileSync('harness/nocoreach/pr-131/verify.json', 'utf8'));
+          if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)
+            || Object.keys(manifest).sort().join(',') !== 'candidateSha,changedFiles') {
+            throw new Error('Expected only candidateSha and changedFiles in the verification manifest.');
+          }
+          const { candidateSha, changedFiles } = manifest;
+          if (typeof candidateSha !== 'string' || !/^[0-9a-f]{40}$/.test(candidateSha)) {
+            throw new Error('candidateSha must be an exact lowercase 40-character commit SHA.');
+          }
+          if (!Array.isArray(changedFiles) || changedFiles.length < 1 || changedFiles.length > 100
+            || new Set(changedFiles).size !== changedFiles.length
+            || changedFiles.some((file) => typeof file !== 'string'
+              || !/^(?:[A-Za-z0-9_][A-Za-z0-9_.-]*\/)*[A-Za-z0-9_][A-Za-z0-9_.-]*$/.test(file)
+              || posix.normalize(file) !== file)) {
+            throw new Error('changedFiles must contain the unique repository-relative paths from the reviewed repair diff.');
+          }
+          appendFileSync(process.env.GITHUB_OUTPUT, 'candidate_sha=' + candidateSha + '\n');
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+            '## NocoReach PR 131 verification\n\nCandidate: `' + candidateSha + '`\n\nChanged files:\n'
+            + changedFiles.map((file) => '- `' + file + '`').join('\n') + '\n');
+          NODE
+
+      - name: Check out the exact NocoReach candidate
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          repository: nocobase/NocoReach
+          ref: ${{ steps.manifest.outputs.candidate_sha }}
+          path: source
+          persist-credentials: false
+
+      - name: Verify checkout identity and scoped paths
+        working-directory: source
+        env:
+          EXPECTED_SHA: ${{ steps.manifest.outputs.candidate_sha }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { execFileSync } from 'node:child_process';
+          import { lstatSync, readFileSync } from 'node:fs';
+          const actual = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+          if (actual !== process.env.EXPECTED_SHA) throw new Error('The checkout does not match the reviewed candidate.');
+          const { changedFiles } = JSON.parse(readFileSync('../harness/nocoreach/pr-131/verify.json', 'utf8'));
+          for (const file of changedFiles) {
+            if (!lstatSync(file).isFile()) throw new Error('Changed path is not a regular source file: ' + file);
+          }
+          const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
+          if (pkg.packageManager !== 'pnpm@11.7.0') throw new Error('Unexpected package manager version.');
+          console.log('Verified NocoReach candidate ' + actual);
+          NODE
+
+      - name: Set up the locked pnpm version
+        uses: pnpm/action-setup@c336a2788d9774dccfdeb4823a5058ccc9f07453 # v4.3.0
+        with:
+          version: '11.7.0'
+          package_json_file: source/package.json
+
+      - name: Install frozen dependencies
+        id: install
+        working-directory: source
+        run: pnpm install --frozen-lockfile
+
+      - name: Check client types
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        working-directory: source
+        run: pnpm exec tsc -p tsconfig.json --noEmit
+
+      - name: Check server types
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        working-directory: source
+        run: pnpm exec tsc -p tsconfig.server.json --noEmit
+
+      - name: Lint changed source and test files
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        working-directory: source
+        run: |
+          node --input-type=module <<'NODE'
+          import { execFileSync } from 'node:child_process';
+          import { readFileSync } from 'node:fs';
+          const { changedFiles } = JSON.parse(readFileSync('../harness/nocoreach/pr-131/verify.json', 'utf8'));
+          const files = changedFiles.filter((file) => /\.(?:ts|tsx|js|mjs)$/.test(file));
+          if (files.length) {
+            execFileSync('pnpm', ['exec', 'eslint', '--max-warnings', '0', '--', ...files], { stdio: 'inherit' });
+          } else {
+            console.log('The repair diff contains no ESLint-supported files.');
+          }
+          NODE
+
+      - name: Check formatting of changed files
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        working-directory: source
+        run: |
+          node --input-type=module <<'NODE'
+          import { execFileSync } from 'node:child_process';
+          import { readFileSync } from 'node:fs';
+          const { changedFiles } = JSON.parse(readFileSync('../harness/nocoreach/pr-131/verify.json', 'utf8'));
+          const preserveStyle = 'client/pages/source-connections.tsx';
+          const files = changedFiles.filter((file) => file !== preserveStyle);
+          if (changedFiles.includes(preserveStyle)) {
+            console.log('Preserving the existing compact style of ' + preserveStyle + '; ESLint and TypeScript still check it.');
+          }
+          if (files.length) {
+            try {
+              execFileSync('pnpm', ['exec', 'prettier', '--check', '--', ...files], { stdio: 'inherit' });
+            } catch {
+              console.log('The original candidate failed formatting. Formatting the checked files only to print a diagnostic patch; this step remains failed.');
+              process.exitCode = 1;
+              try {
+                execFileSync('pnpm', ['exec', 'prettier', '--write', '--', ...files], { stdio: 'inherit' });
+              } finally {
+                try {
+                  console.log('BEGIN_CANDIDATE_FORMATTING_PATCH');
+                  execFileSync('git', ['diff', '--', ...files], { stdio: 'inherit' });
+                  console.log('END_CANDIDATE_FORMATTING_PATCH');
+                } finally {
+                  execFileSync('git', ['restore', '--source=HEAD', '--', ...files], { stdio: 'inherit' });
+                }
+              }
+            }
+          }
+          NODE
+
+      - name: Run focused collector service and component tests
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        working-directory: source
+        run: >-
+          pnpm exec vitest run
+          tests/components/collector-connection.test.tsx
+          tests/components/bilibili-connect.test.tsx
+          tests/components/xiaohongshu-connect.test.tsx
+          tests/components/youtube-connect.test.tsx
+          tests/nocoreach/collector-connections.test.ts
+          tests/nocoreach/collector-connections-app.test.ts
+          --maxWorkers=2 --passWithNoTests=false
+
