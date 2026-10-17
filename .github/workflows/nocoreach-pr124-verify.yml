@@ -1,0 +1,393 @@
+name: NocoReach PR 124 candidate verification
+
+on:
+  push:
+    branches: [nocoreach-pr124-fix-verify]
+    paths:
+      - '.github/workflows/nocoreach-pr124-verify.yml'
+      - 'nocoreach/pr-124/verify.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nocoreach-pr124-fix-verification
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    if: ${{ github.repository == 'gchust/temp' && github.ref == 'refs/heads/nocoreach-pr124-fix-verify' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      CI: 'true'
+      AGENT_ANNOTATIONS_ENABLED: 'false'
+      NOCOREACH_VERIFY_BASELINE: '14910509c348e37e70bea59364e2627e9d7f05b0'
+    steps:
+      - name: Check out the verification manifest
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          path: harness
+          persist-credentials: false
+          sparse-checkout: nocoreach/pr-124/verify.json
+          sparse-checkout-cone-mode: false
+
+      - name: Set up Node 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '24'
+
+      - name: Validate the immutable candidate and scoped file list
+        id: manifest
+        run: |
+          node --input-type=module <<'NODE'
+          import { appendFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+          import { join, posix } from 'node:path';
+          const manifest = JSON.parse(readFileSync('harness/nocoreach/pr-124/verify.json', 'utf8'));
+          if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)
+            || Object.keys(manifest).sort().join(',') !== 'candidateSha,changedFiles') {
+            throw new Error('The manifest must contain only candidateSha and changedFiles.');
+          }
+          const { candidateSha, changedFiles } = manifest;
+          if (typeof candidateSha !== 'string' || !/^[0-9a-f]{40}$/.test(candidateSha)) {
+            throw new Error('candidateSha must be an exact lowercase 40-character commit SHA.');
+          }
+          if (!Array.isArray(changedFiles) || changedFiles.length < 1 || changedFiles.length > 200
+            || new Set(changedFiles).size !== changedFiles.length
+            || changedFiles.some((file) => typeof file !== 'string'
+              || !/^(?:[A-Za-z0-9_][A-Za-z0-9_.-]*\/)*[A-Za-z0-9_][A-Za-z0-9_.-]*$/.test(file)
+              || posix.normalize(file) !== file)) {
+            throw new Error('changedFiles must contain unique, safe repository-relative paths.');
+          }
+          const evidence = join(process.env.RUNNER_TEMP, 'nocoreach-pr124-verification');
+          mkdirSync(evidence, { recursive: true });
+          writeFileSync(join(evidence, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
+          appendFileSync(process.env.GITHUB_ENV, 'NOCOREACH_VERIFY_CANDIDATE=' + candidateSha + '\n');
+          appendFileSync(process.env.GITHUB_ENV, 'NOCOREACH_VERIFY_EVIDENCE=' + evidence + '\n');
+          appendFileSync(process.env.GITHUB_OUTPUT, 'candidate_sha=' + candidateSha + '\n');
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+            '## NocoReach PR 124 candidate verification\n\nCandidate: `' + candidateSha
+            + '`\n\nBaseline: `' + process.env.NOCOREACH_VERIFY_BASELINE + '`\n\nChanged files:\n'
+            + changedFiles.map((file) => '- `' + file + '`').join('\n') + '\n');
+          NODE
+
+      - name: Check out the exact NocoReach candidate
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          repository: nocobase/NocoReach
+          ref: ${{ steps.manifest.outputs.candidate_sha }}
+          path: source
+          persist-credentials: false
+
+      - name: Verify checkout identity, actual diff and regular files
+        id: source
+        working-directory: source
+        run: |
+          node --input-type=module <<'NODE'
+          import { execFileSync } from 'node:child_process';
+          import { lstatSync, readFileSync, realpathSync } from 'node:fs';
+          import { resolve } from 'node:path';
+          const git = (...args) => execFileSync('git', args, { encoding: 'utf8' }).trim();
+          if (git('rev-parse', 'HEAD') !== process.env.NOCOREACH_VERIFY_CANDIDATE) {
+            throw new Error('The checkout does not match the candidate SHA.');
+          }
+          execFileSync('git', ['fetch', '--depth=1', 'origin', process.env.NOCOREACH_VERIFY_BASELINE], { stdio: 'inherit' });
+          const { changedFiles } = JSON.parse(readFileSync('../harness/nocoreach/pr-124/verify.json', 'utf8'));
+          const actual = execFileSync('git', [
+            'diff', '--name-only', '--no-renames', '-z',
+            process.env.NOCOREACH_VERIFY_BASELINE, process.env.NOCOREACH_VERIFY_CANDIDATE,
+          ], { encoding: 'utf8' }).split('\0').filter(Boolean).sort();
+          if (JSON.stringify(actual) !== JSON.stringify([...changedFiles].sort())) {
+            throw new Error('The manifest must exactly match the baseline-to-candidate diff, including deletions: ' + JSON.stringify(actual));
+          }
+          for (const file of changedFiles) {
+            const entry = lstatSync(file, { throwIfNoEntry: false });
+            if (!entry) {
+              // Deleted tracked files are valid diff entries and are omitted from candidate-only checks.
+              git('cat-file', '-e', process.env.NOCOREACH_VERIFY_BASELINE + ':' + file);
+              continue;
+            }
+            if (!entry.isFile() || realpathSync(file) !== resolve(file)) {
+              throw new Error('Changed paths must be regular files without symlink traversal: ' + file);
+            }
+          }
+          const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
+          if (pkg.packageManager !== 'pnpm@11.7.0') throw new Error('Unexpected package manager version.');
+          console.log('Verified candidate and ' + changedFiles.length + ' changed paths.');
+          NODE
+
+      - name: Set up the locked pnpm version
+        uses: pnpm/action-setup@c336a2788d9774dccfdeb4823a5058ccc9f07453 # v4.3.0
+        with:
+          version: '11.7.0'
+          package_json_file: source/package.json
+
+      - name: Install frozen dependencies
+        id: install
+        working-directory: source
+        run: pnpm install --frozen-lockfile
+
+      - name: Check client types
+        id: client_types
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        working-directory: source
+        run: |
+          test "$(git rev-parse HEAD)" = "$NOCOREACH_VERIFY_CANDIDATE"
+          git diff --quiet HEAD
+          pnpm exec tsc -p tsconfig.json --noEmit
+
+      - name: Check server types
+        id: server_types
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        working-directory: source
+        run: |
+          test "$(git rev-parse HEAD)" = "$NOCOREACH_VERIFY_CANDIDATE"
+          git diff --quiet HEAD
+          pnpm exec tsc -p tsconfig.server.json --noEmit
+
+      - name: Compare typed lint diagnostics with the complete baseline tree
+        id: lint
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        working-directory: source
+        run: |
+          node --input-type=module <<'NODE'
+          import { execFileSync, spawnSync } from 'node:child_process';
+          import { appendFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
+          import { join, relative } from 'node:path';
+          const candidate = process.env.NOCOREACH_VERIFY_CANDIDATE;
+          const baselineSha = process.env.NOCOREACH_VERIFY_BASELINE;
+          const git = (...args) => execFileSync('git', args, { encoding: 'utf8' }).trim();
+          if (git('rev-parse', 'HEAD') !== candidate) throw new Error('Not on the candidate.');
+          git('diff', '--quiet', 'HEAD');
+          const { changedFiles } = JSON.parse(readFileSync('../harness/nocoreach/pr-124/verify.json', 'utf8'));
+          const files = changedFiles.filter((file) => /\.[cm]?[jt]sx?$/.test(file) && existsSync(file));
+          const lint = (paths) => {
+            if (!paths.length) return [];
+            const result = spawnSync('pnpm', ['exec', 'eslint', '--format', 'json', '--', ...paths], {
+              encoding: 'utf8', maxBuffer: 32 * 1024 * 1024,
+            });
+            if (result.error || ![0, 1].includes(result.status)) {
+              throw result.error || new Error('ESLint failed to run: ' + result.stderr + result.stdout);
+            }
+            if (result.stderr) process.stderr.write(result.stderr);
+            return JSON.parse(result.stdout).flatMap((entry) => entry.messages.map((message) => ({
+              file: relative(process.cwd(), entry.filePath).split('\\').join('/'), ...message,
+            })));
+          };
+          const current = lint(files);
+          let baseline;
+          try {
+            // Restore all tracked baseline sources, not just the files passed to typed ESLint.
+            execFileSync('git', ['checkout', '--detach', baselineSha], { stdio: 'inherit' });
+            baseline = lint(files.filter((file) => existsSync(file)));
+          } finally {
+            execFileSync('git', ['checkout', '--detach', candidate], { stdio: 'inherit' });
+            if (git('rev-parse', 'HEAD') !== candidate) throw new Error('Failed to restore the candidate.');
+            git('diff', '--quiet', 'HEAD');
+          }
+          // Count identical per-file diagnostics; line/column moves alone do not introduce a new problem.
+          const key = ({ file, ruleId, severity, message, fatal }) =>
+            JSON.stringify({ file, ruleId, severity, message, fatal: Boolean(fatal) });
+          const remaining = new Map();
+          for (const message of baseline) remaining.set(key(message), (remaining.get(key(message)) || 0) + 1);
+          const introduced = current.filter((message) => {
+            const count = remaining.get(key(message)) || 0;
+            if (!count) return true;
+            remaining.set(key(message), count - 1);
+            return false;
+          });
+          const summary = {
+            candidateSha: candidate, baselineSha, files,
+            baselineDiagnostics: baseline.length, candidateDiagnostics: current.length, introduced,
+          };
+          writeFileSync(join(process.env.NOCOREACH_VERIFY_EVIDENCE, 'lint-comparison.json'), JSON.stringify({ ...summary, baseline, current }, null, 2));
+          console.log('LINT_COMPARISON', JSON.stringify(summary, null, 2));
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, '\nTyped lint: ' + current.length + ' candidate diagnostics; '
+            + baseline.length + ' baseline diagnostics; ' + introduced.length + ' newly introduced.\n');
+          if (introduced.length) throw new Error('The candidate introduced lint diagnostics.');
+          NODE
+
+      - name: Check scoped formatting and retain a diagnostic patch on failure
+        id: format
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        working-directory: source
+        run: |
+          node --input-type=module <<'NODE'
+          import { execFileSync, spawnSync } from 'node:child_process';
+          import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+          import { join } from 'node:path';
+          const candidate = process.env.NOCOREACH_VERIFY_CANDIDATE;
+          const git = (...args) => execFileSync('git', args, { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
+          if (git('rev-parse', 'HEAD').trim() !== candidate) throw new Error('Not on the candidate.');
+          git('diff', '--quiet', 'HEAD');
+          const { changedFiles } = JSON.parse(readFileSync('../harness/nocoreach/pr-124/verify.json', 'utf8'));
+          const preserveStyle = new Set([
+            'client/nocoreach-routes.ts',
+            'server/providers/nocoreach.ts',
+            'server/nocoreach/classic-import.ts',
+            ...[
+              'source-connections', 'google-connection', 'keyword-connection', 'github-connect',
+              'site-content-connect', 'community-connect', 'packages-connect', 'hackernews-connect',
+              'reddit-connect', 'trends-connect', 'x-connect', 'chat-connect', 'data-health',
+              'sync-panel', 'competitor-watch',
+            ].map((name) => 'client/pages/' + name + '.tsx'),
+          ]);
+          const files = changedFiles.filter((file) => {
+            if (!existsSync(file) || !/\.(?:[cm]?[jt]sx?|json|ya?ml|mdx?|css|scss|html)$/.test(file)) return false;
+            if (!preserveStyle.has(file)) return true;
+            const before = spawnSync('git', ['show', process.env.NOCOREACH_VERIFY_BASELINE + ':' + file], { encoding: 'utf8' });
+            if (before.status !== 0) return true; // A new file never inherits a style exemption.
+            const lines = before.stdout.split(/\r?\n/).filter((line) => line.trim());
+            const average = lines.length ? lines.reduce((total, line) => total + line.length, 0) / lines.length : 0;
+            console.log('PRESERVE_BASELINE_STYLE', file, 'baseline average nonempty line length:', average.toFixed(2));
+            return false;
+          });
+          console.log('FORMAT_CHECK_FILES', JSON.stringify(files));
+          if (files.length) {
+            try {
+              execFileSync('pnpm', ['exec', 'prettier', '--check', '--', ...files], { stdio: 'inherit' });
+            } catch {
+              // This check remains failed; formatting is only used to expose a reviewable repair patch.
+              process.exitCode = 1;
+              try {
+                execFileSync('pnpm', ['exec', 'prettier', '--write', '--', ...files], { stdio: 'inherit' });
+              } finally {
+                try {
+                  const patch = git('diff', '--', ...files);
+                  writeFileSync(join(process.env.NOCOREACH_VERIFY_EVIDENCE, 'format.patch'), patch);
+                  console.log('BEGIN_FORMAT_PATCH');
+                  process.stdout.write(patch);
+                  console.log('END_FORMAT_PATCH');
+                } finally {
+                  execFileSync('git', ['restore', '--source=' + candidate, '--worktree', '--', ...files], { stdio: 'inherit' });
+                  git('diff', '--quiet', 'HEAD');
+                }
+              }
+            }
+          }
+          NODE
+
+      - name: Run all changed tests and the affected access and schema tests
+        id: focused_tests
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        working-directory: source
+        run: |
+          test "$(git rev-parse HEAD)" = "$NOCOREACH_VERIFY_CANDIDATE"
+          git diff --quiet HEAD
+          node --input-type=module <<'NODE'
+          import { execFileSync } from 'node:child_process';
+          import { existsSync, lstatSync, readFileSync, writeFileSync } from 'node:fs';
+          import { join } from 'node:path';
+          const { changedFiles } = JSON.parse(readFileSync('../harness/nocoreach/pr-124/verify.json', 'utf8'));
+          const files = [...new Set([
+            'tests/nocoreach/access-migration.test.ts',
+            'tests/nocoreach/member-invitation-migration.test.ts',
+            'tests/nocoreach/access-keys-app.test.ts',
+            'tests/nocoreach/key-management-app.test.ts',
+            'tests/nocoreach/member-access-app.test.ts',
+            'tests/nocoreach/classic-import-app.test.ts',
+            'tests/nocoreach/classic-import.test.ts',
+            'tests/nocoreach/members.test.ts',
+            'tests/nocoreach/manual-tasks-app.test.ts',
+            'tests/nocoreach/schedule-management-app.test.ts',
+            'tests/components/key-management.test.tsx',
+            'tests/components/member-access.test.tsx',
+            'tests/components/xhs-authentication-provider.test.tsx',
+            'tests/components/xhs-session-confirm.test.tsx',
+            ...changedFiles.filter((file) => /^tests\/.*\.test\.[cm]?[jt]sx?$/.test(file) && existsSync(file)),
+          ])].sort();
+          for (const file of files) {
+            if (!existsSync(file) || !lstatSync(file).isFile()) throw new Error('Required focused test is missing: ' + file);
+          }
+          writeFileSync(join(process.env.NOCOREACH_VERIFY_EVIDENCE, 'focused-tests.json'), JSON.stringify(files, null, 2));
+          console.log('FOCUSED_TESTS', JSON.stringify(files, null, 2));
+          execFileSync('pnpm', ['exec', 'vitest', 'run', ...files, '--maxWorkers=2', '--passWithNoTests=false'], { stdio: 'inherit' });
+          NODE
+
+      - name: Install Playwright Chromium and its system dependencies
+        id: chromium
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        working-directory: source
+        run: |
+          test "$(git rev-parse HEAD)" = "$NOCOREACH_VERIFY_CANDIDATE"
+          git diff --quiet HEAD
+          pnpm exec playwright install --with-deps chromium
+
+      - name: Verify keys in a real Chromium browser
+        id: keys_browser
+        if: ${{ !cancelled() && steps.install.outcome == 'success' && steps.chromium.outcome == 'success' }}
+        working-directory: source
+        timeout-minutes: 10
+        env:
+          TMPDIR: ${{ runner.temp }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$NOCOREACH_VERIFY_CANDIDATE"
+          git diff --quiet HEAD
+          pnpm exec tsx tests/nocoreach/keys.browser.ts
+
+      - name: Verify members and invitations in a real Chromium browser
+        id: members_browser
+        if: ${{ !cancelled() && steps.install.outcome == 'success' && steps.chromium.outcome == 'success' }}
+        working-directory: source
+        timeout-minutes: 10
+        env:
+          TMPDIR: ${{ runner.temp }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$NOCOREACH_VERIFY_CANDIDATE"
+          git diff --quiet HEAD
+          pnpm exec tsx tests/nocoreach/member-access.browser.ts
+
+      - name: Print browser verification records
+        id: browser_evidence
+        if: ${{ !cancelled() && steps.install.outcome == 'success' && steps.chromium.outcome == 'success' }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { existsSync, readFileSync } from 'node:fs';
+          import { join } from 'node:path';
+          for (const name of ['PM-453-keys-screenshots', 'PM-453-members-screenshots']) {
+            const file = join(process.env.RUNNER_TEMP, name, 'verification.json');
+            if (!existsSync(file)) {
+              console.error('Missing browser verification record:', name);
+              process.exitCode = 1;
+              continue;
+            }
+            console.log('BROWSER_VERIFICATION', name, JSON.stringify(JSON.parse(readFileSync(file, 'utf8')), null, 2));
+          }
+          NODE
+
+      - name: Record the independent check outcomes
+        if: ${{ !cancelled() && steps.manifest.outcome == 'success' }}
+        env:
+          CHECK_OUTCOMES: ${{ toJSON(steps) }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { appendFileSync, writeFileSync } from 'node:fs';
+          import { join } from 'node:path';
+          const steps = JSON.parse(process.env.CHECK_OUTCOMES);
+          const checks = Object.fromEntries([
+            'source', 'install', 'client_types', 'server_types', 'lint', 'format',
+            'focused_tests', 'chromium', 'keys_browser', 'members_browser', 'browser_evidence',
+          ].map((name) => [name, steps[name]?.outcome ?? 'skipped']));
+          const summary = {
+            candidateSha: process.env.NOCOREACH_VERIFY_CANDIDATE,
+            baselineSha: process.env.NOCOREACH_VERIFY_BASELINE,
+            checks,
+          };
+          writeFileSync(join(process.env.NOCOREACH_VERIFY_EVIDENCE, 'verification.json'), JSON.stringify(summary, null, 2) + '\n');
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, '\n## Check outcomes\n\n| Check | Outcome |\n| --- | --- |\n'
+            + Object.entries(checks).map(([name, outcome]) => '| ' + name + ' | ' + outcome + ' |').join('\n') + '\n');
+          NODE
+
+      - name: Upload candidate diagnostics and browser evidence
+        if: ${{ !cancelled() && steps.manifest.outcome == 'success' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: nocoreach-pr124-${{ steps.manifest.outputs.candidate_sha }}
+          retention-days: 7
+          if-no-files-found: error
+          path: |
+            ${{ runner.temp }}/nocoreach-pr124-verification/
+            ${{ runner.temp }}/PM-453-keys-screenshots/*.png
+            ${{ runner.temp }}/PM-453-keys-screenshots/verification.json
+            ${{ runner.temp }}/PM-453-members-screenshots/*.png
+            ${{ runner.temp }}/PM-453-members-screenshots/verification.json
