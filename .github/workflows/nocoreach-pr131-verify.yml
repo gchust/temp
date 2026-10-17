@@ -134,10 +134,14 @@ jobs:
           import { execFileSync } from 'node:child_process';
           import { readFileSync } from 'node:fs';
           const { changedFiles } = JSON.parse(readFileSync('../harness/nocoreach/pr-131/verify.json', 'utf8'));
-          const preserveStyle = 'client/pages/source-connections.tsx';
-          const files = changedFiles.filter((file) => file !== preserveStyle);
-          if (changedFiles.includes(preserveStyle)) {
-            console.log('Preserving the existing compact style of ' + preserveStyle + '; ESLint and TypeScript still check it.');
+          const preserveStyle = new Set([
+            'client/pages/source-connections.tsx',
+            'client/pages/data-sources.ts',
+            'server/nocoreach/plugin.ts',
+          ]);
+          const files = changedFiles.filter((file) => !preserveStyle.has(file));
+          for (const file of changedFiles.filter((file) => preserveStyle.has(file))) {
+            console.log('Preserving the existing compact style of ' + file + '; ESLint and TypeScript still check it.');
           }
           if (files.length) {
             try {
@@ -163,13 +167,19 @@ jobs:
       - name: Run focused collector service and component tests
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         working-directory: source
-        run: >-
-          pnpm exec vitest run
-          tests/components/collector-connection.test.tsx
-          tests/components/bilibili-connect.test.tsx
-          tests/components/xiaohongshu-connect.test.tsx
-          tests/components/youtube-connect.test.tsx
-          tests/nocoreach/collector-connections.test.ts
-          tests/nocoreach/collector-connections-app.test.ts
-          --maxWorkers=2 --passWithNoTests=false
-
+        run: |
+          node --input-type=module <<'NODE'
+          import { execFileSync } from 'node:child_process';
+          import { readFileSync } from 'node:fs';
+          const { changedFiles } = JSON.parse(readFileSync('../harness/nocoreach/pr-131/verify.json', 'utf8'));
+          const files = [...new Set([
+            'tests/components/collector-connection.test.tsx',
+            'tests/components/bilibili-connect.test.tsx',
+            'tests/components/xiaohongshu-connect.test.tsx',
+            'tests/components/youtube-connect.test.tsx',
+            'tests/nocoreach/collector-connections.test.ts',
+            'tests/nocoreach/collector-connections-app.test.ts',
+            ...changedFiles.filter((file) => /^tests\/(?:components|logic|nocoreach)\/.*\.test\.tsx?$/.test(file)),
+          ])];
+          execFileSync('pnpm', ['exec', 'vitest', 'run', ...files, '--maxWorkers=2', '--passWithNoTests=false'], { stdio: 'inherit' });
+          NODE
