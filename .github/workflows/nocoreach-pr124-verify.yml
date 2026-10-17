@@ -186,8 +186,11 @@ jobs:
             git('diff', '--quiet', 'HEAD');
           }
           // Count identical per-file diagnostics; line/column moves alone do not introduce a new problem.
+          // React compiler messages embed source locations and neighboring code after the diagnostic.
+          // Preserve the diagnostic text and count while excluding that incidental code frame.
+          const diagnosticText = (message) => message.replace(/\n\n[^\n]+\.[cm]?[jt]sx?:\d+:\d+\n[\s\S]*$/, '');
           const key = ({ file, ruleId, severity, message, fatal }) =>
-            JSON.stringify({ file, ruleId, severity, message, fatal: Boolean(fatal) });
+            JSON.stringify({ file, ruleId, severity, message: diagnosticText(message), fatal: Boolean(fatal) });
           const remaining = new Map();
           for (const message of baseline) remaining.set(key(message), (remaining.get(key(message)) || 0) + 1);
           const introduced = current.filter((message) => {
